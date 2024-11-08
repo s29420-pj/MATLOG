@@ -2,6 +2,9 @@ package pl.pjatk.MATLOG.domain;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Concrete class representing Student in application
+ */
 @Document("student_user")
 public final class StudentUser extends User {
 

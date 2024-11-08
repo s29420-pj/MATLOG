@@ -98,6 +98,12 @@ public abstract class User {
     }
 
     protected User(Builder<?> builder) {
+        if (builder.firstName == null || builder.firstName.isBlank() ||
+            builder.lastName == null  || builder.lastName.isBlank() ||
+            builder.emailAddress == null || builder.emailAddress.isBlank() || builder.dateOfBirth == null) {
+            throw new UserInvalidDataException("First name, last name, email address and date of birth" +
+                    "canno be empty");
+        }
         this.id = UUID.randomUUID().toString();
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;

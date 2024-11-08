@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.domain;
 
 import org.junit.jupiter.api.Test;
+import pl.pjatk.MATLOG.domain.exceptions.UserInvalidDataException;
 
 import java.time.LocalDate;
 
@@ -21,6 +22,16 @@ public class StudentUserTests {
             assertEquals("Ethan Hovermann", student.getFullName());
             assertEquals(LocalDate.now().getYear() - 1999, student.getAge());
             assertEquals("example@example.com", student.getEmailAddress());
+        });
+    }
+
+    @Test
+    void invalidFirstNameStudent() {
+        assertThrows(UserInvalidDataException.class, () -> {new StudentUser.StudentUserBuilder()
+                .withLastName("Evann")
+                .withEmailAddress("test@example.com")
+                .withDateOfBirth(LocalDate.of(2000, 4, 1))
+                .build();
         });
     }
 }
