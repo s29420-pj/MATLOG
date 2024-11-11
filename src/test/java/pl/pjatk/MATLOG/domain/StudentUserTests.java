@@ -1,5 +1,6 @@
 package pl.pjatk.MATLOG.domain;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.pjatk.MATLOG.domain.exceptions.*;
 
@@ -107,6 +108,7 @@ public class StudentUserTests {
         assertThrows(UserInvalidLastNameException.class, () -> {
             new StudentUser.StudentUserBuilder()
                     .withFirstName("Philip")
+                    .withLastName(null)
                     .withEmailAddress("test@example.com")
                     .withDateOfBirth(LocalDate.of(2003, 12, 12))
                     .build();
@@ -163,6 +165,7 @@ public class StudentUserTests {
     // ------------------ date of birth tests ------------------------
 
     @Test
+    @DisplayName("Throws exception when builder didn't set a date of birth")
     void noDateOfBirthStudent() {
         assertThrows(UserInvalidDateOfBirthException.class, () -> {
             new StudentUser.StudentUserBuilder()
@@ -174,6 +177,7 @@ public class StudentUserTests {
     }
 
     @Test
+    @DisplayName("Throws exception when date of birth is null")
     void nullDateOfBirthStudent() {
         assertThrows(UserInvalidDateOfBirthException.class, () -> {
             new StudentUser.StudentUserBuilder()
@@ -186,6 +190,7 @@ public class StudentUserTests {
     }
 
     @Test
+    @DisplayName("Throws exception when student is 0 years old")
     void ageEqualsTo0DateOfBirthStudent() {
         assertThrows(UserInvalidDateOfBirthException.class, () -> {
             new StudentUser.StudentUserBuilder()
@@ -198,6 +203,7 @@ public class StudentUserTests {
     }
 
     @Test
+    @DisplayName("Throws exception when student is below 0 years old")
     void ageBelow0DateOfBirthStudent() {
         assertThrows(UserInvalidDateOfBirthException.class, () -> {
             new StudentUser.StudentUserBuilder()
@@ -210,6 +216,7 @@ public class StudentUserTests {
     }
 
     @Test
+    @DisplayName("Throws exception when student is above 100 years old")
     void ageGreaterThan100DateOfBirthStudent() {
         assertThrows(UserInvalidDateOfBirthException.class, () -> {
             new StudentUser.StudentUserBuilder()
@@ -222,6 +229,7 @@ public class StudentUserTests {
     }
 
     @Test
+    @DisplayName("Throws exception when student is under 13 years old")
     void ageLessThan13DateOfBirthStudent() {
         assertThrows(UserAgeRestrictionException.class, () -> {
             new StudentUser.StudentUserBuilder()

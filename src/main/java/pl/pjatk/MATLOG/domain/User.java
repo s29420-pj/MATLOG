@@ -117,13 +117,13 @@ public abstract class User {
      * @throws UserInvalidDateOfBirthException if there is no date of birth
      */
     protected User(Builder<?> builder) {
-        if (builder.firstName == null || builder.firstName.isBlank()) {
+        if (builder.firstName == null) {
             throw new UserInvalidFirstNameException();
         }
-        if (builder.lastName == null  || builder.lastName.isBlank()) {
+        if (builder.lastName == null) {
             throw new UserInvalidLastNameException();
         }
-        if (builder.emailAddress == null || builder.emailAddress.isBlank()) {
+        if (builder.emailAddress == null) {
             throw new UserInvalidEmailAddressException();
         }
         if (builder.dateOfBirth == null) {
