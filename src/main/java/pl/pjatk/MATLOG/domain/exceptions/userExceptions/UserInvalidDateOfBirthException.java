@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.domain.exceptions;
+package pl.pjatk.MATLOG.domain.exceptions.userExceptions;
 
 public class UserInvalidDateOfBirthException extends RuntimeException {
     public UserInvalidDateOfBirthException() {

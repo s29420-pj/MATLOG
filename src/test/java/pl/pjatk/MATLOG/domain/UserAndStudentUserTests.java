@@ -2,7 +2,7 @@ package pl.pjatk.MATLOG.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pl.pjatk.MATLOG.domain.exceptions.*;
+import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
 
 import java.time.LocalDate;
 

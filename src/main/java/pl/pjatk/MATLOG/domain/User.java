@@ -1,7 +1,7 @@
 package pl.pjatk.MATLOG.domain;
 
 import org.springframework.data.mongodb.core.mapping.MongoId;
-import pl.pjatk.MATLOG.domain.exceptions.*;
+import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
