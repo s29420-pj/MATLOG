@@ -98,7 +98,7 @@ public abstract class User {
          * in the concrete User class
          * @return Builder
          */
-        protected abstract T self();
+        abstract T self();
 
         /**
          * Method that builds an objects with provided data
