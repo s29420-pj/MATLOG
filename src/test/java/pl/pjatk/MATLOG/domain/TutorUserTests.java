@@ -47,6 +47,7 @@ public class TutorUserTests {
                 .build();
 
         boolean isAdded = tutor.addPrivateLesson(privateLesson);
+
         assertAll(() -> {
             assertFalse(tutor.getPrivateLessons().isEmpty());
             assertTrue(isAdded);

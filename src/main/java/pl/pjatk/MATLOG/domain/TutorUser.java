@@ -1,13 +1,26 @@
 package pl.pjatk.MATLOG.domain;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public final class TutorUser extends User {
 
-    private final Set<PrivateLesson> privateLessons = new HashSet<>();
+    private final Set<PrivateLesson> privateLessons;
+    private final List<Review> reviews;
 
     static class TutorBuilder extends Builder<TutorBuilder> {
+
+        private Set<PrivateLesson> privateLessons;
+        private List<Review> reviews;
+
+        public TutorBuilder withPrivateLessons(Set<PrivateLesson> privateLessons) {
+            this.privateLessons = privateLessons;
+            return self();
+        }
+
+        public TutorBuilder withReviews(List<Review> reviews) {
+            this.reviews = reviews;
+            return self();
+        }
 
         @Override
         TutorBuilder self() {
@@ -28,6 +41,10 @@ public final class TutorUser extends User {
         return Set.copyOf(privateLessons);
     }
 
+    public List<Review> getReviews() {
+        return List.copyOf(reviews);
+    }
+
     /**
      * Method that adds lesson to set
      * @param privateLesson instantiated private lesson that will be added to set
@@ -39,5 +56,7 @@ public final class TutorUser extends User {
 
     private TutorUser(TutorBuilder builder) {
         super(builder);
+        this.privateLessons = Objects.requireNonNullElseGet(builder.privateLessons, HashSet::new);
+        this.reviews = Objects.requireNonNullElseGet(builder.reviews, ArrayList::new);
     }
 }
