@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class StudentUserTests {
+public class UserAndStudentUserTests {
 
     // ------------------ happy tests ----------------------
 

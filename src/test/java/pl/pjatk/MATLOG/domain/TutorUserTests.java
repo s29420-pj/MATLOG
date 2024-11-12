@@ -25,4 +25,22 @@ public class TutorUserTests {
             assertEquals(31, tutor.getAge());
         });
     }
+
+    @Test
+    void addPrivateLesson() {
+        TutorUser tutor = new TutorUser.TutorBuilder()
+                .withFirstName("Matthew")
+                .withLastName("Liam")
+                .withEmailAddress("example@example.com")
+                .withDateOfBirth(LocalDate.now().minusYears(21))
+                .build();
+        PrivateLesson privateLesson = new PrivateLesson();
+        boolean isAdded = tutor.addPrivateLesson(privateLesson);
+        assertAll(() -> {
+            assertFalse(tutor.getPrivateLessons().isEmpty());
+            assertTrue(isAdded);
+            assertTrue(tutor.getPrivateLessons().contains(privateLesson));
+        });
+    }
+
 }
