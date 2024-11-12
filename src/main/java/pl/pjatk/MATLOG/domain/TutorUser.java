@@ -6,7 +6,7 @@ import java.util.Set;
 
 public final class TutorUser extends User {
 
-    private final Set<LocalDateTime> privateLessons = new HashSet<>();
+    private final Set<PrivateLesson> privateLessons = new HashSet<>();
 
     static class TutorBuilder extends Builder<TutorBuilder> {
 
