@@ -21,7 +21,7 @@ public final class TutorUser extends User {
         }
     }
 
-    public Set<LocalDateTime> getPrivateLessons() {
+    public Set<PrivateLesson> getPrivateLessons() {
         return Set.copyOf(privateLessons);
     }
 
