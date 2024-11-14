@@ -72,18 +72,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    42.9%
+    100%
   </span>
   <span class="absValue">
-    (6/14)
+    (14/14)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    78.9%
+    100%
   </span>
   <span class="absValue">
-    (15/19)
+    (19/19)
   </span>
 </td>
   </tr>
@@ -99,18 +99,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    42.9%
+    100%
   </span>
   <span class="absValue">
-    (6/14)
+    (14/14)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    85.7%
+    100%
   </span>
   <span class="absValue">
-    (24/28)
+    (28/28)
   </span>
 </td>
 </tr>
@@ -125,6 +125,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;import lombok.Getter;
 &nbsp;import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidDateException;
+&nbsp;import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidOwnerIdException;
 &nbsp;import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidTimeException;
 &nbsp;import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidTitleException;
 &nbsp;
@@ -168,22 +169,26 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;         * @param date - Date (YYYY/mm/DD) of lesson
 &nbsp;         * @param startTime - Start time (HH:mm:ss) of lesson
 &nbsp;         * @param endTime - End time (HH:mm:ss) of lesson
+&nbsp;         * @throws LessonInvalidOwnerIdException - When ownerId is empty
 &nbsp;         * @throws LessonInvalidDateException - When date is null or is before today&#39;s date
 &nbsp;         * @throws LessonInvalidTimeException - When date is now and start time is before time in the present or
 &nbsp;         * when start time is after end time.
 &nbsp;         */
 <b class="fc">&nbsp;        public Builder(String ownerId, LocalDate date, LocalTime startTime, LocalTime endTime) {</b>
+<b class="fc">&nbsp;            if (ownerId == null || ownerId.isEmpty()) {</b>
+<b class="fc">&nbsp;                throw new LessonInvalidOwnerIdException();</b>
+&nbsp;            }
 <b class="fc">&nbsp;            this.ownerId = ownerId;</b>
-<b class="pc">&nbsp;            if (date == null || date.isBefore(LocalDate.now())) {</b>
-<b class="nc">&nbsp;                throw new LessonInvalidDateException();</b>
+<b class="fc">&nbsp;            if (date == null || date.isBefore(LocalDate.now())) {</b>
+<b class="fc">&nbsp;                throw new LessonInvalidDateException();</b>
 &nbsp;            }
 <b class="fc">&nbsp;            this.date = date;</b>
-<b class="pc">&nbsp;            if (date.isEqual(LocalDate.now()) &amp;&amp; startTime.isBefore(LocalTime.now())) {</b>
-<b class="nc">&nbsp;                throw new LessonInvalidTimeException();</b>
+<b class="fc">&nbsp;            if (date.isEqual(LocalDate.now()) &amp;&amp; startTime.isBefore(LocalTime.now())) {</b>
+<b class="fc">&nbsp;                throw new LessonInvalidTimeException();</b>
 &nbsp;            }
 <b class="fc">&nbsp;            this.startTime = startTime;</b>
-<b class="pc">&nbsp;            if (startTime.isAfter(endTime)) {</b>
-<b class="nc">&nbsp;                throw new LessonInvalidTimeException();</b>
+<b class="fc">&nbsp;            if (startTime.isAfter(endTime)) {</b>
+<b class="fc">&nbsp;                throw new LessonInvalidTimeException();</b>
 &nbsp;            }
 <b class="fc">&nbsp;            this.endTime = endTime;</b>
 &nbsp;        }
@@ -194,9 +199,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;         * @return Builder
 &nbsp;         */
 &nbsp;        public T withTitle(String title) {
-<b class="pc">&nbsp;            if (title == null || title.isBlank()) {</b>
-<b class="nc">&nbsp;                throw new LessonInvalidTitleException();</b>
-&nbsp;            }
 <b class="fc">&nbsp;            this.title = title;</b>
 <b class="fc">&nbsp;            return self();</b>
 &nbsp;        }
@@ -267,7 +269,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-11-14 13:48</div>
+    <div style="float:right;">generated on 2024-11-14 14:10</div>
 </div>
 </body>
 </html>

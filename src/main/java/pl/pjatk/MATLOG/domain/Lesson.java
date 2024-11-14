@@ -76,9 +76,6 @@ public abstract class Lesson {
          * @return Builder
          */
         public T withTitle(String title) {
-            if (title == null || title.isBlank()) {
-                throw new LessonInvalidTitleException();
-            }
             this.title = title;
             return self();
         }
