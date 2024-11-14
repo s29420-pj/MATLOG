@@ -4,10 +4,16 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TutorUserTests {
+
+    // ------------------ happy tests ----------------------
 
     @Test
     void createTutorUser() {
@@ -43,6 +49,45 @@ public class TutorUserTests {
             assertFalse(tutor.getPrivateLessons().isEmpty());
             assertTrue(isAdded);
             assertTrue(tutor.getPrivateLessons().contains(privateLesson));
+        });
+    }
+
+    @Test
+    void createTutorWithProvidedSet() {
+        Set<PrivateLesson> set = new HashSet<>();
+        PrivateLesson lesson = new PrivateLesson.PrivateLessonBuilder(UUID.randomUUID().toString(), LocalDate.now().plusDays(1),
+                LocalTime.now(), LocalTime.now().plusHours(1))
+                .build();
+        set.add(lesson);
+
+        TutorUser tutor = new TutorUser.TutorBuilder("Matthew", "Liam", "test@example.com")
+                .withPrivateLessons(set)
+                        .build();
+
+        assertAll(() -> {
+            assertNotNull(tutor.getId());
+            assertEquals("Matthew Liam", tutor.getFullName());
+            assertEquals("test@example.com", tutor.getEmailAddress());
+            assertFalse(tutor.getPrivateLessons().isEmpty());
+            assertTrue(tutor.getPrivateLessons().contains(lesson));
+        });
+    }
+
+    @Test
+    void createTutorWithProvidedReviews() {
+        Review review = Review.create(Stars.TWO, "comment", UUID.randomUUID().toString(),
+                UUID.randomUUID().toString());
+        List<Review> reviews = List.of(review);
+        TutorUser tutor = new TutorUser.TutorBuilder("Matthew", "Liam", "test@example.com")
+                .withReviews(reviews)
+                .build();
+
+        assertAll(() -> {
+            assertNotNull(tutor.getId());
+            assertEquals("Matthew Liam", tutor.getFullName());
+            assertEquals("test@example.com", tutor.getEmailAddress());
+            assertFalse(tutor.getReviews().isEmpty());
+            assertTrue(tutor.getReviews().contains(review));
         });
     }
 
