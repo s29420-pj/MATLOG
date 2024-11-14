@@ -2,6 +2,7 @@ package pl.pjatk.MATLOG.domain;
 
 import lombok.Getter;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidDateException;
+import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidOwnerIdException;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidTimeException;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidTitleException;
 
@@ -45,11 +46,15 @@ public abstract class Lesson {
          * @param date - Date (YYYY/mm/DD) of lesson
          * @param startTime - Start time (HH:mm:ss) of lesson
          * @param endTime - End time (HH:mm:ss) of lesson
+         * @throws LessonInvalidOwnerIdException - When ownerId is empty
          * @throws LessonInvalidDateException - When date is null or is before today's date
          * @throws LessonInvalidTimeException - When date is now and start time is before time in the present or
          * when start time is after end time.
          */
         public Builder(String ownerId, LocalDate date, LocalTime startTime, LocalTime endTime) {
+            if (ownerId == null || ownerId.isEmpty()) {
+                throw new LessonInvalidOwnerIdException();
+            }
             this.ownerId = ownerId;
             if (date == null || date.isBefore(LocalDate.now())) {
                 throw new LessonInvalidDateException();

@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PrivateLessonTests {
 
+    // ------------------ happy tests ----------------------
+
     @Test
     void createPrivateLesson() {
         Lesson privateLesson = new PrivateLesson.PrivateLessonBuilder(UUID.randomUUID().toString(), LocalDate.now().plusDays(3),
@@ -27,5 +29,12 @@ public class PrivateLessonTests {
             assertNotNull(privateLesson.getEndTime());
             assertEquals(85.0, privateLesson.getPrice());
         });
+    }
+
+    // ------------------ exceptions tests ----------------------
+
+    @Test
+    void nullDatePrivateLesson() {
+        Lesson privateLesson = new PrivateLesson.PrivateLessonBuilder()
     }
 }
