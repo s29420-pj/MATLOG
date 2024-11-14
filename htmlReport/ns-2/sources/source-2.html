@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > StudentUser</title>
+  <title>Coverage Report > PrivateLesson</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,7 +22,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">pl.pjatk.MATLOG.domain</a>
 </div>
 
-<h1>Coverage Summary for Class: StudentUser (pl.pjatk.MATLOG.domain)</h1>
+<h1>Coverage Summary for Class: PrivateLesson (pl.pjatk.MATLOG.domain)</h1>
 
 <table class="coverageStats">
 
@@ -38,7 +38,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">StudentUser</td>
+  <td class="name">PrivateLesson</td>
 <td class="coverageStat">
   <span class="percent">
     100%
@@ -57,7 +57,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 </tr>
   <tr>
-    <td class="name">StudentUser$StudentUserBuilder</td>
+    <td class="name">PrivateLesson$PrivateLessonBuilder</td>
 <td class="coverageStat">
   <span class="percent">
     100%
@@ -103,30 +103,45 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package pl.pjatk.MATLOG.domain;
 &nbsp;
-&nbsp;import org.springframework.data.mongodb.core.mapping.Document;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.LocalTime;
 &nbsp;
 &nbsp;/**
-&nbsp; * Concrete class representing Student in application
+&nbsp; * Concrete representation of Lesson - Private Lesson.
+&nbsp; * Contains all the attribute as Lesson abstract class
 &nbsp; */
-&nbsp;@Document(&quot;student_user&quot;)
-&nbsp;public final class StudentUser extends User {
+&nbsp;public final class PrivateLesson extends Lesson {
 &nbsp;
-<b class="fc">&nbsp;    public static class StudentUserBuilder extends Builder&lt;StudentUserBuilder&gt; {</b>
+&nbsp;    /**
+&nbsp;     * Concrete representation of the builder in Lesson abstract class
+&nbsp;     */
+&nbsp;    public static class PrivateLessonBuilder extends Builder&lt;PrivateLessonBuilder&gt; {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Constructor of builder that takes must-have parameters.
+&nbsp;         * @param ownerId - Identification of the owner of Private Lesson (Tutor)
+&nbsp;         * @param date - Date in which the lesson takes place
+&nbsp;         * @param startTime - Time in which lesson starts
+&nbsp;         * @param endTime - Time in which lesson ends
+&nbsp;         */
+&nbsp;        public PrivateLessonBuilder(String ownerId, LocalDate date, LocalTime startTime, LocalTime endTime) {
+<b class="fc">&nbsp;            super(ownerId, date, startTime, endTime);</b>
+&nbsp;        }
 &nbsp;
 &nbsp;        @Override
-&nbsp;        protected StudentUserBuilder self() {
+&nbsp;        PrivateLessonBuilder self() {
 <b class="fc">&nbsp;            return this;</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        @Override
-&nbsp;        protected User build() {
-<b class="fc">&nbsp;            return new StudentUser(this);</b>
+&nbsp;        protected PrivateLesson build() {
+<b class="fc">&nbsp;            return new PrivateLesson(this);</b>
 &nbsp;        }
 &nbsp;    }
-&nbsp;    private StudentUser(StudentUserBuilder builder) {
+&nbsp;
+&nbsp;    private PrivateLesson(PrivateLessonBuilder builder) {
 <b class="fc">&nbsp;        super(builder);</b>
 &nbsp;    }
-&nbsp;
 &nbsp;}
 </code>
 </pre>
@@ -151,7 +166,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-11-12 13:53</div>
+    <div style="float:right;">generated on 2024-11-14 13:48</div>
 </div>
 </body>
 </html>

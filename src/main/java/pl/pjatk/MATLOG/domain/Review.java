@@ -1,6 +1,9 @@
 package pl.pjatk.MATLOG.domain;
 
 import lombok.Getter;
+import pl.pjatk.MATLOG.domain.exceptions.reviewExceptions.ReviewInvalidRateException;
+import pl.pjatk.MATLOG.domain.exceptions.reviewExceptions.ReviewInvalidStudentId;
+import pl.pjatk.MATLOG.domain.exceptions.reviewExceptions.ReviewInvalidTutorId;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -25,18 +28,32 @@ public final class Review {
      * @param studentId - Student Identification that tells who created the review
      * @param tutorId - Tutor Identification that tells who have been reviewed
      * @return Review
+     * @throws ReviewInvalidRateException - When rate is empty
+     * @throws ReviewInvalidStudentId - When studentId is empty
+     * @throws ReviewInvalidTutorId - When tutorId is empty
      */
     public static Review create(Stars rate, String comment, String studentId, String tutorId) {
+        if (rate == null) {
+            throw new ReviewInvalidRateException();
+        }
+        comment = comment == null ? "" : comment;
+        if (studentId == null || studentId.isBlank()) {
+            throw new ReviewInvalidStudentId();
+        }
+        if (tutorId == null || tutorId.isBlank()) {
+            throw new ReviewInvalidTutorId();
+        }
         return new Review(rate, comment, studentId, tutorId);
     }
 
     /**
-     * Static factory method that creates review from provided different review
+     * Static factory method that creates review from provided different review.
+     * It uses create static method to include all checks-up.
      * @param review - original review
      * @return Review
      */
     public static Review from(Review review) {
-        return new Review(review.rate, review.comment, review.studentId, review.tutorId);
+        return create(review.rate, review.comment, review.studentId, review.tutorId);
     }
 
     private Review(Stars rate, String comment, String studentId, String tutorId) {
