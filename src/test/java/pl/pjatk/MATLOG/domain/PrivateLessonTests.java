@@ -12,13 +12,10 @@ public class PrivateLessonTests {
 
     @Test
     void createPrivateLesson() {
-        Lesson privateLesson = new PrivateLesson.PrivateLessonBuilder()
-                .withOwnerId(UUID.randomUUID().toString())
+        Lesson privateLesson = new PrivateLesson.PrivateLessonBuilder(UUID.randomUUID().toString(), LocalDate.now().plusDays(3),
+                LocalTime.now(), LocalTime.now().plusMinutes(45))
                 .withTitle("testTitle")
                 .withDescription("testDescription")
-                .withDate(LocalDate.now().plusDays(3))
-                .withStartTime(LocalTime.now())
-                .withEndTime(LocalTime.now().plusMinutes(45L))
                 .withPrice(85.0)
                 .build();
         assertAll(() -> {

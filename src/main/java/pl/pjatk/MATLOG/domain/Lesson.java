@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.domain;
 
 import lombok.Getter;
+import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidDateException;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidTitleException;
 
 import java.time.LocalDate;
@@ -27,9 +28,20 @@ public abstract class Lesson {
         private LocalTime endTime;
         private double price;
 
-        public T withOwnerId(String id) {
-            this.ownerId = id;
-            return self();
+        public Builder(String ownerId, LocalDate date, LocalTime startTime, LocalTime endTime) {
+            this.ownerId = ownerId;
+            if (date == null || date.isBefore(LocalDate.now())) {
+                throw new LessonInvalidDateException();
+            }
+            this.date = date;
+            if (date.isEqual(LocalDate.now()) && startTime.isBefore(LocalTime.now())) {
+                throw new LessonInvalidDateException();
+            }
+            this.startTime = startTime;
+            if (startTime.isAfter(endTime)) {
+                throw new LessonInvalidDateException();
+            }
+            this.endTime = endTime;
         }
 
         public T withTitle(String title) {
@@ -42,21 +54,6 @@ public abstract class Lesson {
 
         public T withDescription(String description) {
             this.description = description;
-            return self();
-        }
-
-        public T withDate(LocalDate date) {
-            this.date = date;
-            return self();
-        }
-
-        public T withStartTime(LocalTime startTime) {
-            this.startTime = startTime;
-            return self();
-        }
-
-        public T withEndTime(LocalTime endTime) {
-            this.endTime = endTime;
             return self();
         }
 

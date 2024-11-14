@@ -30,13 +30,10 @@ public class TutorUserTests {
                 .withDateOfBirth(LocalDate.now().minusYears(21))
                 .build();
 
-        PrivateLesson privateLesson = new PrivateLesson.PrivateLessonBuilder()
-                .withOwnerId(tutor.getId())
+        PrivateLesson privateLesson = new PrivateLesson.PrivateLessonBuilder(tutor.getId(), LocalDate.now().plusMonths(2),
+                LocalTime.now(), LocalTime.now().plusMinutes(50))
                 .withTitle("testTitle")
                 .withDescription("testDescription")
-                .withDate(LocalDate.now().plusMonths(2))
-                .withStartTime(LocalTime.now())
-                .withEndTime(LocalTime.now().plusMinutes(50))
                 .withPrice(150.5)
                 .build();
 
