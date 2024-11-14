@@ -12,11 +12,21 @@ public final class TutorUser extends User {
     private final Set<PrivateLesson> privateLessons;
     private final List<Review> reviews;
 
+    /**
+     * Concrete representation of the builder in User abstract class.
+     * It creates TutorUser with desired attributes.
+     */
     static class TutorBuilder extends Builder<TutorBuilder> {
 
         private Set<PrivateLesson> privateLessons;
         private List<Review> reviews;
 
+        /**
+         * Constructor of Builder that takes must-have parameters
+         * @param firstName - First name of the TutorUser
+         * @param lastName - Last name of the TutorUser
+         * @param emailAddress - Email address of the TutorUser
+         */
         public TutorBuilder(String firstName, String lastName, String emailAddress) {
             super(firstName, lastName, emailAddress);
         }
@@ -77,6 +87,12 @@ public final class TutorUser extends User {
         return privateLessons.add(privateLesson);
     }
 
+    /**
+     * Private constructor that creates object of TutorUser.
+     * If privateLessons or reviews has not been initialized (or are set to null), creates empty collections.
+     * Either way initialize collections with set ones in the builder.
+     * @param builder - Builder with set attributes
+     */
     private TutorUser(TutorBuilder builder) {
         super(builder);
         this.privateLessons = Objects.requireNonNullElseGet(builder.privateLessons, HashSet::new);

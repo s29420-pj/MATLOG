@@ -5,6 +5,10 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Class representing Review of the Tutor in application.
+ * It can be created by Student who attended to any kind of Lesson that was led by tutor.
+ */
 @Getter
 public final class Review {
     private final String id;
@@ -14,10 +18,23 @@ public final class Review {
     private final String studentId;
     private final String tutorId;
 
+    /**
+     * Static factory method that returns review.
+     * @param rate - Overall rate of the tutor
+     * @param comment - Detailed information about 
+     * @param studentId - Student Identification that tells who created the review
+     * @param tutorId - Tutor Identification that tells who have been reviewed
+     * @return Review
+     */
     public static Review create(Stars rate, String comment, String studentId, String tutorId) {
         return new Review(rate, comment, studentId, tutorId);
     }
 
+    /**
+     * Static factory method that creates review from provided different review
+     * @param review - original review
+     * @return Review
+     */
     public static Review from(Review review) {
         return new Review(review.rate, review.comment, review.studentId, review.tutorId);
     }

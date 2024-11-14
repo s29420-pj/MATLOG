@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"pl.pjatk.MATLOG"},{"l":"pl.pjatk.MATLOG.domain"},{"l":"pl.pjatk.MATLOG.domain.exceptions"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"pl.pjatk.MATLOG"},{"l":"pl.pjatk.MATLOG.domain"},{"l":"pl.pjatk.MATLOG.domain.exceptions.lessonExceptions"},{"l":"pl.pjatk.MATLOG.domain.exceptions.userExceptions"},{"l":"pl.pjatk.MATLOG.LessonManagement"},{"l":"pl.pjatk.MATLOG.UserManagement"}];updateSearchResults();
