@@ -5,9 +5,11 @@ import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidTitleExce
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Getter
 public abstract class Lesson {
+    private final String id;
     private final String ownerId;
     private final String title;
     private final String description;
@@ -69,6 +71,7 @@ public abstract class Lesson {
     }
 
     protected Lesson(Builder<?> builder) {
+        this.id = UUID.randomUUID().toString();
         this.ownerId = builder.ownerId;
         this.title = builder.title;
         this.description = builder.description;

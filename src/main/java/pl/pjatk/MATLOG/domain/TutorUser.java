@@ -2,6 +2,11 @@ package pl.pjatk.MATLOG.domain;
 
 import java.util.*;
 
+/**
+ * Class that represents Tutor in application. It extends User abstract class.
+ * All conditions of User class must be met. If set of private lessons or list of reviews
+ * is not specified then the new one is created
+ */
 public final class TutorUser extends User {
 
     private final Set<PrivateLesson> privateLessons;
@@ -12,11 +17,25 @@ public final class TutorUser extends User {
         private Set<PrivateLesson> privateLessons;
         private List<Review> reviews;
 
+        public TutorBuilder(String firstName, String lastName, String emailAddress) {
+            super(firstName, lastName, emailAddress);
+        }
+
+        /**
+         * Method that initialize set
+         * @param privateLessons Set with private lessons
+         * @return Builder
+         */
         public TutorBuilder withPrivateLessons(Set<PrivateLesson> privateLessons) {
             this.privateLessons = privateLessons;
             return self();
         }
 
+        /**
+         * Method that initialize reviews
+         * @param reviews List with Tutor reviews
+         * @return Builder
+         */
         public TutorBuilder withReviews(List<Review> reviews) {
             this.reviews = reviews;
             return self();
@@ -41,6 +60,10 @@ public final class TutorUser extends User {
         return Set.copyOf(privateLessons);
     }
 
+    /**
+     * Method that returns reviews
+     * @return Copy of list containing reviews from students
+     */
     public List<Review> getReviews() {
         return List.copyOf(reviews);
     }

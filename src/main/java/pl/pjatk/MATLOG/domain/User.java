@@ -29,46 +29,19 @@ public abstract class User {
         private String emailAddress;
         private LocalDate dateOfBirth;
 
-        /**
-         * Method that sets User's first name
-         * @param firstName - first name of the user
-         * @return concrete Builder
-         * @throws UserInvalidFirstNameException if first name is null or blank
-         */
-        public T withFirstName(String firstName) {
+        public Builder(String firstName, String lastName, String emailAddress) {
             if (firstName == null || firstName.isBlank()) {
                 throw new UserInvalidFirstNameException();
             }
             this.firstName = firstName;
-            return self();
-        }
-
-        /**
-         * Method that sets User's last name
-         * @param lastName - last name of the user
-         * @return Builder
-         * @throws UserInvalidLastNameException if last name is null or blank
-         */
-        public T withLastName(String lastName) {
             if (lastName == null || lastName.isBlank()) {
                 throw new UserInvalidLastNameException();
             }
             this.lastName = lastName;
-            return self();
-        }
-
-        /**
-         * Method that sets User's email address
-         * @param emailAddress - email address of the user
-         * @return Builder
-         * @throws UserInvalidEmailAddressException if email address is null or blank
-         */
-        public T withEmailAddress(String emailAddress) {
             if (emailAddress == null || emailAddress.isBlank()) {
                 throw new UserInvalidEmailAddressException();
             }
             this.emailAddress = emailAddress;
-            return self();
         }
 
         /**
@@ -76,7 +49,6 @@ public abstract class User {
          * @param dateOfBirth - date of birth of the user
          * @return Builder
          * @throws UserInvalidDateOfBirthException if date of birth is null or unreal ( x <= 0 or 100 < x)
-         * @throws UserAgeRestrictionException if person who tries to register is under 13 years old
          * */
         public T withDateOfBirth(LocalDate dateOfBirth) {
             if (dateOfBirth == null) {
@@ -86,16 +58,13 @@ public abstract class User {
             if (age <= 0 || age > 100) {
                 throw new UserInvalidDateOfBirthException();
             }
-            if (age < 13) {
-                throw new UserAgeRestrictionException();
-            }
             this.dateOfBirth = dateOfBirth;
             return self();
         }
 
         /**
          * Method that needs to be implemented by concrete builder static class
-         * in the concrete User class
+         * in the concrete User class. It must return builder class
          * @return Builder
          */
         abstract T self();
@@ -117,23 +86,15 @@ public abstract class User {
      * @throws UserInvalidDateOfBirthException if there is no date of birth
      */
     protected User(Builder<?> builder) {
-        if (builder.firstName == null) {
-            throw new UserInvalidFirstNameException();
-        }
-        if (builder.lastName == null) {
-            throw new UserInvalidLastNameException();
-        }
-        if (builder.emailAddress == null) {
-            throw new UserInvalidEmailAddressException();
-        }
-        if (builder.dateOfBirth == null) {
-            throw new UserInvalidDateOfBirthException();
-        }
         this.id = UUID.randomUUID().toString();
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.emailAddress = builder.emailAddress;
-        this.dateOfBirth = builder.dateOfBirth;
+        if (builder.dateOfBirth != null) {
+            this.dateOfBirth = builder.dateOfBirth;
+        } else {
+            this.dateOfBirth = null;
+        }
     }
 
     /**
@@ -144,6 +105,9 @@ public abstract class User {
     }
 
     int getAge() {
+        if (dateOfBirth == null) {
+            throw new UserInvalidDateOfBirthException();
+        }
         return LocalDate.now().getYear() - dateOfBirth.getYear();
     }
 

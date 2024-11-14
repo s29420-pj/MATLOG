@@ -11,10 +11,7 @@ public class TutorUserTests {
 
     @Test
     void createTutorUser() {
-        TutorUser tutor = new TutorUser.TutorBuilder()
-                .withFirstName("Emily")
-                .withLastName("Rose")
-                .withEmailAddress("example@example.com")
+        TutorUser tutor = new TutorUser.TutorBuilder("Emily", "Rose", "example@example.com")
                 .withDateOfBirth(LocalDate.now().minusYears(31))
                 .build();
         assertAll(() -> {
@@ -29,10 +26,7 @@ public class TutorUserTests {
 
     @Test
     void addPrivateLesson() {
-        TutorUser tutor = new TutorUser.TutorBuilder()
-                .withFirstName("Matthew")
-                .withLastName("Liam")
-                .withEmailAddress("example@example.com")
+        TutorUser tutor = new TutorUser.TutorBuilder("Matthew", "Liam", "test@example.com")
                 .withDateOfBirth(LocalDate.now().minusYears(21))
                 .build();
 

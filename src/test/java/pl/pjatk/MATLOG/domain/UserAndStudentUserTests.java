@@ -14,10 +14,7 @@ public class UserAndStudentUserTests {
 
     @Test
     void createStudentUser() {
-        User student = new StudentUser.StudentUserBuilder()
-                .withFirstName("Ethan")
-                .withLastName("Hovermann")
-                .withEmailAddress("example@example.com")
+        User student = new StudentUser.StudentUserBuilder("Ethan", "Hovermann", "example@example.com")
                 .withDateOfBirth(LocalDate.now().minusYears(50))
                 .build();
         assertAll(() -> {
@@ -30,10 +27,7 @@ public class UserAndStudentUserTests {
 
     @Test
     void ageEqualsTo100DateOfBirthStudent() {
-        User studentUser = new StudentUser.StudentUserBuilder()
-                .withFirstName("Mark")
-                .withLastName("Twain")
-                .withEmailAddress("example@example.com")
+        User studentUser = new StudentUser.StudentUserBuilder("Mark", "Twain", "example@example.com")
                 .withDateOfBirth(LocalDate.now().minusYears(100))
                 .build();
         assertAll(() -> {
@@ -43,10 +37,7 @@ public class UserAndStudentUserTests {
 
     @Test
     void ageEqualsTo13DateOfBirthStudent() {
-        User studentUser = new StudentUser.StudentUserBuilder()
-                .withFirstName("Mark")
-                .withLastName("Twain")
-                .withEmailAddress("example@example.com")
+        User studentUser = new StudentUser.StudentUserBuilder("Mark", "Twain", "example@example.com")
                 .withDateOfBirth(LocalDate.now().minusYears(13))
                 .build();
         assertAll(() -> {
@@ -57,35 +48,32 @@ public class UserAndStudentUserTests {
         });
     }
 
+    @Test
+    void noDateOfBirthStudent() {
+        User studentUser = new StudentUser.StudentUserBuilder("Mark", "Twain", "example@example.com")
+                .build();
+        assertAll(() -> {
+            assertNotNull(studentUser.getId());
+            assertEquals("Mark Twain", studentUser.getFullName());
+            assertEquals("example@example.com", studentUser.getEmailAddress());
+            assertThrows(UserInvalidDateOfBirthException.class, studentUser::getAge);
+        });
+    }
+
     // ------------------ first name tests ----------------------
 
     @Test
-    void noFirstNameStudent() {
-        assertThrows(UserInvalidFirstNameException.class, () -> {new StudentUser.StudentUserBuilder()
-                .withLastName("Evann")
-                .withEmailAddress("test@example.com")
+    void nullFirstNameStudent() {
+        assertThrows(UserInvalidFirstNameException.class, () -> {new StudentUser.StudentUserBuilder(null, "Evann", "test@example.com")
                 .withDateOfBirth(LocalDate.of(2000, 4, 1))
                 .build();
         });
     }
 
     @Test
-    void nullFirstNameStudent() {
-        assertThrows(UserInvalidFirstNameException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName(null)
-                    .withLastName("Evann")
-                    .withEmailAddress("example@example.com")
-                    .withDateOfBirth(LocalDate.of(2002, 5, 10))
-                    .build();
-        });
-    }
-
-    @Test
     void blankFirstNameStudent() {
         assertThrows(UserInvalidFirstNameException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("")
+            new StudentUser.StudentUserBuilder("", "Evann", "example@example.com")
                     .build();
         });
     }
@@ -93,23 +81,9 @@ public class UserAndStudentUserTests {
     // ------------------ last name tests ----------------------
 
     @Test
-    void noLastNameStudent() {
-        assertThrows(UserInvalidLastNameException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Mike")
-                    .withEmailAddress("mike@example.com")
-                    .withDateOfBirth(LocalDate.of(1980, 9, 25))
-                    .build();
-        });
-    }
-
-    @Test
     void nullLastNameStudent() {
         assertThrows(UserInvalidLastNameException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Philip")
-                    .withLastName(null)
-                    .withEmailAddress("test@example.com")
+            new StudentUser.StudentUserBuilder("Philip", null, "test@example.com")
                     .withDateOfBirth(LocalDate.of(2003, 12, 12))
                     .build();
         });
@@ -118,9 +92,7 @@ public class UserAndStudentUserTests {
     @Test
     void blankLastNameStudent() {
         assertThrows(UserInvalidLastNameException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Mark")
-                    .withLastName("")
+            new StudentUser.StudentUserBuilder("Mark", "", "example@example.com")
                     .build();
         });
     }
@@ -128,24 +100,10 @@ public class UserAndStudentUserTests {
     // ------------------ email address tests ------------------------
 
     @Test
-    void noEmailAddressStudent() {
-        assertThrows(UserInvalidEmailAddressException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Mark")
-                    .withLastName("Twain")
-                    .withDateOfBirth(LocalDate.of(1990, 3, 12))
-                    .build();
-        });
-    }
-
-    @Test
     void nullEmailAddressStudent() {
         assertThrows(UserInvalidEmailAddressException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Gregory")
-                    .withLastName("House")
-                    .withEmailAddress(null)
-                    .withDateOfBirth(LocalDate.of(1965, 4, 19))
+            new StudentUser.StudentUserBuilder("Mark", "Twain", null)
+                    .withDateOfBirth(LocalDate.of(1990, 3, 12))
                     .build();
         });
     }
@@ -153,10 +111,7 @@ public class UserAndStudentUserTests {
     @Test
     void blankEmailAddressStudent() {
         assertThrows(UserInvalidEmailAddressException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Gregory")
-                    .withLastName("House")
-                    .withEmailAddress("")
+            new StudentUser.StudentUserBuilder("Gregory", "House", "")
                     .withDateOfBirth(LocalDate.of(1965, 4, 19))
                     .build();
         });
@@ -165,25 +120,10 @@ public class UserAndStudentUserTests {
     // ------------------ date of birth tests ------------------------
 
     @Test
-    @DisplayName("Throws exception when builder didn't set a date of birth")
-    void noDateOfBirthStudent() {
-        assertThrows(UserInvalidDateOfBirthException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Mark")
-                    .withLastName("Twain")
-                    .withEmailAddress("example@example.com")
-                    .build();
-        });
-    }
-
-    @Test
     @DisplayName("Throws exception when date of birth is null")
     void nullDateOfBirthStudent() {
         assertThrows(UserInvalidDateOfBirthException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Mark")
-                    .withLastName("Twain")
-                    .withEmailAddress("example@example.com")
+            new StudentUser.StudentUserBuilder("Mark", "Twain", "example@example.com")
                     .withDateOfBirth(null)
                     .build();
         });
@@ -193,10 +133,7 @@ public class UserAndStudentUserTests {
     @DisplayName("Throws exception when student is 0 years old")
     void ageEqualsTo0DateOfBirthStudent() {
         assertThrows(UserInvalidDateOfBirthException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Mark")
-                    .withLastName("Twain")
-                    .withEmailAddress("example@example.com")
+            new StudentUser.StudentUserBuilder("Mark", "Twain", "example@example.com")
                     .withDateOfBirth(LocalDate.now())
                     .build();
         });
@@ -206,10 +143,7 @@ public class UserAndStudentUserTests {
     @DisplayName("Throws exception when student is below 0 years old")
     void ageBelow0DateOfBirthStudent() {
         assertThrows(UserInvalidDateOfBirthException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Mark")
-                    .withLastName("Twain")
-                    .withEmailAddress("example@example.com")
+            new StudentUser.StudentUserBuilder("Mark", "Twain", "example@example.com")
                     .withDateOfBirth(LocalDate.now().plusYears(3))
                     .build();
         });
@@ -219,24 +153,8 @@ public class UserAndStudentUserTests {
     @DisplayName("Throws exception when student is above 100 years old")
     void ageGreaterThan100DateOfBirthStudent() {
         assertThrows(UserInvalidDateOfBirthException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Mark")
-                    .withLastName("Twain")
-                    .withEmailAddress("example@example.com")
+            new StudentUser.StudentUserBuilder("Mark", "Twain", "example@example.com")
                     .withDateOfBirth(LocalDate.now().minusYears(101))
-                    .build();
-        });
-    }
-
-    @Test
-    @DisplayName("Throws exception when student is under 13 years old")
-    void ageLessThan13DateOfBirthStudent() {
-        assertThrows(UserAgeRestrictionException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Mark")
-                    .withLastName("Twain")
-                    .withEmailAddress("example@example.com")
-                    .withDateOfBirth(LocalDate.now().minusYears(12))
                     .build();
         });
     }

@@ -10,6 +10,10 @@ public final class StudentUser extends User {
 
     public static class StudentUserBuilder extends Builder<StudentUserBuilder> {
 
+        public StudentUserBuilder(String firstName, String lastName, String emailAddress) {
+            super(firstName, lastName, emailAddress);
+        }
+
         @Override
         protected StudentUserBuilder self() {
             return this;
