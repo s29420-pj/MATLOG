@@ -17,6 +17,7 @@ public abstract class User {
     private final String firstName;
     private final String lastName;
     private final String emailAddress;
+    private final String password;
     private final LocalDate dateOfBirth;
 
     /**
@@ -27,6 +28,7 @@ public abstract class User {
         private String firstName;
         private String lastName;
         private String emailAddress;
+        private String password;
         private LocalDate dateOfBirth;
 
         public Builder(String firstName, String lastName, String emailAddress) {
@@ -42,6 +44,25 @@ public abstract class User {
                 throw new UserInvalidEmailAddressException();
             }
             this.emailAddress = emailAddress;
+        }
+
+        /**
+         * Method that sets User's password.
+         * @param password password of the user
+         * @return Builder
+         * @throws UserEmptyPasswordException when password is empty
+         * @throws UserUnsecurePasswordException when password is not at least 6 characters long nor doesn't
+         * have any special characters (33 >= x <= 64 in ASCII table) nor doesn't have any capital letter
+         */
+        public T withPassword(String password) {
+            if (password == null || password.isEmpty()) {
+                throw new UserEmptyPasswordException();
+            }
+            if (!UserPasswordValidator.isSecure(password)) {
+                throw new UserUnsecurePasswordException();
+            }
+            this.password = password;
+            return self();
         }
 
         /**
@@ -100,22 +121,22 @@ public abstract class User {
     /**
      * @return full name of user in format: "[first name] [last name]"
      */
-    String getFullName() {
+    public String getFullName() {
         return String.format("%s %s", firstName, lastName);
     }
 
-    int getAge() {
+    public int getAge() {
         if (dateOfBirth == null) {
             throw new UserInvalidDateOfBirthException();
         }
         return LocalDate.now().getYear() - dateOfBirth.getYear();
     }
 
-    String getEmailAddress() {
+    public String getEmailAddress() {
         return emailAddress;
     }
 
-    String getId() {
+    public String getId() {
         return id;
     }
 
