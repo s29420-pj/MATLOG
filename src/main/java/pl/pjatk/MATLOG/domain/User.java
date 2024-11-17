@@ -111,6 +111,11 @@ public abstract class User {
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.emailAddress = builder.emailAddress;
+        if (builder.password == null || builder.password.isEmpty()) {
+            this.password = id;
+        } else {
+            this.password = builder.password;
+        }
         if (builder.dateOfBirth != null) {
             this.dateOfBirth = builder.dateOfBirth;
         } else {
