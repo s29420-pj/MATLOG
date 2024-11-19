@@ -6,6 +6,7 @@ import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidOwnerIdEx
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidTimeException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -17,8 +18,10 @@ public class PrivateLessonTests {
 
     @Test
     void createPrivateLesson() {
-        Lesson privateLesson = new PrivateLesson.PrivateLessonBuilder(UUID.randomUUID().toString(), LocalDate.now().plusDays(3),
-                LocalTime.now(), LocalTime.now().plusMinutes(45))
+        PrivateLesson privateLesson = PrivateLesson.builder()
+                .withOwnerId(UUID.randomUUID().toString())
+                .withStartTime(LocalDateTime.now().plusDays(1))
+                .withEndTime(LocalDateTime.now().plusDays(1).plusHours(2))
                 .withTitle("testTitle")
                 .withDescription("testDescription")
                 .withPrice(85.0)
@@ -27,7 +30,6 @@ public class PrivateLessonTests {
             assertNotNull(privateLesson.getOwnerId());
             assertEquals("testTitle", privateLesson.getTitle());
             assertEquals("testDescription", privateLesson.getDescription());
-            assertEquals(LocalDate.now().plusDays(3), privateLesson.getDate());
             assertNotNull(privateLesson.getStartTime());
             assertNotNull(privateLesson.getEndTime());
             assertEquals(85.0, privateLesson.getPrice());
@@ -39,48 +41,18 @@ public class PrivateLessonTests {
     @Test
     void nullOwnerIdException() {
         assertThrows(LessonInvalidOwnerIdException.class, () -> {
-            new PrivateLesson.PrivateLessonBuilder(null, LocalDate.now().plusDays(1),
-                    LocalTime.now(), LocalTime.now().plusHours(1)).build();
+            PrivateLesson.builder()
+                    .withOwnerId(null)
+                    .build();
         });
     }
 
     @Test
     void emptyOwnerIdException() {
         assertThrows(LessonInvalidOwnerIdException.class, () -> {
-            new PrivateLesson.PrivateLessonBuilder("", LocalDate.now().plusDays(1),
-                    LocalTime.now(), LocalTime.now().plusHours(1)).build();
-        });
-    }
-
-    @Test
-    void nullDateException() {
-        assertThrows(LessonInvalidDateException.class, () -> {
-            new PrivateLesson.PrivateLessonBuilder(UUID.randomUUID().toString(),
-                    null, LocalTime.now(), LocalTime.now().plusHours(1)).build();
-        });
-    }
-
-    @Test
-    void dateIsBeforeNowException() {
-        assertThrows(LessonInvalidDateException.class, () -> {
-            new PrivateLesson.PrivateLessonBuilder(UUID.randomUUID().toString(), LocalDate.now().minusDays(1),
-                    LocalTime.now(), LocalTime.now().plusHours(1)).build();
-        });
-    }
-
-    @Test
-    void dateIsNowAndStartTimeIsBeforeNowException() {
-        assertThrows(LessonInvalidTimeException.class, () -> {
-            new PrivateLesson.PrivateLessonBuilder(UUID.randomUUID().toString(), LocalDate.now(),
-                    LocalTime.now().minusHours(1), LocalTime.now()).build();
-        });
-    }
-
-    @Test
-    void startTimeIsAfterEndTimeException() {
-        assertThrows(LessonInvalidTimeException.class, () -> {
-            new PrivateLesson.PrivateLessonBuilder(UUID.randomUUID().toString(), LocalDate.now(),
-                    LocalTime.now(), LocalTime.now().minusHours(1)).build();
+            PrivateLesson.builder()
+                    .withOwnerId("")
+                    .build();
         });
     }
 }

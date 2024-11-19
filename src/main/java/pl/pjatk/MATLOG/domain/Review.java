@@ -23,10 +23,10 @@ public final class Review {
 
     /**
      * Static factory method that returns review.
-     * @param rate - Overall rate of the tutor
-     * @param comment - Detailed information. If equals null then it's converted to empty String
-     * @param studentId - Student Identification that tells who created the review
-     * @param tutorId - Tutor Identification that tells who have been reviewed
+     * @param rate Overall rate of the tutor
+     * @param comment Detailed information. If equals null then it's converted to empty String
+     * @param studentId Student Identification that tells who created the review
+     * @param tutorId Tutor Identification that tells who have been reviewed
      * @return Review
      * @throws ReviewInvalidRateException - When rate is empty
      * @throws ReviewInvalidStudentId - When studentId is empty
@@ -46,6 +46,13 @@ public final class Review {
         return new Review(rate, comment, studentId, tutorId);
     }
 
+    /**
+     * Overloaded static method that uses its full form to validate every parameter.
+     * @param rate Overall rate of the tutor
+     * @param studentId Student Identification that tells who created the review
+     * @param tutorId Tutor Identification that tells who have been reviewed
+     * @return Review
+     */
     public static Review create(Stars rate, String studentId, String tutorId) {
         return create(rate, null, studentId, tutorId);
     }

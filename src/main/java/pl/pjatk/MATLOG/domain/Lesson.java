@@ -1,11 +1,9 @@
 package pl.pjatk.MATLOG.domain;
 
 import lombok.Getter;
-import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidDateException;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidOwnerIdException;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidPriceException;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -14,7 +12,6 @@ import java.util.UUID;
  * Mandatory fields of Lesson are:
  * - id
  * - ownerId
- * - date
  */
 @Getter
 public abstract class Lesson {
@@ -22,7 +19,6 @@ public abstract class Lesson {
     private final String ownerId;
     private final String title;
     private final String description;
-    private final LocalDate date;
     private final double price;
 
     /**
@@ -36,7 +32,6 @@ public abstract class Lesson {
         this.ownerId = builder.ownerId;
         this.title = builder.title;
         this.description = builder.description;
-        this.date = builder.date;
         this.price = builder.price;
     }
 
@@ -44,11 +39,9 @@ public abstract class Lesson {
      * Method that validate if all required fields are set by builder
      * @param builder Builder passed in to constructor
      * @throws LessonInvalidOwnerIdException when ownerId is null
-     * @throws LessonInvalidDateException when date is null
      */
     private void validateFields(Builder<?> builder) {
         if (builder.ownerId == null) throw new LessonInvalidOwnerIdException();
-        if (builder.date == null) throw new LessonInvalidDateException();
     }
 
     /**
@@ -60,7 +53,6 @@ public abstract class Lesson {
         private String ownerId;
         private String title;
         private String description;
-        private LocalDate date;
         private double price;
 
         /**
@@ -94,20 +86,6 @@ public abstract class Lesson {
          */
         public T withDescription(String description) {
             this.description = description;
-            return self();
-        }
-
-        /**
-         * Method that sets Lesson's date
-         * @param date Date of publication or happen
-         * @return Builder
-         * @throws LessonInvalidDateException when date is null or is before present
-         */
-        public T withDate(LocalDate date) {
-            if (date == null || date.isBefore(LocalDate.now())) {
-                throw new LessonInvalidDateException();
-            }
-            this.date = date;
             return self();
         }
 

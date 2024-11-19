@@ -3,6 +3,7 @@ package pl.pjatk.MATLOG.domain;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -40,14 +41,17 @@ public class TutorUserTests {
     @Test
     void addPrivateLesson() {
         TutorUser tutor = TutorUser.builder()
+                .withFirstName("Anthony")
+                .withLastName("Emmaus")
+                .withEmailAddress("example@example.com")
+                .withPassword("!pAssword!")
                 .withDateOfBirth(LocalDate.now().minusYears(21))
                 .build();
 
-        PrivateLesson privateLesson = new PrivateLesson.PrivateLessonBuilder(tutor.getId(), LocalDate.now().plusMonths(2),
-                LocalTime.now(), LocalTime.now().plusMinutes(50))
-                .withTitle("testTitle")
-                .withDescription("testDescription")
-                .withPrice(150.5)
+        PrivateLesson privateLesson = PrivateLesson.builder()
+                .withOwnerId(tutor.getId())
+                .withStartTime(LocalDateTime.now().plusMonths(2))
+                .withEndTime(LocalDateTime.now().plusMonths(2).plusHours(1))
                 .build();
 
         boolean isAdded = tutor.addPrivateLesson(privateLesson);
@@ -62,19 +66,27 @@ public class TutorUserTests {
     @Test
     void createTutorWithProvidedSet() {
         Set<PrivateLesson> set = new HashSet<>();
-        PrivateLesson lesson = new PrivateLesson.PrivateLessonBuilder(UUID.randomUUID().toString(), LocalDate.now().plusDays(1),
-                LocalTime.now(), LocalTime.now().plusHours(1))
-                .build();
-        set.add(lesson);
 
         TutorUser tutor = TutorUser.builder()
+                .withFirstName("Anthony")
+                .withLastName("Emmaus")
+                .withEmailAddress("example@example.com")
+                .withPassword("!pAssword!")
                 .withPrivateLessons(set)
-                        .build();
+                .build();
+
+        PrivateLesson lesson = PrivateLesson.builder()
+                .withOwnerId(tutor.getId())
+                .withStartTime(LocalDateTime.now().plusDays(2))
+                .withEndTime(LocalDateTime.now().plusDays(2).plusHours(1))
+                .build();
+
+        set.add(lesson);
 
         assertAll(() -> {
             assertNotNull(tutor.getId());
-            assertEquals("Matthew Liam", tutor.getFullName());
-            assertEquals("test@example.com", tutor.getEmailAddress());
+            assertEquals("Anthony Emmaus", tutor.getFullName());
+            assertEquals("example@example.com", tutor.getEmailAddress());
             assertFalse(tutor.getPrivateLessons().isEmpty());
             assertTrue(tutor.getPrivateLessons().contains(lesson));
         });
@@ -86,13 +98,17 @@ public class TutorUserTests {
                 UUID.randomUUID().toString());
         List<Review> reviews = List.of(review);
         TutorUser tutor = TutorUser.builder()
+                .withFirstName("Anthony")
+                .withLastName("Emmaus")
+                .withEmailAddress("example@example.com")
+                .withPassword("!pAssword!")
                 .withReviews(reviews)
                 .build();
 
         assertAll(() -> {
             assertNotNull(tutor.getId());
-            assertEquals("Matthew Liam", tutor.getFullName());
-            assertEquals("test@example.com", tutor.getEmailAddress());
+            assertEquals("Anthony Emmaus", tutor.getFullName());
+            assertEquals("example@example.com", tutor.getEmailAddress());
             assertFalse(tutor.getReviews().isEmpty());
             assertTrue(tutor.getReviews().contains(review));
         });

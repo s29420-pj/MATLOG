@@ -75,7 +75,6 @@ public class UserAndStudentUserTests {
         assertThrows(UserInvalidFirstNameException.class, () -> {
             new StudentUser.StudentUserBuilder()
                     .withFirstName(null)
-                    .withDateOfBirth(LocalDate.of(2000, 4, 1))
                     .build();
         });
     }
@@ -83,7 +82,19 @@ public class UserAndStudentUserTests {
     @Test
     void blankFirstNameStudent() {
         assertThrows(UserInvalidFirstNameException.class, () -> {
-            new StudentUser.StudentUserBuilder()
+            StudentUser.builder()
+                    .withFirstName("")
+                    .build();
+        });
+    }
+
+    @Test
+    void firstNameNotSetInBuilder() {
+        assertThrows(IllegalStateException.class, () -> {
+            StudentUser.builder()
+                    .withLastName("Evans")
+                    .withEmailAddress("test@example.com")
+                    .withPassword("P@ssword!")
                     .build();
         });
     }
@@ -92,7 +103,7 @@ public class UserAndStudentUserTests {
 
     @Test
     void nullLastNameStudent() {
-        assertThrows(UserInvalidLastNameException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             new StudentUser.StudentUserBuilder()
                     .withDateOfBirth(LocalDate.of(2003, 12, 12))
                     .build();
@@ -101,7 +112,7 @@ public class UserAndStudentUserTests {
 
     @Test
     void blankLastNameStudent() {
-        assertThrows(UserInvalidLastNameException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             new StudentUser.StudentUserBuilder()
                     .build();
         });
@@ -111,7 +122,7 @@ public class UserAndStudentUserTests {
 
     @Test
     void nullEmailAddressStudent() {
-        assertThrows(UserInvalidEmailAddressException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             new StudentUser.StudentUserBuilder()
                     .withDateOfBirth(LocalDate.of(1990, 3, 12))
                     .build();
@@ -120,7 +131,7 @@ public class UserAndStudentUserTests {
 
     @Test
     void blankEmailAddressStudent() {
-        assertThrows(UserInvalidEmailAddressException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             new StudentUser.StudentUserBuilder()
                     .withDateOfBirth(LocalDate.of(1965, 4, 19))
                     .build();
