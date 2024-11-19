@@ -41,7 +41,7 @@ public abstract class Lesson {
      * @throws LessonInvalidOwnerIdException when ownerId is null
      */
     private void validateFields(Builder<?> builder) {
-        if (builder.ownerId == null) throw new LessonInvalidOwnerIdException();
+        if (builder.ownerId == null) throw new IllegalStateException("OwnerId is mandatory and must be set");
     }
 
     /**

@@ -44,7 +44,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (1/1)
+    (2/2)
   </span>
 </td>
 <td class="coverageStat">
@@ -52,7 +52,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (1/1)
+    (2/2)
   </span>
 </td>
 </tr>
@@ -82,7 +82,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (4/4)
+    (5/5)
   </span>
 </td>
 <td class="coverageStat">
@@ -90,7 +90,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (4/4)
+    (5/5)
   </span>
 </td>
 </tr>
@@ -112,19 +112,17 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;public final class StudentUser extends User {
 &nbsp;
 &nbsp;    /**
+&nbsp;     * Method that returns builder and starts chaining creation of the object
+&nbsp;     * @return StudentUserBuilder
+&nbsp;     */
+&nbsp;    public static StudentUserBuilder builder() {
+<b class="fc">&nbsp;        return new StudentUserBuilder();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
 &nbsp;     * Concrete implementation of the Builder in User abstract class
 &nbsp;     */
-&nbsp;    public static class StudentUserBuilder extends Builder&lt;StudentUserBuilder&gt; {
-&nbsp;
-&nbsp;        /**
-&nbsp;         * Constructor of builder that takes must-have parameters.
-&nbsp;         * @param firstName - First name of the StudentUser
-&nbsp;         * @param lastName - Last name of the StudentUser
-&nbsp;         * @param emailAddress - Email address of the StudentUser
-&nbsp;         */
-&nbsp;        public StudentUserBuilder(String firstName, String lastName, String emailAddress) {
-<b class="fc">&nbsp;            super(firstName, lastName, emailAddress);</b>
-&nbsp;        }
+<b class="fc">&nbsp;    static class StudentUserBuilder extends Builder&lt;StudentUserBuilder&gt; {</b>
 &nbsp;
 &nbsp;        @Override
 &nbsp;        protected StudentUserBuilder self() {
@@ -132,7 +130,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        }
 &nbsp;
 &nbsp;        @Override
-&nbsp;        protected User build() {
+&nbsp;        public StudentUser build() {
 <b class="fc">&nbsp;            return new StudentUser(this);</b>
 &nbsp;        }
 &nbsp;    }
@@ -164,7 +162,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-11-14 11:55</div>
+    <div style="float:right;">generated on 2024-11-19 19:03</div>
 </div>
 </body>
 </html>

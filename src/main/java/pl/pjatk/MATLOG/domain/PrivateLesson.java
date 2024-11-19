@@ -27,6 +27,7 @@ public final class PrivateLesson extends Lesson {
      */
     private PrivateLesson(PrivateLessonBuilder builder) {
         super(builder);
+        validateFields(builder);
         this.startTime = LocalTime.from(builder.startTime);
         this.endTime = LocalTime.from(builder.endTime);
     }
@@ -38,8 +39,18 @@ public final class PrivateLesson extends Lesson {
      * @throws PrivateLessonInvalidEndTimeException when endTime is null
      */
     private void validateFields(PrivateLessonBuilder builder) {
-        if (builder.startTime == null) throw new PrivateLessonInvalidStartTimeException();
-        if (builder.endTime == null) throw new PrivateLessonInvalidEndTimeException();
+        if (builder.startTime == null) throw new IllegalStateException("Start time of private lesson is mandatory and must be set");
+        if (builder.endTime == null) throw new IllegalStateException("End time of private lesson is mandatory and must be set");
+
+        LocalDateTime builderStartTime = builder.startTime;
+        LocalDateTime builderEndTime = builder.endTime;
+        if (builderStartTime.isBefore(LocalDateTime.now()) || builderStartTime.isEqual(LocalDateTime.now()))
+            throw new PrivateLessonInvalidStartTimeException();
+
+        if (builderEndTime.isBefore(LocalDateTime.now()) || builderEndTime.isBefore(builderStartTime) ||
+                builderEndTime.isEqual(builderStartTime))
+
+            throw new PrivateLessonInvalidEndTimeException();
     }
 
     /**
@@ -61,12 +72,8 @@ public final class PrivateLesson extends Lesson {
          * Method that sets PrivateLesson's start time
          * @param startTime Time and date when private lesson begins
          * @return PrivateLessonBuilder
-         * @throws PrivateLessonInvalidStartTimeException when startTime is before or equal to present
          */
         public PrivateLessonBuilder withStartTime(LocalDateTime startTime) {
-            if (startTime.isBefore(LocalDateTime.now()) || startTime.isEqual(LocalDateTime.now())) {
-                throw new PrivateLessonInvalidStartTimeException();
-            }
             this.startTime = startTime;
             return self();
         }
@@ -75,13 +82,8 @@ public final class PrivateLesson extends Lesson {
          * Method that sets PrivateLesson's end time
          * @param endTime Time and date when private lesson ends
          * @return PrivateLessonBuilder
-         * @throws PrivateLessonInvalidEndTimeException when end time before present and start time
-         * or when is equal to start time
          */
         public PrivateLessonBuilder withEndTime(LocalDateTime endTime) {
-            if (endTime.isBefore(LocalDateTime.now()) || endTime.isBefore(startTime) || endTime.isEqual(startTime)) {
-                throw new PrivateLessonInvalidEndTimeException();
-            }
             this.endTime = endTime;
             return self();
         }

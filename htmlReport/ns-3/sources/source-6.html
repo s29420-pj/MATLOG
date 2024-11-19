@@ -41,18 +41,18 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">TutorUser</td>
 <td class="coverageStat">
   <span class="percent">
-    75%
+    100%
   </span>
   <span class="absValue">
-    (3/4)
+    (5/5)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    83.3%
+    100%
   </span>
   <span class="absValue">
-    (5/6)
+    (7/7)
   </span>
 </td>
 </tr>
@@ -60,18 +60,18 @@ Current scope:     <a href="../../index.html">all classes</a>
     <td class="name">TutorUser$TutorBuilder</td>
 <td class="coverageStat">
   <span class="percent">
-    60%
+    100%
   </span>
   <span class="absValue">
-    (3/5)
+    (5/5)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    42.9%
+    100%
   </span>
   <span class="absValue">
-    (3/7)
+    (7/7)
   </span>
 </td>
   </tr>
@@ -79,18 +79,18 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name"><strong>Total</strong></td>
 <td class="coverageStat">
   <span class="percent">
-    66.7%
+    100%
   </span>
   <span class="absValue">
-    (6/9)
+    (10/10)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    61.5%
+    100%
   </span>
   <span class="absValue">
-    (8/13)
+    (14/14)
   </span>
 </td>
 </tr>
@@ -108,7 +108,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;/**
 &nbsp; * Class that represents Tutor in application. It extends User abstract class.
 &nbsp; * All conditions of User class must be met. If set of private lessons or list of reviews
-&nbsp; * is not specified then the new one is created
+&nbsp; * is not specified then the new, empty one is created
 &nbsp; */
 &nbsp;public final class TutorUser extends User {
 &nbsp;
@@ -116,51 +116,49 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private final List&lt;Review&gt; reviews;
 &nbsp;
 &nbsp;    /**
+&nbsp;     * Method that returns builder and starts chaining creation of the object
+&nbsp;     * @return TutorBuilder
+&nbsp;     */
+&nbsp;    public static TutorBuilder builder() {
+<b class="fc">&nbsp;        return new TutorBuilder();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
 &nbsp;     * Concrete representation of the builder in User abstract class.
 &nbsp;     * It creates TutorUser with desired attributes.
 &nbsp;     */
-&nbsp;    static class TutorBuilder extends Builder&lt;TutorBuilder&gt; {
+<b class="fc">&nbsp;    static class TutorBuilder extends Builder&lt;TutorBuilder&gt; {</b>
 &nbsp;
 &nbsp;        private Set&lt;PrivateLesson&gt; privateLessons;
 &nbsp;        private List&lt;Review&gt; reviews;
 &nbsp;
 &nbsp;        /**
-&nbsp;         * Constructor of Builder that takes must-have parameters
-&nbsp;         * @param firstName - First name of the TutorUser
-&nbsp;         * @param lastName - Last name of the TutorUser
-&nbsp;         * @param emailAddress - Email address of the TutorUser
-&nbsp;         */
-&nbsp;        public TutorBuilder(String firstName, String lastName, String emailAddress) {
-<b class="fc">&nbsp;            super(firstName, lastName, emailAddress);</b>
-&nbsp;        }
-&nbsp;
-&nbsp;        /**
 &nbsp;         * Method that initialize set
 &nbsp;         * @param privateLessons Set with private lessons
-&nbsp;         * @return Builder
+&nbsp;         * @return TutorBuilder
 &nbsp;         */
 &nbsp;        public TutorBuilder withPrivateLessons(Set&lt;PrivateLesson&gt; privateLessons) {
-<b class="nc">&nbsp;            this.privateLessons = privateLessons;</b>
-<b class="nc">&nbsp;            return self();</b>
+<b class="fc">&nbsp;            this.privateLessons = privateLessons;</b>
+<b class="fc">&nbsp;            return self();</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        /**
 &nbsp;         * Method that initialize reviews
 &nbsp;         * @param reviews List with Tutor reviews
-&nbsp;         * @return Builder
+&nbsp;         * @return TutorBuilder
 &nbsp;         */
 &nbsp;        public TutorBuilder withReviews(List&lt;Review&gt; reviews) {
-<b class="nc">&nbsp;            this.reviews = reviews;</b>
-<b class="nc">&nbsp;            return self();</b>
+<b class="fc">&nbsp;            this.reviews = reviews;</b>
+<b class="fc">&nbsp;            return self();</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        @Override
-&nbsp;        TutorBuilder self() {
+&nbsp;        protected TutorBuilder self() {
 <b class="fc">&nbsp;            return this;</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        @Override
-&nbsp;        protected TutorUser build() {
+&nbsp;        public TutorUser build() {
 <b class="fc">&nbsp;            return new TutorUser(this);</b>
 &nbsp;        }
 &nbsp;    }
@@ -178,13 +176,14 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return Copy of list containing reviews from students
 &nbsp;     */
 &nbsp;    public List&lt;Review&gt; getReviews() {
-<b class="nc">&nbsp;        return List.copyOf(reviews);</b>
+<b class="fc">&nbsp;        return List.copyOf(reviews);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Method that adds lesson to set
 &nbsp;     * @param privateLesson instantiated private lesson that will be added to set
-&nbsp;     * @return boolean - true if set doesn&#39;t contain specified private lesson or false if lesson couldn&#39;t be added
+&nbsp;     * @return boolean - true if set doesn&#39;t contain specified private lesson and was added
+&nbsp;     * or false if lesson couldn&#39;t be added
 &nbsp;     */
 &nbsp;    public boolean addPrivateLesson(PrivateLesson privateLesson) {
 <b class="fc">&nbsp;        return privateLessons.add(privateLesson);</b>
@@ -194,7 +193,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * Private constructor that creates object of TutorUser.
 &nbsp;     * If privateLessons or reviews has not been initialized (or are set to null), creates empty collections.
 &nbsp;     * Either way initialize collections with set ones in the builder.
-&nbsp;     * @param builder - Builder with set attributes
+&nbsp;     * @param builder - TutorBuilder with set attributes
 &nbsp;     */
 &nbsp;    private TutorUser(TutorBuilder builder) {
 <b class="fc">&nbsp;        super(builder);</b>
@@ -225,7 +224,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-11-14 11:55</div>
+    <div style="float:right;">generated on 2024-11-19 19:03</div>
 </div>
 </body>
 </html>
