@@ -19,7 +19,7 @@ public final class StudentUser extends User {
         }
 
         @Override
-        protected User build() {
+        protected StudentUser createUser() {
             return new StudentUser(this);
         }
     }

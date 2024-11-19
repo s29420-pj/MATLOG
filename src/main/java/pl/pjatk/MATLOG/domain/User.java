@@ -22,29 +22,19 @@ public abstract class User {
     private final LocalDate dateOfBirth;
 
     /**
-     * Constructor of the User.
+     * Constructor of the User. It uses validateFields method to validate if mandatory
+     * fields have been set.
      * Sets a random UUID as an id of user and other data provided in builder.
      * @param builder builder of extended class
-     * @throws UserInvalidFirstNameException if there is no first name or it's blank
-     * @throws UserInvalidLastNameException if there is no last name or it's blank
-     * @throws UserInvalidEmailAddressException if there is no email address or it's blank
-     * @throws UserInvalidDateOfBirthException if there is no date of birth
+     *
      */
     protected User(Builder<?> builder) {
-        validateFields(builder);
         this.id = UUID.randomUUID().toString();
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.emailAddress = builder.emailAddress;
         this.password = builder.password;
         this.dateOfBirth = builder.dateOfBirth;
-    }
-
-    private void validateFields(Builder<?> builder) {
-        if (builder.firstName == null) throw new UserInvalidFirstNameException();
-        if (builder.lastName == null) throw new UserInvalidLastNameException();
-        if (builder.emailAddress == null) throw new UserInvalidEmailAddressException();
-        if (builder.password == null) throw new UserEmptyPasswordException();
     }
 
     public String getId() {
@@ -189,11 +179,32 @@ public abstract class User {
          */
         abstract T self();
 
+        protected abstract User createUser();
+
         /**
          * Method that builds an objects with provided data
          * @return Object of a class that extends this class
          */
-        protected abstract User build();
+        protected final User build() {
+            validateFields();
+            return createUser();
+        }
+
+        /**
+         * Method that is being used by User constructor to check if mandatory fields are set.
+         * @throws IllegalStateException if there is no first name or it's blank
+         * @throws IllegalStateException if there is no last name or it's blank
+         * @throws IllegalStateException if there is no email address or it's blank
+         * @throws IllegalStateException if there is no date of birth
+         */
+        private void validateFields() {
+            if (firstName == null) throw new IllegalStateException("First name of user is mandatory and must be set");
+            if (lastName == null) throw new IllegalStateException("Last name of user is mandatory and must be set");
+            if (emailAddress == null) throw new IllegalStateException("Email address of user is mandatory and must be set");
+            if (password == null) throw new IllegalStateException("Password of user is mandatory and must be set");
+        }
+
+
     }
 
 }

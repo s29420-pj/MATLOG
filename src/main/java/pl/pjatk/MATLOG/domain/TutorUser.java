@@ -47,7 +47,7 @@ public final class TutorUser extends User {
         }
 
         @Override
-        protected TutorUser build() {
+        protected TutorUser createUser() {
             return new TutorUser(this);
         }
     }
