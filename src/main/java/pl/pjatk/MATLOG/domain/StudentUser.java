@@ -9,9 +9,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public final class StudentUser extends User {
 
     /**
+     * Method that returns builder and starts chaining creation of the object
+     * @return StudentUserBuilder
+     */
+    public static StudentUserBuilder builder() {
+        return new StudentUserBuilder();
+    }
+
+    /**
      * Concrete implementation of the Builder in User abstract class
      */
-    public static class StudentUserBuilder extends Builder<StudentUserBuilder> {
+    static class StudentUserBuilder extends Builder<StudentUserBuilder> {
 
         @Override
         protected StudentUserBuilder self() {
@@ -19,7 +27,7 @@ public final class StudentUser extends User {
         }
 
         @Override
-        protected StudentUser createUser() {
+        public StudentUser build() {
             return new StudentUser(this);
         }
     }

@@ -5,12 +5,20 @@ import java.util.*;
 /**
  * Class that represents Tutor in application. It extends User abstract class.
  * All conditions of User class must be met. If set of private lessons or list of reviews
- * is not specified then the new one is created
+ * is not specified then the new, empty one is created
  */
 public final class TutorUser extends User {
 
     private final Set<PrivateLesson> privateLessons;
     private final List<Review> reviews;
+
+    /**
+     * Method that returns builder and starts chaining creation of the object
+     * @return TutorBuilder
+     */
+    public static TutorBuilder builder() {
+        return new TutorBuilder();
+    }
 
     /**
      * Concrete representation of the builder in User abstract class.
@@ -24,7 +32,7 @@ public final class TutorUser extends User {
         /**
          * Method that initialize set
          * @param privateLessons Set with private lessons
-         * @return Builder
+         * @return TutorBuilder
          */
         public TutorBuilder withPrivateLessons(Set<PrivateLesson> privateLessons) {
             this.privateLessons = privateLessons;
@@ -34,7 +42,7 @@ public final class TutorUser extends User {
         /**
          * Method that initialize reviews
          * @param reviews List with Tutor reviews
-         * @return Builder
+         * @return TutorBuilder
          */
         public TutorBuilder withReviews(List<Review> reviews) {
             this.reviews = reviews;
@@ -42,12 +50,12 @@ public final class TutorUser extends User {
         }
 
         @Override
-        TutorBuilder self() {
+        protected TutorBuilder self() {
             return this;
         }
 
         @Override
-        protected TutorUser createUser() {
+        public TutorUser build() {
             return new TutorUser(this);
         }
     }
@@ -82,7 +90,7 @@ public final class TutorUser extends User {
      * Private constructor that creates object of TutorUser.
      * If privateLessons or reviews has not been initialized (or are set to null), creates empty collections.
      * Either way initialize collections with set ones in the builder.
-     * @param builder - Builder with set attributes
+     * @param builder - TutorBuilder with set attributes
      */
     private TutorUser(TutorBuilder builder) {
         super(builder);

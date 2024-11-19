@@ -14,7 +14,7 @@ public class UserAndStudentUserTests {
 
     @Test
     void createStudentUser() {
-        User student = new StudentUser.StudentUserBuilder()
+        User student = StudentUser.builder()
                 .withFirstName("Ethan")
                 .withLastName("Hovermann")
                 .withEmailAddress("example@example.com")
@@ -35,35 +35,36 @@ public class UserAndStudentUserTests {
     @Test
     void ageEqualsTo100DateOfBirthStudent() {
         User studentUser = new StudentUser.StudentUserBuilder()
+                .withFirstName("Ethan")
+                .withLastName("Hovermann")
+                .withEmailAddress("test@example.com")
+                .withPassword("testP@ssword!")
                 .withDateOfBirth(LocalDate.now().minusYears(100))
                 .build();
         assertAll(() -> {
-
-        });
-    }
-
-    @Test
-    void ageEqualsTo13DateOfBirthStudent() {
-        User studentUser = new StudentUser.StudentUserBuilder()
-                .withDateOfBirth(LocalDate.now().minusYears(13))
-                .build();
-        assertAll(() -> {
             assertNotNull(studentUser.getId());
-            assertEquals("Mark Twain", studentUser.getFullName());
-            assertEquals("example@example.com", studentUser.getEmailAddress());
-            assertEquals(13, studentUser.getAge());
+            assertEquals("Ethan", studentUser.getFirstName());
+            assertEquals("Hovermann", studentUser.getLastName());
+            assertEquals("Ethan Hovermann", studentUser.getFullName());
+            assertEquals("test@example.com", studentUser.getEmailAddress());
+            assertEquals("testP@ssword!", studentUser.getPassword());
+            assertEquals(100, studentUser.getAge());
         });
     }
 
     @Test
     void noDateOfBirthStudent() {
         User studentUser = new StudentUser.StudentUserBuilder()
+                .withFirstName("Mark")
+                .withLastName("Twain")
+                .withEmailAddress("example@example.com")
+                .withPassword("testP@ssword")
                 .build();
         assertAll(() -> {
             assertNotNull(studentUser.getId());
             assertEquals("Mark Twain", studentUser.getFullName());
             assertEquals("example@example.com", studentUser.getEmailAddress());
-            assertThrows(UserInvalidDateOfBirthException.class, studentUser::getAge);
+            assertEquals(-1, studentUser.getAge());
         });
     }
 
@@ -73,8 +74,9 @@ public class UserAndStudentUserTests {
     void nullFirstNameStudent() {
         assertThrows(UserInvalidFirstNameException.class, () -> {
             new StudentUser.StudentUserBuilder()
-                .withDateOfBirth(LocalDate.of(2000, 4, 1))
-                .build();
+                    .withFirstName(null)
+                    .withDateOfBirth(LocalDate.of(2000, 4, 1))
+                    .build();
         });
     }
 

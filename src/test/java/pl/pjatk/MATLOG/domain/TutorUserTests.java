@@ -17,22 +17,29 @@ public class TutorUserTests {
 
     @Test
     void createTutorUser() {
-        TutorUser tutor = new TutorUser.TutorBuilder()
+        TutorUser tutor = TutorUser.builder()
+                .withFirstName("Emily")
+                .withLastName("Rose")
+                .withEmailAddress("example@example.com")
+                .withPassword("testP@ssword")
                 .withDateOfBirth(LocalDate.now().minusYears(31))
                 .build();
         assertAll(() -> {
             assertNotNull(tutor.getId());
             assertNotNull(tutor.getPrivateLessons());
             assertTrue(tutor.getPrivateLessons().isEmpty());
+            assertEquals("Emily", tutor.getFirstName());
+            assertEquals("Rose", tutor.getLastName());
             assertEquals("Emily Rose", tutor.getFullName());
             assertEquals("example@example.com", tutor.getEmailAddress());
+            assertEquals("testP@ssword", tutor.getPassword());
             assertEquals(31, tutor.getAge());
         });
     }
 
     @Test
     void addPrivateLesson() {
-        TutorUser tutor = new TutorUser.TutorBuilder()
+        TutorUser tutor = TutorUser.builder()
                 .withDateOfBirth(LocalDate.now().minusYears(21))
                 .build();
 
@@ -60,7 +67,7 @@ public class TutorUserTests {
                 .build();
         set.add(lesson);
 
-        TutorUser tutor = new TutorUser.TutorBuilder()
+        TutorUser tutor = TutorUser.builder()
                 .withPrivateLessons(set)
                         .build();
 
@@ -78,7 +85,7 @@ public class TutorUserTests {
         Review review = Review.create(Stars.TWO, "comment", UUID.randomUUID().toString(),
                 UUID.randomUUID().toString());
         List<Review> reviews = List.of(review);
-        TutorUser tutor = new TutorUser.TutorBuilder()
+        TutorUser tutor = TutorUser.builder()
                 .withReviews(reviews)
                 .build();
 
