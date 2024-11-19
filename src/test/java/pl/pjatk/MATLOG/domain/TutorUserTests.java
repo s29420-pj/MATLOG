@@ -17,7 +17,7 @@ public class TutorUserTests {
 
     @Test
     void createTutorUser() {
-        TutorUser tutor = new TutorUser.TutorBuilder("Emily", "Rose", "example@example.com")
+        TutorUser tutor = new TutorUser.TutorBuilder()
                 .withDateOfBirth(LocalDate.now().minusYears(31))
                 .build();
         assertAll(() -> {
@@ -32,7 +32,7 @@ public class TutorUserTests {
 
     @Test
     void addPrivateLesson() {
-        TutorUser tutor = new TutorUser.TutorBuilder("Matthew", "Liam", "test@example.com")
+        TutorUser tutor = new TutorUser.TutorBuilder()
                 .withDateOfBirth(LocalDate.now().minusYears(21))
                 .build();
 
@@ -60,7 +60,7 @@ public class TutorUserTests {
                 .build();
         set.add(lesson);
 
-        TutorUser tutor = new TutorUser.TutorBuilder("Matthew", "Liam", "test@example.com")
+        TutorUser tutor = new TutorUser.TutorBuilder()
                 .withPrivateLessons(set)
                         .build();
 
@@ -78,7 +78,7 @@ public class TutorUserTests {
         Review review = Review.create(Stars.TWO, "comment", UUID.randomUUID().toString(),
                 UUID.randomUUID().toString());
         List<Review> reviews = List.of(review);
-        TutorUser tutor = new TutorUser.TutorBuilder("Matthew", "Liam", "test@example.com")
+        TutorUser tutor = new TutorUser.TutorBuilder()
                 .withReviews(reviews)
                 .build();
 

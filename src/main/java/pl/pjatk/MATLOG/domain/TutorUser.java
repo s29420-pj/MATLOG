@@ -22,16 +22,6 @@ public final class TutorUser extends User {
         private List<Review> reviews;
 
         /**
-         * Constructor of Builder that takes must-have parameters
-         * @param firstName - First name of the TutorUser
-         * @param lastName - Last name of the TutorUser
-         * @param emailAddress - Email address of the TutorUser
-         */
-        public TutorBuilder(String firstName, String lastName, String emailAddress) {
-            super(firstName, lastName, emailAddress);
-        }
-
-        /**
          * Method that initialize set
          * @param privateLessons Set with private lessons
          * @return Builder
@@ -81,7 +71,8 @@ public final class TutorUser extends User {
     /**
      * Method that adds lesson to set
      * @param privateLesson instantiated private lesson that will be added to set
-     * @return boolean - true if set doesn't contain specified private lesson or false if lesson couldn't be added
+     * @return boolean - true if set doesn't contain specified private lesson and was added
+     * or false if lesson couldn't be added
      */
     public boolean addPrivateLesson(PrivateLesson privateLesson) {
         return privateLessons.add(privateLesson);
