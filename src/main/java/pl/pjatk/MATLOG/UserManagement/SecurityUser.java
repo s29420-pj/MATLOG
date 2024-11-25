@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import pl.pjatk.MATLOG.domain.User;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * Class that represents User in Spring Security.
@@ -14,13 +13,9 @@ import java.util.Set;
 public final class SecurityUser implements UserDetails {
 
     private final User user;
-    private final Set<GrantedAuthority> authorities;
-    private boolean isAccountNonLocked;
 
-    public SecurityUser(User user, Set<GrantedAuthority> authorities) {
+    public SecurityUser(User user) {
         this.user = user;
-        this.authorities = authorities;
-        this.isAccountNonLocked = true;
     }
 
     @Override
@@ -35,11 +30,11 @@ public final class SecurityUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Set.copyOf(authorities);
+        return user.getAuthorities();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return isAccountNonLocked;
+        return user.isAccountNonLocked();
     }
 }

@@ -29,6 +29,7 @@ public class UserAndStudentUserTests {
             assertEquals("Hovermann", student.getLastName());
             assertEquals("testPassword!", student.getPassword());
             assertEquals("example@example.com", student.getEmailAddress());
+            assertEquals(Role.STUDENT, student.getRole());
         });
     }
 
@@ -48,6 +49,7 @@ public class UserAndStudentUserTests {
             assertEquals("Ethan Hovermann", studentUser.getFullName());
             assertEquals("test@example.com", studentUser.getEmailAddress());
             assertEquals("testP@ssword!", studentUser.getPassword());
+            assertEquals(Role.STUDENT, studentUser.getRole());
             assertEquals(100, studentUser.getAge());
         });
     }
@@ -63,6 +65,7 @@ public class UserAndStudentUserTests {
         assertAll(() -> {
             assertNotNull(studentUser.getId());
             assertEquals("Mark Twain", studentUser.getFullName());
+            assertEquals(Role.STUDENT, studentUser.getRole());
             assertEquals("example@example.com", studentUser.getEmailAddress());
             assertEquals(-1, studentUser.getAge());
         });

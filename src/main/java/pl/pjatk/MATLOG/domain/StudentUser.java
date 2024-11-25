@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.domain;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
  * Concrete class representing Student in application
@@ -26,13 +27,25 @@ public final class StudentUser extends User {
             return this;
         }
 
+        /**
+         * Sets user's role to STUDENT and builds the object.
+         * @return StudentUser
+         */
         @Override
         public StudentUser build() {
+            withRole(Role.STUDENT);
             return new StudentUser(this);
         }
     }
+
+    /**
+     * StudentUser constructor that creates object.
+     * It adds authority as STUDENT_USER and sets role to Student.
+     * @param builder StudentBuilder with set attributes
+     */
     private StudentUser(StudentUserBuilder builder) {
         super(builder);
+        addAuthority(new SimpleGrantedAuthority("STUDENT_USER"));
     }
 
 }

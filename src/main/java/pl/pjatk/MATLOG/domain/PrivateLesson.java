@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.domain;
 
 import lombok.Getter;
+import org.springframework.data.mongodb.core.mapping.Document;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.PrivateLessonInvalidEndTimeException;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.PrivateLessonInvalidStartTimeException;
 
@@ -14,6 +15,7 @@ import java.time.LocalTime;
  * - startTime
  * - endTime
  */
+@Document("private_lesson")
 @Getter
 public final class PrivateLesson extends Lesson {
 

@@ -1,10 +1,14 @@
 package pl.pjatk.MATLOG.domain;
 
 import org.springframework.data.mongodb.core.mapping.MongoId;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -26,9 +30,13 @@ public abstract class User {
     private final String emailAddress;
     private final String password;
     private final LocalDate dateOfBirth;
+    private final Set<GrantedAuthority> authorities;
+    private boolean isAccountNonLocked;
+    private final Role role;
 
     /**
-     * Constructor of the User. Sets a random UUID as an id of user and other data provided in builder.
+     * Constructor of the User. Sets a random UUID as an id of user, basic SimpleGrantedAuthority which is a USER role,
+     * non-locked account, and other data provided in builder.
      * @param builder builder of extended class
      */
     protected User(Builder<?> builder) {
@@ -39,6 +47,10 @@ public abstract class User {
         this.emailAddress = builder.emailAddress;
         this.password = builder.password;
         this.dateOfBirth = builder.dateOfBirth;
+        this.authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority("USER"));
+        this.isAccountNonLocked = true;
+        this.role = builder.role;
     }
 
     /**
@@ -53,6 +65,7 @@ public abstract class User {
         if (builder.lastName == null) throw new IllegalStateException("Last name of user is mandatory and must be set");
         if (builder.emailAddress == null) throw new IllegalStateException("Email address of user is mandatory and must be set");
         if (builder.password == null) throw new IllegalStateException("Password of user is mandatory and must be set");
+        if (builder.role == null) builder.role = Role.STUDENT;
     }
 
     public String getId() {
@@ -77,6 +90,22 @@ public abstract class User {
 
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    public Set<GrantedAuthority> getAuthorities() {
+        return Set.copyOf(authorities);
+    }
+
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    protected boolean addAuthority(GrantedAuthority authority) {
+        return authorities.add(authority);
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     /**
@@ -107,6 +136,7 @@ public abstract class User {
         private String emailAddress;
         private String password;
         private LocalDate dateOfBirth;
+        private Role role;
 
         private static final int MIN_AGE = 1;
         private static final int MAX_AGE = 100;
@@ -187,6 +217,20 @@ public abstract class User {
                 throw new UserInvalidDateOfBirthException();
             }
             this.dateOfBirth = dateOfBirth;
+            return self();
+        }
+
+        /**
+         * Method that sets User's role
+         * @param role role of the user
+         * @return Builder
+         * @throws UserInvalidRoleException when role is not provided or there is not such a role
+         */
+        public T withRole(Role role) {
+            if (role == null) {
+                throw new UserInvalidRoleException();
+            }
+            this.role = role;
             return self();
         }
 

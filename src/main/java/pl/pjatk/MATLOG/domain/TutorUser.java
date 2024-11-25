@@ -1,5 +1,8 @@
 package pl.pjatk.MATLOG.domain;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import java.util.*;
 
 /**
@@ -7,6 +10,7 @@ import java.util.*;
  * All conditions of User class must be met. If set of private lessons or list of reviews
  * is not specified then the new, empty one is created
  */
+@Document("tutor_user")
 public final class TutorUser extends User {
 
     private final Set<PrivateLesson> privateLessons;
@@ -54,8 +58,13 @@ public final class TutorUser extends User {
             return this;
         }
 
+        /**
+         * Sets user's role to TUTOR and builds the object.
+         * @return TutorUser
+         */
         @Override
         public TutorUser build() {
+            withRole(Role.TUTOR);
             return new TutorUser(this);
         }
     }
@@ -88,12 +97,14 @@ public final class TutorUser extends User {
 
     /**
      * Private constructor that creates object of TutorUser.
+     * It adds authority as TUTOR_USER and sets role to Tutor.
      * If privateLessons or reviews has not been initialized (or are set to null), creates empty collections.
      * Either way initialize collections with set ones in the builder.
      * @param builder - TutorBuilder with set attributes
      */
     private TutorUser(TutorBuilder builder) {
         super(builder);
+        addAuthority(new SimpleGrantedAuthority("TUTOR_USER"));
         this.privateLessons = Objects.requireNonNullElseGet(builder.privateLessons, HashSet::new);
         this.reviews = Objects.requireNonNullElseGet(builder.reviews, ArrayList::new);
     }

@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.domain;
 
 import lombok.Getter;
+import org.springframework.data.mongodb.core.mapping.Document;
 import pl.pjatk.MATLOG.domain.exceptions.reviewExceptions.ReviewInvalidRateException;
 import pl.pjatk.MATLOG.domain.exceptions.reviewExceptions.ReviewInvalidStudentId;
 import pl.pjatk.MATLOG.domain.exceptions.reviewExceptions.ReviewInvalidTutorId;
@@ -12,6 +13,7 @@ import java.util.UUID;
  * Class representing Review of the Tutor in application.
  * It can be created by Student who attended to any kind of Lesson that was led by tutor.
  */
+@Document("review")
 @Getter
 public final class Review {
     private final String id;

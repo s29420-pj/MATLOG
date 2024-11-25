@@ -30,6 +30,7 @@ public class TutorUserTests {
             assertNotNull(tutor.getPrivateLessons());
             assertTrue(tutor.getPrivateLessons().isEmpty());
             assertEquals("Emily", tutor.getFirstName());
+            assertEquals(Role.TUTOR, tutor.getRole());
             assertEquals("Rose", tutor.getLastName());
             assertEquals("Emily Rose", tutor.getFullName());
             assertEquals("example@example.com", tutor.getEmailAddress());
@@ -58,6 +59,7 @@ public class TutorUserTests {
 
         assertAll(() -> {
             assertFalse(tutor.getPrivateLessons().isEmpty());
+            assertEquals(Role.TUTOR, tutor.getRole());
             assertTrue(isAdded);
             assertTrue(tutor.getPrivateLessons().contains(privateLesson));
         });
@@ -87,6 +89,7 @@ public class TutorUserTests {
             assertNotNull(tutor.getId());
             assertEquals("Anthony Emmaus", tutor.getFullName());
             assertEquals("example@example.com", tutor.getEmailAddress());
+            assertEquals(Role.TUTOR, tutor.getRole());
             assertFalse(tutor.getPrivateLessons().isEmpty());
             assertTrue(tutor.getPrivateLessons().contains(lesson));
         });
@@ -109,6 +112,7 @@ public class TutorUserTests {
             assertNotNull(tutor.getId());
             assertEquals("Anthony Emmaus", tutor.getFullName());
             assertEquals("example@example.com", tutor.getEmailAddress());
+            assertEquals(Role.TUTOR, tutor.getRole());
             assertFalse(tutor.getReviews().isEmpty());
             assertTrue(tutor.getReviews().contains(review));
         });
