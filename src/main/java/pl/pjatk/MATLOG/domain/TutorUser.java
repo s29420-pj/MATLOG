@@ -10,7 +10,6 @@ import java.util.*;
  * All conditions of User class must be met. If set of private lessons or list of reviews
  * is not specified then the new, empty one is created
  */
-@Document("tutor_user")
 public final class TutorUser extends User {
 
     private final Set<PrivateLesson> privateLessons;

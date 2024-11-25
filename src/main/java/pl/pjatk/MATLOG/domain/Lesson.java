@@ -1,6 +1,8 @@
 package pl.pjatk.MATLOG.domain;
 
 import lombok.Getter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidOwnerIdException;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidPriceException;
 
@@ -15,6 +17,7 @@ import java.util.UUID;
  */
 @Getter
 public abstract class Lesson {
+    @Id
     private final String id;
     private final String ownerId;
     private final String title;

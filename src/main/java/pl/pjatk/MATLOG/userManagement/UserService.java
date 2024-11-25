@@ -3,7 +3,8 @@ package pl.pjatk.MATLOG.userManagement;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.domain.User;
-import pl.pjatk.MATLOG.domain.exceptions.userExceptions.UserInvalidEmailAddressException;
+import pl.pjatk.MATLOG.userManagement.exceptions.UserInvalidEmailAddressException;
+import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ public class UserService {
             throw new UserInvalidEmailAddressException();
         }
         Optional<User> user = userRepository.findByEmailAddress(emailAddress);
-        if (user.isEmpty()) throw new UserInvalidEmailAddressException();
+        if (user.isEmpty()) throw new UserNotFoundException();
         return user.get();
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 /**
  * Concrete class representing Student in application
  */
-@Document("student_user")
 public final class StudentUser extends User {
 
     /**

@@ -1,5 +1,6 @@
 package pl.pjatk.MATLOG.domain;
 
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +22,7 @@ import java.util.UUID;
  * - email address
  * - password
  */
+@Document("user")
 public abstract class User {
 
     @MongoId
