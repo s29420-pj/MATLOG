@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.UserManagement;
+package pl.pjatk.MATLOG.userManagement;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

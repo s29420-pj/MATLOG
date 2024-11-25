@@ -1,8 +1,7 @@
-package pl.pjatk.MATLOG.UserManagement;
+package pl.pjatk.MATLOG.userManagement;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import pl.pjatk.MATLOG.domain.User;
 import pl.pjatk.MATLOG.domain.exceptions.userExceptions.UserInvalidEmailAddressException;
 
