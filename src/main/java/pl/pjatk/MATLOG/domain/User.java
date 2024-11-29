@@ -64,7 +64,6 @@ public abstract class User {
         if (builder.lastName == null) throw new IllegalStateException("Last name of user is mandatory and must be set");
         if (builder.emailAddress == null) throw new IllegalStateException("Email address of user is mandatory and must be set");
         if (builder.password == null) throw new IllegalStateException("Password of user is mandatory and must be set");
-        if (builder.role == null) builder.role = Role.STUDENT;
     }
 
     public String getId() {
