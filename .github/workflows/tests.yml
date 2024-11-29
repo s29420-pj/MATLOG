@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '21' # Wersja Javy
-          distribution: 'temurin' # Zastąp amazon-corretto dystrybucją temurin
+          distribution: 'temurin'
 
       - name: Cache Maven dependencies
         uses: actions/cache@v3
@@ -34,14 +34,14 @@ jobs:
 
       - name: Save HTML Report
         if: always() # Wykonuje się zawsze, nawet jeśli testy nie przejdą
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: html-report
           path: htmlReport/
 
       - name: Save Test Report
         if: always() # Wykonuje się zawsze, nawet jeśli testy nie przejdą
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-report
           path: target/surefire-reports/ # Ścieżka do raportu testów
