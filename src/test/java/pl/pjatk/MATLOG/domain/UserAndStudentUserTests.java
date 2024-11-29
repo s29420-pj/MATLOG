@@ -71,6 +71,25 @@ public class UserAndStudentUserTests {
         });
     }
 
+    @Test
+    void changePasswordStudent() {
+        User studentUser = StudentUser.builder()
+                .withFirstName("Mark")
+                .withLastName("Twain")
+                .withEmailAddress("example@example.com")
+                .withPassword("testP@ssword")
+                .build();
+        studentUser.changePassword("!09Acb");
+        assertAll(() -> {
+            assertNotNull(studentUser.getId());
+            assertEquals("Mark Twain", studentUser.getFullName());
+            assertEquals(Role.STUDENT, studentUser.getRole());
+            assertEquals("example@example.com", studentUser.getEmailAddress());
+            assertEquals(-1, studentUser.getAge());
+            assertEquals("!09Acb", studentUser.getPassword());
+        });
+    }
+
     // ------------------ first name tests ----------------------
 
     @Test
@@ -116,8 +135,9 @@ public class UserAndStudentUserTests {
 
     @Test
     void blankLastNameStudent() {
-        assertThrows(IllegalStateException.class, () -> {
+        assertThrows(UserInvalidLastNameException.class, () -> {
             new StudentUser.StudentUserBuilder()
+                    .withLastName("")
                     .build();
         });
     }
@@ -225,5 +245,86 @@ public class UserAndStudentUserTests {
     }
 
     // ------------------ password tests ------------------------
+
+    @Test
+    void passwordNullInBuilder() {
+        assertThrows(UserEmptyPasswordException.class, () -> {
+            StudentUser.builder()
+                    .withPassword(null)
+                    .build();
+        });
+    }
+
+    @Test
+    void passwordEmptyInBuilder() {
+        assertThrows(UserEmptyPasswordException.class, () -> {
+            StudentUser.builder()
+                    .withPassword("")
+                    .build();
+        });
+    }
+
+    @Test
+    void passwordUnsecureInBuilder() {
+        assertThrows(UserUnsecurePasswordException.class, () -> {
+            StudentUser.builder()
+                    .withPassword("a")
+                    .build();
+        });
+    }
+
+    @Test
+    void passwordNotSetInBuilder() {
+        assertThrows(IllegalStateException.class, () -> {
+            StudentUser.builder()
+                    .withFirstName("Gregory")
+                    .withLastName("House")
+                    .withEmailAddress("test@example.com")
+                    .build();
+        });
+    }
+
+    @Test
+    void nullPasswordOnChangePassword() {
+        User student = StudentUser.builder()
+                        .withFirstName("Derek")
+                                .withLastName("Terr")
+                                        .withEmailAddress("test@example.com")
+                                                .withPassword("!23esFFDP")
+                                                        .build();
+        assertThrows(UserEmptyPasswordException.class, () -> {
+            student.changePassword(null);
+        });
+    }
+
+    @Test
+    void emptyPasswordOnChangePassword() {
+        User student = StudentUser.builder()
+                .withFirstName("Derek")
+                .withLastName("Terr")
+                .withEmailAddress("test@example.com")
+                .withPassword("!23esFFDP")
+                .build();
+        assertThrows(UserEmptyPasswordException.class, () -> {
+            student.changePassword("");
+        });
+    }
+
+    @Test
+    void unsecurePasswordOnChangePassword() {
+        User student = StudentUser.builder()
+                .withFirstName("Derek")
+                .withLastName("Terr")
+                .withEmailAddress("test@example.com")
+                .withPassword("!23esFFDP")
+                .build();
+        assertThrows(UserUnsecurePasswordException.class, () -> {
+            student.changePassword("sd");
+        });
+    }
+
+    // ------------------ Role tests ------------------------
+
+
 
 }
