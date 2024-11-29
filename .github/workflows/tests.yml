@@ -1,4 +1,4 @@
-name: Run Tests
+name: Run Tests # Nazwa workflow
 
 on:
   push:
@@ -33,3 +33,10 @@ jobs:
 
       - name: Run tests
         run: mvn test
+
+      - name: Save test results
+        if: always() # Wykonuje się zawsze, nawet jeśli testy nie przejdą
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: target/surefire-reports/ # Dostosuj ścieżkę, jeśli wyniki testów są zapisywane gdzie indziej
