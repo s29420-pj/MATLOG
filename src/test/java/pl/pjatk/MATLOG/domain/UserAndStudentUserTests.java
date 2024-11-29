@@ -2,6 +2,8 @@ package pl.pjatk.MATLOG.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
 
 import java.time.LocalDate;
@@ -29,6 +31,10 @@ public class UserAndStudentUserTests {
             assertEquals("Hovermann", student.getLastName());
             assertEquals("testPassword!", student.getPassword());
             assertEquals("example@example.com", student.getEmailAddress());
+            assertTrue(student.isAccountNonLocked());
+            assertEquals(LocalDate.now().minusYears(50), student.getDateOfBirth());
+            assertTrue(student.getAuthorities().contains(new SimpleGrantedAuthority("USER")));
+            assertTrue(student.getAuthorities().contains(new SimpleGrantedAuthority("STUDENT_USER")));
             assertEquals(Role.STUDENT, student.getRole());
         });
     }
@@ -325,6 +331,13 @@ public class UserAndStudentUserTests {
 
     // ------------------ Role tests ------------------------
 
-
+    @Test
+    void nullRoleInBuilder() {
+        assertThrows(UserInvalidRoleException.class, () -> {
+            StudentUser.builder()
+                    .withRole(null)
+                    .build();
+        });
+    }
 
 }

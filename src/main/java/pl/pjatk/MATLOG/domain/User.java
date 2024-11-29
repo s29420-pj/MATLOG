@@ -235,7 +235,7 @@ public abstract class User {
          * @return Builder
          * @throws UserInvalidRoleException when role is not provided or there is not such a role
          */
-        public T withRole(Role role) {
+        protected T withRole(Role role) {
             if (role == null) {
                 throw new UserInvalidRoleException();
             }
