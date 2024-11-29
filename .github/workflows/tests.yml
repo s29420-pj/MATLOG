@@ -19,8 +19,9 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '21' # Wersja Javy - dostosuj do swojego projektu
-          distribution: 'amazon-corretto' # Dystrybucja Javy - dostosuj do swojego projektu
+          java-version: '21' # Wersja Javy
+          distribution: 'temurin' # Zastąp amazon-corretto dystrybucją temurin
+
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
@@ -33,10 +34,3 @@ jobs:
 
       - name: Run tests
         run: mvn test
-
-      - name: Save test results
-        if: always() # Wykonuje się zawsze, nawet jeśli testy nie przejdą
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: target/surefire-reports/ # Dostosuj ścieżkę, jeśli wyniki testów są zapisywane gdzie indziej
