@@ -1,9 +1,6 @@
 name: Run Tests # Nazwa workflow
 
 on:
-  push:
-    branches:
-      - dev
   pull_request:
     branches:
       - dev
