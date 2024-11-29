@@ -34,3 +34,10 @@ jobs:
 
       - name: Run tests
         run: mvn test
+
+      - name: Save HTML Report
+        if: always() # Wykonuje się zawsze, nawet jeśli testy nie przejdą
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-report
+          path: htmlReport/
