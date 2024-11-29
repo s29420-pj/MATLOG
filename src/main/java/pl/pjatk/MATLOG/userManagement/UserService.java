@@ -8,6 +8,9 @@ import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 
 import java.util.Optional;
 
+/**
+ * Class that is used to retrieve, modify and delete users from database.
+ */
 @Service
 public class UserService {
 
@@ -33,5 +36,10 @@ public class UserService {
         Optional<User> user = userRepository.findByEmailAddress(emailAddress);
         if (user.isEmpty()) throw new UserNotFoundException();
         return user.get();
+    }
+
+    public void createUser(User user) {
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+
     }
 }

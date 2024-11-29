@@ -10,6 +10,6 @@ public class AppConfiguration {
 
     @Bean
     public MongoClient mongoClient() {
-        return MongoClients.create("mongodb://localhost:1010/matlog");
+        return MongoClients.create("mongodb://matlogadmin:matlogadmin@localhost:1010/matlog");
     }
 }

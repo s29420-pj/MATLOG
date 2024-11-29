@@ -30,7 +30,7 @@ public abstract class User {
     private final String firstName;
     private final String lastName;
     private final String emailAddress;
-    private final String password;
+    private String password;
     private final LocalDate dateOfBirth;
     private final Set<GrantedAuthority> authorities;
     private boolean isAccountNonLocked;
@@ -88,6 +88,16 @@ public abstract class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public void changePassword(String password) {
+        if (password == null || password.isEmpty()) {
+            throw new UserEmptyPasswordException();
+        }
+        if (!UserPasswordValidator.isSecure(password)) {
+            throw new UserUnsecurePasswordException();
+        }
+        this.password = password;
     }
 
     public LocalDate getDateOfBirth() {
