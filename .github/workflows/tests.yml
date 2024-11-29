@@ -1,4 +1,4 @@
-name: Run Tests # Nazwa workflow
+name: Run Tests
 
 on:
   push:
@@ -19,8 +19,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '21' # Wersja Javy
-          distribution: 'temurin' # Zastąp amazon-corretto dystrybucją temurin
+          java-version: '21'
+          distribution: 'temurin'
 
       - name: Cache Maven dependencies
         uses: actions/cache@v3
