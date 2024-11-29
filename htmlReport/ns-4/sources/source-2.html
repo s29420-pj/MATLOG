@@ -45,26 +45,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">PrivateLesson</td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (3/3)
+    (0/3)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (12/12)
+    (0/12)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (14/14)
+    (0/14)
   </span>
 </td>
 </tr>
@@ -72,18 +72,18 @@ Current scope:     <a href="../../index.html">all classes</a>
     <td class="name">PrivateLesson$PrivateLessonBuilder</td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (5/5)
+    (0/5)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (7/7)
+    (0/7)
   </span>
 </td>
   </tr>
@@ -91,26 +91,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name"><strong>Total</strong></td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (8/8)
+    (0/8)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (12/12)
+    (0/12)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (21/21)
+    (0/21)
   </span>
 </td>
 </tr>
@@ -151,10 +151,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @param builder Builder of PrivateLesson class
 &nbsp;     */
 &nbsp;    private PrivateLesson(PrivateLessonBuilder builder) {
-<b class="fc">&nbsp;        super(builder);</b>
-<b class="fc">&nbsp;        validateFields(builder);</b>
-<b class="fc">&nbsp;        this.startTime = LocalTime.from(builder.startTime);</b>
-<b class="fc">&nbsp;        this.endTime = LocalTime.from(builder.endTime);</b>
+<b class="nc">&nbsp;        super(builder);</b>
+<b class="nc">&nbsp;        validateFields(builder);</b>
+<b class="nc">&nbsp;        this.startTime = LocalTime.from(builder.startTime);</b>
+<b class="nc">&nbsp;        this.endTime = LocalTime.from(builder.endTime);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -166,17 +166,17 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * or is equal to startTime
 &nbsp;     */
 &nbsp;    private void validateFields(PrivateLessonBuilder builder) {
-<b class="fc">&nbsp;        if (builder.startTime == null) throw new IllegalStateException(&quot;Start time of private lesson is mandatory and must be set&quot;);</b>
-<b class="fc">&nbsp;        if (builder.endTime == null) throw new IllegalStateException(&quot;End time of private lesson is mandatory and must be set&quot;);</b>
+<b class="nc">&nbsp;        if (builder.startTime == null) throw new IllegalStateException(&quot;Start time of private lesson is mandatory and must be set&quot;);</b>
+<b class="nc">&nbsp;        if (builder.endTime == null) throw new IllegalStateException(&quot;End time of private lesson is mandatory and must be set&quot;);</b>
 &nbsp;
-<b class="fc">&nbsp;        LocalDateTime builderStartTime = builder.startTime;</b>
-<b class="fc">&nbsp;        LocalDateTime builderEndTime = builder.endTime;</b>
-<b class="fc">&nbsp;        if (builderStartTime.isBefore(LocalDateTime.now()))</b>
-<b class="fc">&nbsp;            throw new PrivateLessonInvalidStartTimeException();</b>
+<b class="nc">&nbsp;        LocalDateTime builderStartTime = builder.startTime;</b>
+<b class="nc">&nbsp;        LocalDateTime builderEndTime = builder.endTime;</b>
+<b class="nc">&nbsp;        if (builderStartTime.isBefore(LocalDateTime.now()))</b>
+<b class="nc">&nbsp;            throw new PrivateLessonInvalidStartTimeException();</b>
 &nbsp;
-<b class="fc">&nbsp;        if (builderEndTime.isBefore(LocalDateTime.now()) || builderEndTime.isBefore(builderStartTime) ||</b>
-<b class="fc">&nbsp;                builderEndTime.isEqual(builderStartTime))</b>
-<b class="fc">&nbsp;            throw new PrivateLessonInvalidEndTimeException();</b>
+<b class="nc">&nbsp;        if (builderEndTime.isBefore(LocalDateTime.now()) || builderEndTime.isBefore(builderStartTime) ||</b>
+<b class="nc">&nbsp;                builderEndTime.isEqual(builderStartTime))</b>
+<b class="nc">&nbsp;            throw new PrivateLessonInvalidEndTimeException();</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -184,13 +184,13 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return PrivateLessonBuilder
 &nbsp;     */
 &nbsp;    public static PrivateLessonBuilder builder() {
-<b class="fc">&nbsp;        return new PrivateLessonBuilder();</b>
+<b class="nc">&nbsp;        return new PrivateLessonBuilder();</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Concrete representation of the builder in Lesson abstract class
 &nbsp;     */
-<b class="fc">&nbsp;    public static class PrivateLessonBuilder extends Builder&lt;PrivateLessonBuilder&gt; {</b>
+<b class="nc">&nbsp;    public static class PrivateLessonBuilder extends Builder&lt;PrivateLessonBuilder&gt; {</b>
 &nbsp;
 &nbsp;        private LocalDateTime startTime;
 &nbsp;        private LocalDateTime endTime;
@@ -201,8 +201,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;         * @return PrivateLessonBuilder
 &nbsp;         */
 &nbsp;        public PrivateLessonBuilder withStartTime(LocalDateTime startTime) {
-<b class="fc">&nbsp;            this.startTime = startTime;</b>
-<b class="fc">&nbsp;            return self();</b>
+<b class="nc">&nbsp;            this.startTime = startTime;</b>
+<b class="nc">&nbsp;            return self();</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        /**
@@ -211,18 +211,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;         * @return PrivateLessonBuilder
 &nbsp;         */
 &nbsp;        public PrivateLessonBuilder withEndTime(LocalDateTime endTime) {
-<b class="fc">&nbsp;            this.endTime = endTime;</b>
-<b class="fc">&nbsp;            return self();</b>
+<b class="nc">&nbsp;            this.endTime = endTime;</b>
+<b class="nc">&nbsp;            return self();</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        @Override
 &nbsp;        protected PrivateLessonBuilder self() {
-<b class="fc">&nbsp;            return this;</b>
+<b class="nc">&nbsp;            return this;</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        @Override
 &nbsp;        protected PrivateLesson build() {
-<b class="fc">&nbsp;            return new PrivateLesson(this);</b>
+<b class="nc">&nbsp;            return new PrivateLesson(this);</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;}
@@ -249,7 +249,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-11-29 16:28</div>
+    <div style="float:right;">generated on 2024-11-29 16:46</div>
 </div>
 </body>
 </html>

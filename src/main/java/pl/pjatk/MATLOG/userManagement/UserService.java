@@ -39,7 +39,11 @@ public class UserService {
     }
 
     public void createUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("Please provide valid user.");
+        }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
-
+        user.changePassword(encodedPassword);
+        userRepository.save(user);
     }
 }

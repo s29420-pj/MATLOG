@@ -138,7 +138,7 @@ public abstract class User {
      * Abstract builder that have to be extended in concrete User class
      * @param <T> - concrete user builder
      */
-    abstract static class Builder<T extends Builder<T>> {
+    public abstract static class Builder<T extends Builder<T>> {
         private String firstName;
         private String lastName;
         private String emailAddress;

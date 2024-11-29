@@ -27,7 +27,7 @@ public final class TutorUser extends User {
      * Concrete representation of the builder in User abstract class.
      * It creates TutorUser with desired attributes.
      */
-    static class TutorBuilder extends Builder<TutorBuilder> {
+    public static class TutorBuilder extends Builder<TutorBuilder> {
 
         private Set<PrivateLesson> privateLessons;
         private List<Review> reviews;

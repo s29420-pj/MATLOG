@@ -41,18 +41,18 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">TutorUser</td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (5/5)
+    (0/5)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (8/8)
+    (0/8)
   </span>
 </td>
 </tr>
@@ -60,18 +60,18 @@ Current scope:     <a href="../../index.html">all classes</a>
     <td class="name">TutorUser$TutorBuilder</td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (5/5)
+    (0/5)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (8/8)
+    (0/8)
   </span>
 </td>
   </tr>
@@ -79,18 +79,18 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name"><strong>Total</strong></td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (10/10)
+    (0/10)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (16/16)
+    (0/16)
   </span>
 </td>
 </tr>
@@ -123,14 +123,14 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return TutorBuilder
 &nbsp;     */
 &nbsp;    public static TutorBuilder builder() {
-<b class="fc">&nbsp;        return new TutorBuilder();</b>
+<b class="nc">&nbsp;        return new TutorBuilder();</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Concrete representation of the builder in User abstract class.
 &nbsp;     * It creates TutorUser with desired attributes.
 &nbsp;     */
-<b class="fc">&nbsp;    static class TutorBuilder extends Builder&lt;TutorBuilder&gt; {</b>
+<b class="nc">&nbsp;    public static class TutorBuilder extends Builder&lt;TutorBuilder&gt; {</b>
 &nbsp;
 &nbsp;        private Set&lt;PrivateLesson&gt; privateLessons;
 &nbsp;        private List&lt;Review&gt; reviews;
@@ -141,8 +141,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;         * @return TutorBuilder
 &nbsp;         */
 &nbsp;        public TutorBuilder withPrivateLessons(Set&lt;PrivateLesson&gt; privateLessons) {
-<b class="fc">&nbsp;            this.privateLessons = privateLessons;</b>
-<b class="fc">&nbsp;            return self();</b>
+<b class="nc">&nbsp;            this.privateLessons = privateLessons;</b>
+<b class="nc">&nbsp;            return self();</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        /**
@@ -151,13 +151,13 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;         * @return TutorBuilder
 &nbsp;         */
 &nbsp;        public TutorBuilder withReviews(List&lt;Review&gt; reviews) {
-<b class="fc">&nbsp;            this.reviews = reviews;</b>
-<b class="fc">&nbsp;            return self();</b>
+<b class="nc">&nbsp;            this.reviews = reviews;</b>
+<b class="nc">&nbsp;            return self();</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        @Override
 &nbsp;        protected TutorBuilder self() {
-<b class="fc">&nbsp;            return this;</b>
+<b class="nc">&nbsp;            return this;</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        /**
@@ -166,8 +166,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;         */
 &nbsp;        @Override
 &nbsp;        public TutorUser build() {
-<b class="fc">&nbsp;            withRole(Role.TUTOR);</b>
-<b class="fc">&nbsp;            return new TutorUser(this);</b>
+<b class="nc">&nbsp;            withRole(Role.TUTOR);</b>
+<b class="nc">&nbsp;            return new TutorUser(this);</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -176,7 +176,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return Copy of set containing private lessons
 &nbsp;     */
 &nbsp;    public Set&lt;PrivateLesson&gt; getPrivateLessons() {
-<b class="fc">&nbsp;        return Set.copyOf(privateLessons);</b>
+<b class="nc">&nbsp;        return Set.copyOf(privateLessons);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -184,7 +184,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return Copy of list containing reviews from students
 &nbsp;     */
 &nbsp;    public List&lt;Review&gt; getReviews() {
-<b class="fc">&nbsp;        return List.copyOf(reviews);</b>
+<b class="nc">&nbsp;        return List.copyOf(reviews);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -194,7 +194,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * or false if lesson couldn&#39;t be added
 &nbsp;     */
 &nbsp;    public boolean addPrivateLesson(PrivateLesson privateLesson) {
-<b class="fc">&nbsp;        return privateLessons.add(privateLesson);</b>
+<b class="nc">&nbsp;        return privateLessons.add(privateLesson);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -205,10 +205,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @param builder - TutorBuilder with set attributes
 &nbsp;     */
 &nbsp;    private TutorUser(TutorBuilder builder) {
-<b class="fc">&nbsp;        super(builder);</b>
-<b class="fc">&nbsp;        addAuthority(new SimpleGrantedAuthority(&quot;TUTOR_USER&quot;));</b>
-<b class="fc">&nbsp;        this.privateLessons = Objects.requireNonNullElseGet(builder.privateLessons, HashSet::new);</b>
-<b class="fc">&nbsp;        this.reviews = Objects.requireNonNullElseGet(builder.reviews, ArrayList::new);</b>
+<b class="nc">&nbsp;        super(builder);</b>
+<b class="nc">&nbsp;        addAuthority(new SimpleGrantedAuthority(&quot;TUTOR_USER&quot;));</b>
+<b class="nc">&nbsp;        this.privateLessons = Objects.requireNonNullElseGet(builder.privateLessons, HashSet::new);</b>
+<b class="nc">&nbsp;        this.reviews = Objects.requireNonNullElseGet(builder.reviews, ArrayList::new);</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -234,7 +234,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-11-29 16:28</div>
+    <div style="float:right;">generated on 2024-11-29 16:46</div>
 </div>
 </body>
 </html>

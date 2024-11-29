@@ -19,7 +19,7 @@ public final class StudentUser extends User {
     /**
      * Concrete implementation of the Builder in User abstract class
      */
-    static class StudentUserBuilder extends Builder<StudentUserBuilder> {
+    public static class StudentUserBuilder extends Builder<StudentUserBuilder> {
 
         @Override
         protected StudentUserBuilder self() {
