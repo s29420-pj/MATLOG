@@ -106,8 +106,9 @@ public class UserAndStudentUserTests {
 
     @Test
     void nullLastNameStudent() {
-        assertThrows(IllegalStateException.class, () -> {
+        assertThrows(UserInvalidLastNameException.class, () -> {
             new StudentUser.StudentUserBuilder()
+                    .withLastName(null)
                     .withDateOfBirth(LocalDate.of(2003, 12, 12))
                     .build();
         });
@@ -121,12 +122,29 @@ public class UserAndStudentUserTests {
         });
     }
 
+    @Test
+    void lastNameNotSetInBuilder() {
+        assertThrows(IllegalStateException.class, () -> {
+            StudentUser.builder()
+                    .withFirstName("Roman")
+                    .withEmailAddress("test@example.com")
+                    .withRole(Role.STUDENT)
+                    .withPassword("Test123!")
+                    .build();
+        });
+    }
+
     // ------------------ email address tests ------------------------
 
     @Test
     void nullEmailAddressStudent() {
-        assertThrows(IllegalStateException.class, () -> {
+        assertThrows(UserInvalidEmailAddressException.class, () -> {
             new StudentUser.StudentUserBuilder()
+                    .withFirstName("Comapn")
+                    .withLastName("Gyurr")
+                    .withEmailAddress(null)
+                    .withPassword("Test!234")
+                    .withRole(Role.STUDENT)
                     .withDateOfBirth(LocalDate.of(1990, 3, 12))
                     .build();
         });
@@ -134,8 +152,26 @@ public class UserAndStudentUserTests {
 
     @Test
     void blankEmailAddressStudent() {
-        assertThrows(IllegalStateException.class, () -> {
+        assertThrows(UserInvalidEmailAddressException.class, () -> {
             new StudentUser.StudentUserBuilder()
+                    .withFirstName("Comapn")
+                    .withLastName("Gyurr")
+                    .withEmailAddress("")
+                    .withPassword("Test!234")
+                    .withRole(Role.STUDENT)
+                    .withDateOfBirth(LocalDate.of(1965, 4, 19))
+                    .build();
+        });
+    }
+
+    @Test
+    void emailAddressNotSetInBuilder() {
+        assertThrows(IllegalStateException.class, () -> {
+            StudentUser.builder()
+                    .withFirstName("Brian")
+                    .withLastName("Connor")
+                    .withPassword("@Pass!wor")
+                    .withRole(Role.STUDENT)
                     .withDateOfBirth(LocalDate.of(1965, 4, 19))
                     .build();
         });
@@ -148,6 +184,11 @@ public class UserAndStudentUserTests {
     void nullDateOfBirthStudent() {
         assertThrows(UserInvalidDateOfBirthException.class, () -> {
             new StudentUser.StudentUserBuilder()
+                    .withFirstName("Comapn")
+                    .withLastName("Gyurr")
+                    .withEmailAddress("test@example.com")
+                    .withPassword("Test!234")
+                    .withRole(Role.STUDENT)
                     .withDateOfBirth(null)
                     .build();
         });
@@ -182,5 +223,7 @@ public class UserAndStudentUserTests {
                     .build();
         });
     }
+
+    // ------------------ password tests ------------------------
 
 }
