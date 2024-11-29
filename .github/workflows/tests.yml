@@ -1,0 +1,42 @@
+name: Run Tests # Nazwa workflow
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21' # Wersja Javy - dostosuj do swojego projektu
+          distribution: 'amazon-corretto' # Dystrybucja Javy - dostosuj do swojego projektu
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven
+
+      - name: Install dependencies
+        run: mvn install --quiet
+
+      - name: Run tests
+        run: mvn test
+
+      - name: Save test results
+        if: always() # Wykonuje się zawsze, nawet jeśli testy nie przejdą
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: target/surefire-reports/ # Dostosuj ścieżkę, jeśli wyniki testów są zapisywane gdzie indziej
