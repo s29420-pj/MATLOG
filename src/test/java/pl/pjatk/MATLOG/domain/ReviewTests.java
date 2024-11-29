@@ -14,12 +14,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ReviewTests {
 
+    private static final String STUDENT_ID = UUID.randomUUID().toString();
+    private static final String TUTOR_ID = UUID.randomUUID().toString();
+
     // ------------------ happy tests ----------------------
     @ParameterizedTest
     @EnumSource(Stars.class)
     void createReview(Stars stars) {
-        Review review = Review.create(stars, "testComment",
-                UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        Review review = Review.create(stars, "testComment", STUDENT_ID, TUTOR_ID);
         assertAll(() -> {
             assertNotNull(review);
             assertEquals(stars, review.getRate());
@@ -32,7 +34,7 @@ public class ReviewTests {
     @Test
     void createReviewFrom() {
         Review review = Review.create(Stars.FIVE, "testComment",
-                UUID.randomUUID().toString(), UUID.randomUUID().toString());
+                STUDENT_ID, TUTOR_ID);
         Review reviewToAssert = Review.from(review);
         assertAll(() -> {
             assertNotEquals(review.getId(), reviewToAssert.getId());
@@ -45,8 +47,8 @@ public class ReviewTests {
 
     @Test
     void createReviewWithNullComment() {
-        Review review = Review.create(Stars.FOUR, null, UUID.randomUUID().toString(),
-                UUID.randomUUID().toString());
+        Review review = Review.create(Stars.FOUR, null, STUDENT_ID,
+                TUTOR_ID);
         assertAll(() -> {
             assertNotNull(review);
             assertEquals(Stars.FOUR, review.getRate());
@@ -58,14 +60,26 @@ public class ReviewTests {
 
     @Test
     void createReviewWithEmptyComment() {
-        Review review = Review.create(Stars.FOUR, "", UUID.randomUUID().toString(),
-                UUID.randomUUID().toString());
+        Review review = Review.create(Stars.FOUR, "", STUDENT_ID,
+                TUTOR_ID);
         assertAll(() -> {
             assertNotNull(review);
             assertEquals(Stars.FOUR, review.getRate());
             assertEquals("", review.getComment());
             assertNotNull(review.getStudentId());
             assertNotNull(review.getTutorId());
+        });
+    }
+
+    @Test
+    void createReviewWithoutComment() {
+        Review review = Review.create(Stars.TWO, STUDENT_ID, TUTOR_ID);
+        assertAll(() -> {
+            assertNotNull(review.getId());
+            assertNotNull(review.getStudentId());
+            assertNotNull(review.getTutorId());
+            assertEquals(Stars.TWO, review.getRate());
+            assertEquals("", review.getComment());
         });
     }
 

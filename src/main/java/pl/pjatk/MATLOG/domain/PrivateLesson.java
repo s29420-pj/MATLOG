@@ -37,8 +37,10 @@ public final class PrivateLesson extends Lesson {
     /**
      * Method that checks if all required fields are set by builder
      * @param builder Builder
-     * @throws PrivateLessonInvalidStartTimeException when startTime is null
-     * @throws PrivateLessonInvalidEndTimeException when endTime is null
+     * @throws IllegalStateException when startTime or endTime is null
+     * @throws PrivateLessonInvalidStartTimeException when startTime is before present
+     * @throws PrivateLessonInvalidEndTimeException when endTime is before present or when is before startTime
+     * or is equal to startTime
      */
     private void validateFields(PrivateLessonBuilder builder) {
         if (builder.startTime == null) throw new IllegalStateException("Start time of private lesson is mandatory and must be set");
@@ -46,12 +48,11 @@ public final class PrivateLesson extends Lesson {
 
         LocalDateTime builderStartTime = builder.startTime;
         LocalDateTime builderEndTime = builder.endTime;
-        if (builderStartTime.isBefore(LocalDateTime.now()) || builderStartTime.isEqual(LocalDateTime.now()))
+        if (builderStartTime.isBefore(LocalDateTime.now()))
             throw new PrivateLessonInvalidStartTimeException();
 
         if (builderEndTime.isBefore(LocalDateTime.now()) || builderEndTime.isBefore(builderStartTime) ||
                 builderEndTime.isEqual(builderStartTime))
-
             throw new PrivateLessonInvalidEndTimeException();
     }
 
@@ -62,6 +63,7 @@ public final class PrivateLesson extends Lesson {
     public static PrivateLessonBuilder builder() {
         return new PrivateLessonBuilder();
     }
+
     /**
      * Concrete representation of the builder in Lesson abstract class
      */
