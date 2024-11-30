@@ -2,9 +2,9 @@ package pl.pjatk.MATLOG.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
+import pl.pjatk.MATLOG.userManagement.exceptions.UserUnsecurePasswordException;
 
 import java.time.LocalDate;
 
@@ -271,15 +271,6 @@ public class UserAndStudentUserTests {
     }
 
     @Test
-    void passwordUnsecureInBuilder() {
-        assertThrows(UserUnsecurePasswordException.class, () -> {
-            StudentUser.builder()
-                    .withPassword("a")
-                    .build();
-        });
-    }
-
-    @Test
     void passwordNotSetInBuilder() {
         assertThrows(IllegalStateException.class, () -> {
             StudentUser.builder()
@@ -313,19 +304,6 @@ public class UserAndStudentUserTests {
                 .build();
         assertThrows(UserEmptyPasswordException.class, () -> {
             student.changePassword("");
-        });
-    }
-
-    @Test
-    void unsecurePasswordOnChangePassword() {
-        User student = StudentUser.builder()
-                .withFirstName("Derek")
-                .withLastName("Terr")
-                .withEmailAddress("test@example.com")
-                .withPassword("!23esFFDP")
-                .build();
-        assertThrows(UserUnsecurePasswordException.class, () -> {
-            student.changePassword("sd");
         });
     }
 

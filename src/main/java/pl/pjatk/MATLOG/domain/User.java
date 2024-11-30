@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
+import pl.pjatk.MATLOG.userManagement.UserPasswordValidator;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -86,12 +87,14 @@ public abstract class User {
         return password;
     }
 
+    /**
+     * Method that changes password of the User.
+     * CAUTION! THIS METHOD SHOULD BE ONLY USED VIA USERSERVICE IN USERMANAGEMENT PACKAGE!
+     * @param password new password
+     */
     public void changePassword(String password) {
         if (password == null || password.isEmpty()) {
             throw new UserEmptyPasswordException();
-        }
-        if (!UserPasswordValidator.isSecure(password)) {
-            throw new UserUnsecurePasswordException();
         }
         this.password = password;
     }
@@ -196,15 +199,10 @@ public abstract class User {
          * @param password password of the user
          * @return Builder
          * @throws UserEmptyPasswordException when password is null or blank
-         * @throws UserUnsecurePasswordException when password doesn't have any capital letter
-         * nor special sign (33 - 64 in ASCII table) nor isn't at least 6 letters long
          */
         public T withPassword(String password) {
             if (password == null || password.isBlank()) {
                 throw new UserEmptyPasswordException();
-            }
-            if (!UserPasswordValidator.isSecure(password)) {
-                throw new UserUnsecurePasswordException();
             }
             this.password = password;
             return self();

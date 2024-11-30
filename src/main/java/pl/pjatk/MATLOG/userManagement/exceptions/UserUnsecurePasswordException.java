@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.domain.exceptions.userExceptions;
+package pl.pjatk.MATLOG.userManagement.exceptions;
 
 public class UserUnsecurePasswordException extends RuntimeException {
     public UserUnsecurePasswordException() {

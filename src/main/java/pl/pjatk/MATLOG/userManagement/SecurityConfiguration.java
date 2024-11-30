@@ -30,4 +30,9 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public UserPasswordValidator passwordValidator() {
+        return new StandardUserPasswordValidator();
+    }
 }
