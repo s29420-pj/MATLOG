@@ -1,5 +1,8 @@
 package pl.pjatk.MATLOG.userManagement;
 
+/**
+ * Implementation of standard checking if password is secure.
+ */
 public class StandardUserPasswordValidator implements UserPasswordValidator {
 
     @Override
@@ -7,6 +10,11 @@ public class StandardUserPasswordValidator implements UserPasswordValidator {
         return this;
     }
 
+    /**
+     * Method that checks if password is secure according to standard rules.
+     * @param password password to check
+     * @return true if password is secure, false otherwise
+     */
     @Override
     public boolean isSecure(String password) {
         boolean hasCapitalLetter = password.chars().anyMatch((e) -> e >= 65 && e <= 90);

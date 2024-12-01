@@ -3,14 +3,12 @@ package pl.pjatk.MATLOG.userManagement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.pjatk.MATLOG.domain.User;
 
-@RestController("/usercontroller")
+@RestController("/user/controller")
 public class UserController {
 
     private final UserService userService;
@@ -19,7 +17,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Secured("isAnonymous()")
     @PostMapping("/create")
     public ResponseEntity<Void> createUser(@RequestBody User user) {
         userService.createUser(user);

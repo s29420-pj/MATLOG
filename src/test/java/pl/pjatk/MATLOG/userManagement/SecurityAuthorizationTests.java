@@ -1,5 +1,6 @@
 package pl.pjatk.MATLOG.userManagement;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +29,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Testcontainers
 @ApplicationModuleTest
-@Import({TestInfrastructure.class, AppConfiguration.class})
 @AutoConfigureMockMvc
-@SpringBootTest
+@Import(TestInfrastructure.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SecurityAuthorizationTests {
 
     @Autowired
+    private MongoDBContainer mongo;
+    @Autowired
     private MockMvc mvc;
 
+    @AfterAll
+    void shutDown() {
+        mongo.close();
+    }
 
     @Test
     public void helloUnauthenticated() throws Exception {

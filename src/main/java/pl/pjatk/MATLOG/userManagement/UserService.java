@@ -42,6 +42,12 @@ public class UserService {
         return user.get();
     }
 
+    /**
+     * Method that creates new user with provided data. It saves user
+     * in database so guest can log in as created account.
+     * @param user User that needs to be added to database
+     * @throws IllegalArgumentException when user is not provided
+     */
     public void createUser(User user) {
         if (user == null) {
             throw new IllegalArgumentException("Please provide valid user.");
