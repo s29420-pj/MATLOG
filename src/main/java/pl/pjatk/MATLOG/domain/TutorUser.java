@@ -1,5 +1,6 @@
 package pl.pjatk.MATLOG.domain;
 
+import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.*;

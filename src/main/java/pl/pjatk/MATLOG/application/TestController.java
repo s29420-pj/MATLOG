@@ -11,4 +11,9 @@ public class TestController {
     public ResponseEntity<String> getHelloMessage() {
         return ResponseEntity.ok("Hello");
     }
+
+    @GetMapping("/block")
+    public ResponseEntity<String> getHello2Message() {
+        return ResponseEntity.ok("Hello2");
+    }
 }
