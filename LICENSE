@@ -3,81 +3,37 @@
 Copyright (C) 2024
 
 Authors:
-Marek Lewańczyk
-Mateusz Szotyński
-Katarzyna Kasperek
+
+	•	Marek Lewańczyk
+	•	Mateusz Szotyński
+	•	Katarzyna Kasperek
 
 All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
-to use the Software solely for personal, non-commercial purposes, subject to the following restrictions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to use the Software solely for personal, non-commercial purposes, subject to the following restrictions:
 
-1. Redistribution:
-   Redistribution of this software, in whole or in part, in any form or by any means,
-   is strictly prohibited without the prior written permission of the copyright owner.
+1. Redistribution
 
-2. Modification:
-   Modification, decompilation, reverse engineering,
-   or creation of derivative works based on this software is strictly prohibited.
+Redistribution of this software, in whole or in part, in any form or by any means, is strictly prohibited without the prior written permission of the copyright owner.
 
-3. Commercial Use:
-   Use of this software for commercial purposes is strictly
-   prohibited without the prior written consent of the copyright owner.
+2. Modification
 
-4. Warranty:
-   This software is provided "as is", without warranty of any kind,
-   express or implied, including but not limited to the warranties of merchantability,
-   fitness for a particular purpose, or non-infringement.
-   In no event shall the copyright owner be liable for any claim, damages, or other liability,
-   whether in an action of contract, tort, or otherwise, arising from, out of,
-   or in connection with the software or the use or other dealings in the software.
+Modification, decompilation, reverse engineering, or creation of derivative works based on this software is strictly prohibited.
 
-5. Legal Actions:
-   Any unauthorized use, distribution, or modification of this software will be pursued to the fullest extent of the applicable laws.
+3. Commercial Use
+
+Use of this software for commercial purposes is strictly prohibited without the prior written consent of the copyright owner.
+
+4. Warranty
+
+This software is provided “as is”, without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, or non-infringement.
+In no event shall the copyright owner be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
+
+5. Legal Actions
+
+Any unauthorized use, distribution, or modification of this software will be pursued to the fullest extent of the applicable laws.
 
 For inquiries, please contact us.
 
 This license is subject to change without notice and was last updated on 4.12.2024.
-If you do not agree to the terms of this license,
-you must immediately cease the use of the software and destroy all copies of the software in your possession.
-
-(Polish)
-Copyright (C) 2024
-
-Autorzy:
-Marek Lewańczyk
-Mateusz Szotyński
-Katarzyna Kasperek
-
-Wszelkie prawa zastrzeżone.
-
-Niniejszym udziela się zgody każdej osobie, która uzyska kopię tego oprogramowania i powiązanej dokumentacji (zwanych dalej "Oprogramowaniem"),
-na korzystanie z Oprogramowania wyłącznie do celów osobistych i niekomercyjnych, z zastrzeżeniem następujących warunków:
-
-1. Dystrybucja:
-   Dystrybucja tego oprogramowania, w całości lub w części, w jakiejkolwiek formie lub za pomocą jakichkolwiek środków,
-   jest surowo zabroniona bez uprzedniej pisemnej zgody właściciela praw autorskich.
-
-2. Modyfikacje:
-   Modyfikowanie, dekompilacja, inżynieria wsteczna
-   lub tworzenie dzieł pochodnych na podstawie tego oprogramowania jest surowo zabronione.
-
-3. Użytek komercyjny:
-   Użycie tego oprogramowania do celów komercyjnych jest surowo
-   zabronione bez uprzedniej pisemnej zgody właściciela praw autorskich.
-
-4. Gwarancja:
-   To oprogramowanie jest dostarczane "tak jak jest", bez jakiejkolwiek gwarancji,
-   wyraźnej lub dorozumianej, w tym między innymi gwarancji przydatności handlowej,
-   przydatności do określonego celu lub nienaruszalności praw.
-   W żadnym wypadku właściciel praw autorskich nie ponosi odpowiedzialności za jakiekolwiek roszczenia, szkody lub inne zobowiązania,
-   wynikające z użycia tego oprogramowania lub w związku z nim,
-   czy to w ramach umowy, czynu niedozwolonego lub w inny sposób.
-
-5. Działania prawne:
-   Jakiekolwiek nieautoryzowane użycie, dystrybucja lub modyfikacja tego oprogramowania będą ścigane w najszerszym zakresie zgodnie z obowiązującym prawem.
-
-W sprawie zapytań prosimy o kontakt z nami.
-
-Niniejsza licencja może ulec zmianie bez wcześniejszego powiadomienia i została ostatnio zaktualizowana dnia 4.12.2024.
-Jeśli nie zgadzasz się z warunkami tej licencji, musisz natychmiast zaprzestać korzystania z oprogramowania i zniszczyć wszystkie kopie oprogramowania znajdujące się w Twoim posiadaniu.
+If you do not agree to the terms of this license, you must immediately cease the use of the software and destroy all copies of the software in your possession.
