@@ -1,5 +1,6 @@
 package pl.pjatk.MATLOG.userManagement;
 
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.domain.User;
@@ -33,12 +34,12 @@ public class UserService {
      * @throws UserInvalidEmailAddressException when user with provided email address
      * couldn't be found
      */
-    public User findUserByEmailAddress(String emailAddress) {
+    public User findUserByEmailAddress(String emailAddress) throws AuthenticationException {
         if (emailAddress == null || emailAddress.isEmpty()) {
             throw new UserInvalidEmailAddressException();
         }
         Optional<User> user = userRepository.findByEmailAddress(emailAddress);
-        if (user.isEmpty()) throw new UserNotFoundException();
+        if (user.isEmpty()) throw new AuthenticationException("User with that email address does not exist.");
         return user.get();
     }
 

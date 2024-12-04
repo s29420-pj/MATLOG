@@ -10,11 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserManagementConfiguration {
 
     @Bean
-    public UserDetailsService userDetailsService(UserService userService) {
-        return new MongoUserDetailsService(userService);
-    }
-
-    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
