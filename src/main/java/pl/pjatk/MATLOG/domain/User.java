@@ -1,5 +1,6 @@
 package pl.pjatk.MATLOG.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.mongodb.core.mapping.Document;

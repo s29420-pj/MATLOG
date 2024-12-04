@@ -1,6 +1,8 @@
 package pl.pjatk.MATLOG.userManagement;
 
 import org.apache.tomcat.websocket.AuthenticationException;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.domain.User;

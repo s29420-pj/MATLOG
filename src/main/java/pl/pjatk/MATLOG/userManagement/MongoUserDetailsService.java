@@ -1,11 +1,8 @@
 package pl.pjatk.MATLOG.userManagement;
 
-import org.apache.tomcat.websocket.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.function.Supplier;
 
