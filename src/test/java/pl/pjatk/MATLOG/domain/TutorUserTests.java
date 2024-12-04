@@ -5,10 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,9 +47,11 @@ public class TutorUserTests {
                 .build();
 
         PrivateLesson privateLesson = PrivateLesson.builder()
-                .withOwnerId(tutor.getId())
-                .withStartTime(LocalDateTime.now().plusMonths(2))
-                .withEndTime(LocalDateTime.now().plusMonths(2).plusHours(1))
+                .withTutorId(tutor.getId())
+                .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                .withStartTime(LocalDateTime.now().plusDays(1))
+                .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
+                .withPrice(80.0)
                 .build();
 
         boolean isAdded = tutor.addPrivateLesson(privateLesson);
@@ -78,9 +77,11 @@ public class TutorUserTests {
                 .build();
 
         PrivateLesson lesson = PrivateLesson.builder()
-                .withOwnerId(tutor.getId())
+                .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                .withTutorId(tutor.getId())
                 .withStartTime(LocalDateTime.now().plusDays(2))
                 .withEndTime(LocalDateTime.now().plusDays(2).plusHours(1))
+                .withPrice(80.0)
                 .build();
 
         set.add(lesson);
