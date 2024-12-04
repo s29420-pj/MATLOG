@@ -1,8 +1,10 @@
 package pl.pjatk.MATLOG.userManagement;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,19 +22,27 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import pl.pjatk.MATLOG.TestInfrastructure;
+import pl.pjatk.MATLOG.configuration.AppConfiguration;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Testcontainers
 @ApplicationModuleTest
-@Import(TestInfrastructure.class)
 @AutoConfigureMockMvc
+@Import(TestInfrastructure.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SecurityAuthorizationTests {
 
     @Autowired
+    private MongoDBContainer mongo;
+    @Autowired
     private MockMvc mvc;
 
+    @AfterAll
+    void shutDown() {
+        mongo.close();
+    }
 
     @Test
     public void helloUnauthenticated() throws Exception {

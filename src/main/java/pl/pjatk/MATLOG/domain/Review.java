@@ -25,14 +25,14 @@ public final class Review {
 
     /**
      * Static factory method that returns review.
-     * @param rate Overall rate of the tutor
-     * @param comment Detailed information. If equals null then it's converted to empty String
-     * @param studentId Student Identification that tells who created the review
-     * @param tutorId Tutor Identification that tells who have been reviewed
-     * @return Review
-     * @throws ReviewInvalidRateException - When rate is empty
-     * @throws ReviewInvalidStudentId - When studentId is empty
-     * @throws ReviewInvalidTutorId - When tutorId is empty
+     * @param rate Overall rate of the tutor.
+     * @param comment Detailed information. If equals null then it's converted to empty String.
+     * @param studentId Student Identification that tells who created the review.
+     * @param tutorId Tutor Identification that tells who have been reviewed.
+     * @return Review.
+     * @throws ReviewInvalidRateException - When rate is empty.
+     * @throws ReviewInvalidStudentId - When studentId is empty.
+     * @throws ReviewInvalidTutorId - When tutorId is empty.
      */
     public static Review create(Stars rate, String comment, String studentId, String tutorId) {
         if (rate == null) {
@@ -50,10 +50,10 @@ public final class Review {
 
     /**
      * Overloaded static method that uses its full form to validate every parameter.
-     * @param rate Overall rate of the tutor
-     * @param studentId Student Identification that tells who created the review
-     * @param tutorId Tutor Identification that tells who have been reviewed
-     * @return Review
+     * @param rate Overall rate of the tutor.
+     * @param studentId Student Identification that tells who created the review.
+     * @param tutorId Tutor Identification that tells who have been reviewed.
+     * @return Review.
      */
     public static Review create(Stars rate, String studentId, String tutorId) {
         return create(rate, null, studentId, tutorId);
@@ -62,13 +62,21 @@ public final class Review {
     /**
      * Static factory method that creates review from provided different review.
      * It uses create static method to include all checks-up.
-     * @param review - original review
-     * @return Review
+     * @param review - original review.
+     * @return Review.
      */
     public static Review from(Review review) {
         return create(review.rate, review.comment, review.studentId, review.tutorId);
     }
 
+    /**
+     * Private constructor of Review class that creates review
+     * with random UUID and provided data.
+     * @param rate rate to assign to the tutor.
+     * @param comment comment to assign to the tutor.
+     * @param studentId student's id who created review.
+     * @param tutorId tutor's id who is concerned.
+     */
     private Review(Stars rate, String comment, String studentId, String tutorId) {
         this.id = UUID.randomUUID().toString();
         this.comment = comment;

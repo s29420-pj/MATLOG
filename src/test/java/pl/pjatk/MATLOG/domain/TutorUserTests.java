@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.domain;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,6 +37,9 @@ public class TutorUserTests {
             assertEquals("example@example.com", tutor.getEmailAddress());
             assertEquals("testP@ssword", tutor.getPassword());
             assertEquals(31, tutor.getAge());
+            assertTrue(tutor.isAccountNonLocked());
+            assertTrue(tutor.getAuthorities().contains(new SimpleGrantedAuthority("USER")));
+            assertTrue(tutor.getAuthorities().contains(new SimpleGrantedAuthority("TUTOR_USER")));
         });
     }
 
@@ -55,7 +59,7 @@ public class TutorUserTests {
                 .withEndTime(LocalDateTime.now().plusMonths(2).plusHours(1))
                 .build();
 
-        boolean isAdded = tutor.addPrivateLesson(privateLesson);
+        boolean isAdded = tutor.addLesson(privateLesson);
 
         assertAll(() -> {
             assertFalse(tutor.getPrivateLessons().isEmpty());
@@ -67,7 +71,7 @@ public class TutorUserTests {
 
     @Test
     void createTutorWithProvidedSet() {
-        Set<PrivateLesson> set = new HashSet<>();
+        Set<Lesson> set = new HashSet<>();
 
         TutorUser tutor = TutorUser.builder()
                 .withFirstName("Anthony")

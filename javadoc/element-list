@@ -1,6 +1,9 @@
 pl.pjatk.MATLOG
+pl.pjatk.MATLOG.application
+pl.pjatk.MATLOG.configuration
 pl.pjatk.MATLOG.domain
 pl.pjatk.MATLOG.domain.exceptions.lessonExceptions
+pl.pjatk.MATLOG.domain.exceptions.reviewExceptions
 pl.pjatk.MATLOG.domain.exceptions.userExceptions
-pl.pjatk.MATLOG.lessonManagement
 pl.pjatk.MATLOG.userManagement
+pl.pjatk.MATLOG.userManagement.exceptions

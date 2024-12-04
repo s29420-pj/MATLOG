@@ -2,7 +2,9 @@ package pl.pjatk.MATLOG.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
+import pl.pjatk.MATLOG.userManagement.exceptions.UserUnsecurePasswordException;
 
 import java.time.LocalDate;
 
@@ -29,6 +31,10 @@ public class UserAndStudentUserTests {
             assertEquals("Hovermann", student.getLastName());
             assertEquals("testPassword!", student.getPassword());
             assertEquals("example@example.com", student.getEmailAddress());
+            assertTrue(student.isAccountNonLocked());
+            assertEquals(LocalDate.now().minusYears(50), student.getDateOfBirth());
+            assertTrue(student.getAuthorities().contains(new SimpleGrantedAuthority("USER")));
+            assertTrue(student.getAuthorities().contains(new SimpleGrantedAuthority("STUDENT_USER")));
             assertEquals(Role.STUDENT, student.getRole());
         });
     }
@@ -265,15 +271,6 @@ public class UserAndStudentUserTests {
     }
 
     @Test
-    void passwordUnsecureInBuilder() {
-        assertThrows(UserUnsecurePasswordException.class, () -> {
-            StudentUser.builder()
-                    .withPassword("a")
-                    .build();
-        });
-    }
-
-    @Test
     void passwordNotSetInBuilder() {
         assertThrows(IllegalStateException.class, () -> {
             StudentUser.builder()
@@ -310,21 +307,15 @@ public class UserAndStudentUserTests {
         });
     }
 
-    @Test
-    void unsecurePasswordOnChangePassword() {
-        User student = StudentUser.builder()
-                .withFirstName("Derek")
-                .withLastName("Terr")
-                .withEmailAddress("test@example.com")
-                .withPassword("!23esFFDP")
-                .build();
-        assertThrows(UserUnsecurePasswordException.class, () -> {
-            student.changePassword("sd");
-        });
-    }
-
     // ------------------ Role tests ------------------------
 
-
+    @Test
+    void nullRoleInBuilder() {
+        assertThrows(UserInvalidRoleException.class, () -> {
+            StudentUser.builder()
+                    .withRole(null)
+                    .build();
+        });
+    }
 
 }

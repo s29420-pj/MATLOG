@@ -48,34 +48,34 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">Review</td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (1/1)
+    (0/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (4/4)
+    (0/4)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (12/12)
+    (0/12)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (17/17)
+    (0/17)
   </span>
 </td>
 </tr>
@@ -124,17 +124,17 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @throws ReviewInvalidTutorId - When tutorId is empty
 &nbsp;     */
 &nbsp;    public static Review create(Stars rate, String comment, String studentId, String tutorId) {
-<b class="fc">&nbsp;        if (rate == null) {</b>
-<b class="fc">&nbsp;            throw new ReviewInvalidRateException();</b>
+<b class="nc">&nbsp;        if (rate == null) {</b>
+<b class="nc">&nbsp;            throw new ReviewInvalidRateException();</b>
 &nbsp;        }
-<b class="fc">&nbsp;        comment = comment == null ? &quot;&quot; : comment;</b>
-<b class="fc">&nbsp;        if (studentId == null || studentId.isBlank()) {</b>
-<b class="fc">&nbsp;            throw new ReviewInvalidStudentId();</b>
+<b class="nc">&nbsp;        comment = comment == null ? &quot;&quot; : comment;</b>
+<b class="nc">&nbsp;        if (studentId == null || studentId.isBlank()) {</b>
+<b class="nc">&nbsp;            throw new ReviewInvalidStudentId();</b>
 &nbsp;        }
-<b class="fc">&nbsp;        if (tutorId == null || tutorId.isBlank()) {</b>
-<b class="fc">&nbsp;            throw new ReviewInvalidTutorId();</b>
+<b class="nc">&nbsp;        if (tutorId == null || tutorId.isBlank()) {</b>
+<b class="nc">&nbsp;            throw new ReviewInvalidTutorId();</b>
 &nbsp;        }
-<b class="fc">&nbsp;        return new Review(rate, comment, studentId, tutorId);</b>
+<b class="nc">&nbsp;        return new Review(rate, comment, studentId, tutorId);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -145,7 +145,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return Review
 &nbsp;     */
 &nbsp;    public static Review create(Stars rate, String studentId, String tutorId) {
-<b class="fc">&nbsp;        return create(rate, null, studentId, tutorId);</b>
+<b class="nc">&nbsp;        return create(rate, null, studentId, tutorId);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -155,16 +155,16 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return Review
 &nbsp;     */
 &nbsp;    public static Review from(Review review) {
-<b class="fc">&nbsp;        return create(review.rate, review.comment, review.studentId, review.tutorId);</b>
+<b class="nc">&nbsp;        return create(review.rate, review.comment, review.studentId, review.tutorId);</b>
 &nbsp;    }
 &nbsp;
-<b class="fc">&nbsp;    private Review(Stars rate, String comment, String studentId, String tutorId) {</b>
-<b class="fc">&nbsp;        this.id = UUID.randomUUID().toString();</b>
-<b class="fc">&nbsp;        this.comment = comment;</b>
-<b class="fc">&nbsp;        this.rate = rate;</b>
-<b class="fc">&nbsp;        this.dateAndTimeOfComment = LocalDateTime.now();</b>
-<b class="fc">&nbsp;        this.studentId = studentId;</b>
-<b class="fc">&nbsp;        this.tutorId = tutorId;</b>
+<b class="nc">&nbsp;    private Review(Stars rate, String comment, String studentId, String tutorId) {</b>
+<b class="nc">&nbsp;        this.id = UUID.randomUUID().toString();</b>
+<b class="nc">&nbsp;        this.comment = comment;</b>
+<b class="nc">&nbsp;        this.rate = rate;</b>
+<b class="nc">&nbsp;        this.dateAndTimeOfComment = LocalDateTime.now();</b>
+<b class="nc">&nbsp;        this.studentId = studentId;</b>
+<b class="nc">&nbsp;        this.tutorId = tutorId;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;}
@@ -191,7 +191,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-11-29 15:37</div>
+    <div style="float:right;">generated on 2024-11-29 16:46</div>
 </div>
 </body>
 </html>

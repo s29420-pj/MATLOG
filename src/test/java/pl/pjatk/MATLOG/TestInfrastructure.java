@@ -11,9 +11,10 @@ public class TestInfrastructure {
 
     @Bean
     @ServiceConnection
-    MongoDBContainer mongoContainer() {
-        var container = new MongoDBContainer(DockerImageName.parse("mongo:latest"));
-        container.start();
-        return container;
+    public MongoDBContainer mongoDBContainer() {
+        MongoDBContainer mongo = new MongoDBContainer(DockerImageName.parse("mongo:latest"));
+        mongo.start();
+        return mongo;
     }
+
 }

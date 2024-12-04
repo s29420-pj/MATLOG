@@ -1,10 +1,14 @@
 package pl.pjatk.MATLOG.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
+import pl.pjatk.MATLOG.userManagement.UserPasswordValidator;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -64,7 +68,6 @@ public abstract class User {
         if (builder.lastName == null) throw new IllegalStateException("Last name of user is mandatory and must be set");
         if (builder.emailAddress == null) throw new IllegalStateException("Email address of user is mandatory and must be set");
         if (builder.password == null) throw new IllegalStateException("Password of user is mandatory and must be set");
-        if (builder.role == null) builder.role = Role.STUDENT;
     }
 
     public String getId() {
@@ -87,12 +90,14 @@ public abstract class User {
         return password;
     }
 
+    /**
+     * Method that changes password of the User.
+     * CAUTION! THIS METHOD SHOULD BE ONLY USED VIA USERSERVICE IN USERMANAGEMENT PACKAGE!
+     * @param password new password
+     */
     public void changePassword(String password) {
         if (password == null || password.isEmpty()) {
             throw new UserEmptyPasswordException();
-        }
-        if (!UserPasswordValidator.isSecure(password)) {
-            throw new UserUnsecurePasswordException();
         }
         this.password = password;
     }
@@ -139,7 +144,7 @@ public abstract class User {
      * Abstract builder that have to be extended in concrete User class
      * @param <T> - concrete user builder
      */
-    abstract static class Builder<T extends Builder<T>> {
+    public abstract static class Builder<T extends Builder<T>> {
         private String firstName;
         private String lastName;
         private String emailAddress;
@@ -197,15 +202,10 @@ public abstract class User {
          * @param password password of the user
          * @return Builder
          * @throws UserEmptyPasswordException when password is null or blank
-         * @throws UserUnsecurePasswordException when password doesn't have any capital letter
-         * nor special sign (33 - 64 in ASCII table) nor isn't at least 6 letters long
          */
         public T withPassword(String password) {
             if (password == null || password.isBlank()) {
                 throw new UserEmptyPasswordException();
-            }
-            if (!UserPasswordValidator.isSecure(password)) {
-                throw new UserUnsecurePasswordException();
             }
             this.password = password;
             return self();
@@ -235,7 +235,7 @@ public abstract class User {
          * @return Builder
          * @throws UserInvalidRoleException when role is not provided or there is not such a role
          */
-        public T withRole(Role role) {
+        protected T withRole(Role role) {
             if (role == null) {
                 throw new UserInvalidRoleException();
             }
