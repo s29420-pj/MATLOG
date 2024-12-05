@@ -1,6 +1,15 @@
 package pl.pjatk.MATLOG.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.HashSet;
@@ -10,6 +19,7 @@ import java.util.Set;
 /**
  * Concrete class representing Student in application
  */
+@Document("student")
 public final class StudentUser extends User {
 
     private final Set<Lesson> assignedLessons;

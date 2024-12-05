@@ -24,15 +24,12 @@ public class WebAuthorizationConfiguration {
                 .authenticationProvider(authenticationProvider)
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
-                .formLogin(e ->
-                    e.loginPage("/user/controller/login")
-                            .successForwardUrl("/home")
-                                    .failureForwardUrl("/block_access"))
+                .formLogin(e -> e
+                        .successForwardUrl("/hello"))
                 .authorizeHttpRequests(
                     auth -> auth
                             .requestMatchers("/user/controller/create").permitAll()
                             .requestMatchers("/hello").permitAll()
-                            .requestMatchers("/user/controller/login").permitAll()
                             .anyRequest().authenticated()
                 );
         return http.build();

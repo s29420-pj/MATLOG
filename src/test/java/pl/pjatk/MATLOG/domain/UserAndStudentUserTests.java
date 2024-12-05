@@ -4,7 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
-import pl.pjatk.MATLOG.userManagement.exceptions.UserUnsecurePasswordException;
+import pl.pjatk.MATLOG.userManagement.StandardUserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.UserPasswordValidator;
 
 import java.time.LocalDate;
 
@@ -85,7 +86,8 @@ public class UserAndStudentUserTests {
                 .withEmailAddress("example@example.com")
                 .withPassword("testP@ssword")
                 .build();
-        studentUser.changePassword("!09Acb");
+        UserPasswordValidator validator = new StandardUserPasswordValidator();
+        studentUser.changePassword("!09Acb", validator);
         assertAll(() -> {
             assertNotNull(studentUser.getId());
             assertEquals("Mark Twain", studentUser.getFullName());
@@ -289,8 +291,9 @@ public class UserAndStudentUserTests {
                                         .withEmailAddress("test@example.com")
                                                 .withPassword("!23esFFDP")
                                                         .build();
+        UserPasswordValidator validator = new StandardUserPasswordValidator();
         assertThrows(UserEmptyPasswordException.class, () -> {
-            student.changePassword(null);
+            student.changePassword(null, validator);
         });
     }
 
@@ -302,8 +305,9 @@ public class UserAndStudentUserTests {
                 .withEmailAddress("test@example.com")
                 .withPassword("!23esFFDP")
                 .build();
+        UserPasswordValidator validator = new StandardUserPasswordValidator();
         assertThrows(UserEmptyPasswordException.class, () -> {
-            student.changePassword("");
+            student.changePassword("", validator);
         });
     }
 

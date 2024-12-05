@@ -1,6 +1,8 @@
 package pl.pjatk.MATLOG.domain;
 
-import org.springframework.data.annotation.PersistenceCreator;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.*;
@@ -10,27 +12,27 @@ import java.util.*;
  * All conditions of User class must be met. If set of private lessons or list of reviews
  * is not specified then the new, empty one is created
  */
+@Document("tutor")
 public final class TutorUser extends User {
 
     private final Set<Lesson> lessons;
     private final List<Review> reviews;
 
     /**
-     * Method that returns lessons.
-     * @return Copy of set containing lessons.
+     * Method that returns copy of lessons set.
+     * @return Set of lessons
      */
-    public Set<Lesson> getPrivateLessons() {
+    public Set<Lesson> getLessons() {
         return Set.copyOf(lessons);
     }
 
     /**
-     * Method that returns reviews
-     * @return Copy of list containing reviews from students
+     * Method that return copy of reviews list.
+     * @return List of reviews
      */
     public List<Review> getReviews() {
         return List.copyOf(reviews);
     }
-
     /**
      * Method that adds lesson to set
      * @param lesson instantiated lesson that will be added to set

@@ -1,14 +1,10 @@
 package pl.pjatk.MATLOG.userManagement;
 
 import org.apache.tomcat.websocket.AuthenticationException;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.domain.User;
-import pl.pjatk.MATLOG.userManagement.exceptions.UserUnsecurePasswordException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserInvalidEmailAddressException;
-import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 
 import java.util.Optional;
 
@@ -55,9 +51,8 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException("Please provide valid user.");
         }
-        if (!userPasswordValidator.isSecure(user.getPassword())) throw new UserUnsecurePasswordException();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.changePassword(encodedPassword);
+        user.changePassword(encodedPassword, userPasswordValidator);
         userRepository.save(user);
     }
 }
