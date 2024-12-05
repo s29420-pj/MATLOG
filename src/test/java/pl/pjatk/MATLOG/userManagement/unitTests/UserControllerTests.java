@@ -7,9 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
-import pl.pjatk.MATLOG.domain.Role;
-import pl.pjatk.MATLOG.domain.StudentUser;
-import pl.pjatk.MATLOG.userManagement.UserDTO;
+import pl.pjatk.MATLOG.Domain.Enums.Role;
+import pl.pjatk.MATLOG.UserManagement.UserDTO;
 
 import java.time.LocalDate;
 
