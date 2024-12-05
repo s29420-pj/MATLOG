@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 import pl.pjatk.MATLOG.TestInfrastructure;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.User;
-import pl.pjatk.MATLOG.userManagement.UserRepository;
+import pl.pjatk.MATLOG.UserManagement.UserRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

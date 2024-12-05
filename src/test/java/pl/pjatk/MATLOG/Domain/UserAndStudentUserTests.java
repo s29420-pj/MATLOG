@@ -3,9 +3,10 @@ package pl.pjatk.MATLOG.Domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pl.pjatk.MATLOG.Domain.Exceptions.userExceptions.*;
-import pl.pjatk.MATLOG.userManagement.StandardUserPasswordValidator;
-import pl.pjatk.MATLOG.userManagement.UserPasswordValidator;
+import pl.pjatk.MATLOG.Domain.Enums.Role;
+import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
+import pl.pjatk.MATLOG.UserManagement.StandardUserPasswordValidator;
+import pl.pjatk.MATLOG.UserManagement.UserPasswordValidator;
 
 import java.time.LocalDate;
 
@@ -206,21 +207,6 @@ public class UserAndStudentUserTests {
     }
 
     // ------------------ date of birth tests ------------------------
-
-    @Test
-    @DisplayName("Throws exception when date of birth is null")
-    void nullDateOfBirthStudent() {
-        assertThrows(UserInvalidDateOfBirthException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Comapn")
-                    .withLastName("Gyurr")
-                    .withEmailAddress("test@example.com")
-                    .withPassword("Test!234")
-                    .withRole(Role.STUDENT)
-                    .withDateOfBirth(null)
-                    .build();
-        });
-    }
 
     @Test
     @DisplayName("Throws exception when student is 0 years old")

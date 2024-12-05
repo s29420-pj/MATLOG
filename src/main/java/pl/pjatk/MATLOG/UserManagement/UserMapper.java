@@ -5,9 +5,6 @@ import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.Domain.User;
 
-import static pl.pjatk.MATLOG.Domain.Enums.Role.STUDENT;
-import static pl.pjatk.MATLOG.Domain.Enums.Role.TUTOR;
-
 @Component
 public class UserMapper {
 
