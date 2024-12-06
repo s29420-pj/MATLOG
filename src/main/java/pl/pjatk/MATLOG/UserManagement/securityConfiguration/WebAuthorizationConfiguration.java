@@ -24,7 +24,7 @@ public class WebAuthorizationConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
                 .formLogin(e -> e
-                        .successForwardUrl("/hello"))
+                        .successForwardUrl("/block"))
                 .authorizeHttpRequests(
                     auth -> auth
                             .requestMatchers("/user/controller/create").permitAll()
