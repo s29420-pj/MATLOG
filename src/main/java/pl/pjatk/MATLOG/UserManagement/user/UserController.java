@@ -23,7 +23,7 @@ public class UserController {
         this.authProvider = authProvider;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/register")
     public ResponseEntity<Void> createUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
         userService.createUser(registerUserDTOMapper.mapTo(userRegistrationDTO));
         return ResponseEntity.status(HttpStatus.CREATED).build();

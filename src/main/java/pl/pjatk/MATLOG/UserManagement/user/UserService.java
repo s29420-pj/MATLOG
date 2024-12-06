@@ -4,6 +4,7 @@ import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.User;
+import pl.pjatk.MATLOG.UserManagement.Exceptions.UserAlreadyExistException;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserInvalidEmailAddressException;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.user.mappers.UserDAOMapper;
@@ -60,6 +61,10 @@ public class UserService {
     public void createUser(User user) {
         if (user == null) {
             throw new IllegalArgumentException("Please provide valid user.");
+        }
+        Optional<UserDAO> userDao = userRepository.findByEmailAddress(user.getEmailAddress());
+        if (userDao.isPresent()) {
+            throw new UserAlreadyExistException();
         }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.changePassword(encodedPassword, userPasswordValidator);
