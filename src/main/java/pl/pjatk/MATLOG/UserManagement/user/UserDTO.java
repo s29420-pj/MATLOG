@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.UserManagement;
+package pl.pjatk.MATLOG.UserManagement.user;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import pl.pjatk.MATLOG.Domain.Enums.Role;

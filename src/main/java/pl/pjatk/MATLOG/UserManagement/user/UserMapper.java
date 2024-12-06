@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.UserManagement;
+package pl.pjatk.MATLOG.UserManagement.user;
 
 import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.StudentUser;

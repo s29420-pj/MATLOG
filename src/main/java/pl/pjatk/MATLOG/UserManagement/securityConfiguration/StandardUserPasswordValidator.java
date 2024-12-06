@@ -1,6 +1,4 @@
-package pl.pjatk.MATLOG.UserManagement;
-
-import pl.pjatk.MATLOG.UserManagement.UserPasswordValidator;
+package pl.pjatk.MATLOG.UserManagement.securityConfiguration;
 
 /**
  * Implementation of standard checking if password is secure.

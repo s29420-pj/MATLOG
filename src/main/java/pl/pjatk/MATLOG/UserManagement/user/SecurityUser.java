@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.UserManagement;
+package pl.pjatk.MATLOG.UserManagement.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

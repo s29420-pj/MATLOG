@@ -1,8 +1,11 @@
-package pl.pjatk.MATLOG.UserManagement;
+package pl.pjatk.MATLOG.UserManagement.securityConfiguration;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import pl.pjatk.MATLOG.UserManagement.user.SecurityUser;
+import pl.pjatk.MATLOG.UserManagement.user.UserRepository;
+import pl.pjatk.MATLOG.UserManagement.user.UserService;
 
 import java.util.function.Supplier;
 

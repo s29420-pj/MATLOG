@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.UserManagement;
+package pl.pjatk.MATLOG.UserManagement.securityConfiguration;
 
 public interface UserPasswordValidator {
 

@@ -1,12 +1,10 @@
 package pl.pjatk.MATLOG.Domain;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.Domain.Enums.Role;
 import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
-import pl.pjatk.MATLOG.UserManagement.UserPasswordValidator;
+import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -26,10 +24,8 @@ import java.util.UUID;
  * - authorities, added USER and by concrete classes
  * - role, set by concrete classes
  */
-@Document("user")
 public abstract class User {
 
-    @MongoId
     private final String id;
     private final String firstName;
     private final String lastName;

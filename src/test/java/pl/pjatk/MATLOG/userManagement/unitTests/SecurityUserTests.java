@@ -3,7 +3,7 @@ package pl.pjatk.MATLOG.userManagement.unitTests;
 import org.junit.jupiter.api.Test;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.User;
-import pl.pjatk.MATLOG.UserManagement.SecurityUser;
+import pl.pjatk.MATLOG.UserManagement.user.SecurityUser;
 
 import java.time.LocalDate;
 
