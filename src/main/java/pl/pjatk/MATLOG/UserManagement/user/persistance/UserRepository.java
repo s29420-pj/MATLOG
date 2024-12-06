@@ -2,12 +2,11 @@ package pl.pjatk.MATLOG.UserManagement.user.persistance;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import pl.pjatk.MATLOG.Domain.User;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserRepository extends MongoRepository<UserDAO, String> {
 
-    Optional<User> findByEmailAddress(String emailAddress);
+    Optional<UserDAO> findByEmailAddress(String emailAddress);
 }
