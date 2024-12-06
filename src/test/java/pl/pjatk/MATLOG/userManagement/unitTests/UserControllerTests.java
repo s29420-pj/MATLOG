@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import pl.pjatk.MATLOG.Domain.Enums.Role;
-import pl.pjatk.MATLOG.UserManagement.user.UserDTO;
+import pl.pjatk.MATLOG.UserManagement.user.UserRegisterDTO;
 
 import java.time.LocalDate;
 
@@ -27,7 +27,7 @@ public class UserControllerTests {
         mvc.perform(post("/user/controller/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(
-                        new UserDTO("testUser", "testsurname", "example@com",
+                        new UserRegisterDTO("testUser", "testsurname", "example@com",
                                 "TstPass@rod", LocalDate.now().minusYears(19), Role.STUDENT)
                 ))
                 .accept(MediaType.APPLICATION_JSON))

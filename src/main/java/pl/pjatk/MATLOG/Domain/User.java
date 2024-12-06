@@ -148,6 +148,8 @@ public abstract class User {
         private String emailAddress;
         private String password;
         private LocalDate dateOfBirth;
+        private Set<GrantedAuthority> authorities;
+        private boolean isAccountNonLocked;
         private Role role;
 
         private static final int MIN_AGE = 1;
@@ -223,6 +225,26 @@ public abstract class User {
                 }
             }
             this.dateOfBirth = dateOfBirth;
+            return self();
+        }
+
+        /**
+         * Method that sets User's set of granted authorities
+         * @param authorities authorities to add
+         * @return Builder
+         */
+        public T withAuthorities(Set<GrantedAuthority> authorities) {
+            this.authorities = authorities;
+            return self();
+        }
+
+        /**
+         * Method that sets User's account status. It can be blocked or not
+         * @param isAccountNonLocked status of an account
+         * @return Builder
+         */
+        public T withIsAccountNonLocked(boolean isAccountNonLocked) {
+            this.isAccountNonLocked = isAccountNonLocked;
             return self();
         }
 
