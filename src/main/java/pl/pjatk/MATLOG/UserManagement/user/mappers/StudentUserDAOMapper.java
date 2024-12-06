@@ -1,6 +1,7 @@
-package pl.pjatk.MATLOG.UserManagement.user;
+package pl.pjatk.MATLOG.UserManagement.user.mappers;
 
 import pl.pjatk.MATLOG.Domain.StudentUser;
+import pl.pjatk.MATLOG.UserManagement.user.persistance.StudentUserDAO;
 
 public class StudentUserDAOMapper {
 

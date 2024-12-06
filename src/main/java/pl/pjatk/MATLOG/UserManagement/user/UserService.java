@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserInvalidEmailAddressException;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.UserManagement.user.persistance.UserRepository;
 
 import java.util.Optional;
 
