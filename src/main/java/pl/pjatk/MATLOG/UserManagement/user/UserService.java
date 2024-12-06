@@ -58,7 +58,7 @@ public class UserService {
      * @param user User that needs to be added to database
      * @throws IllegalArgumentException when user is not provided
      */
-    public void createUser(User user) {
+    public boolean createUser(User user) {
         if (user == null) {
             throw new IllegalArgumentException("Please provide valid user.");
         }
@@ -69,5 +69,6 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.changePassword(encodedPassword, userPasswordValidator);
         userRepository.save(userMapper.mapFrom(user));
+        return true;
     }
 }

@@ -27,7 +27,7 @@ public class WebAuthorizationConfiguration {
                         .successForwardUrl("/block"))
                 .authorizeHttpRequests(
                     auth -> auth
-                            .requestMatchers("/user/controller/create").permitAll()
+                            .requestMatchers("/user/controller/register").permitAll()
                             .requestMatchers("/hello").permitAll()
                             .anyRequest().authenticated()
                 );
