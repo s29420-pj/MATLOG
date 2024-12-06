@@ -6,46 +6,52 @@ import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
 
+/**
+ * Component which is used to get data from the database and map it to the domain User.
+ */
 @Component
 public class UserDAOMapper {
 
+    /**
+     * Method that maps UserDAO to the StudentUser
+     * @param user UserDAO from the database
+     * @return StudentUser
+     */
     public StudentUser mapToStudentUser(UserDAO user) {
-        return mapUserDaoToStudentUser(user);
-    }
-
-    public TutorUser mapToTutorUser(UserDAO user) {
-        return mapUserDaoToTutorUser(user);
-    }
-
-    public UserDAO mapFrom(User user) {
-        return mapStudentUserToStudentUserDao(user);
-    }
-
-    private StudentUser mapUserDaoToStudentUser(UserDAO userDAO) {
         return StudentUser.builder()
-                .withFirstName(userDAO.firstName())
-                .withLastName(userDAO.lastName())
-                .withEmailAddress(userDAO.emailAddress())
-                .withPassword(userDAO.password())
-                .withDateOfBirth(userDAO.dateOfBirth())
-                .withAuthorities(userDAO.authorities())
-                .withIsAccountNonLocked(userDAO.isAccountNonLocked())
+                .withFirstName(user.firstName())
+                .withLastName(user.lastName())
+                .withEmailAddress(user.emailAddress())
+                .withPassword(user.password())
+                .withDateOfBirth(user.dateOfBirth())
+                .withAuthorities(user.authorities())
+                .withIsAccountNonLocked(user.isAccountNonLocked())
                 .build();
     }
 
-    private TutorUser mapUserDaoToTutorUser(UserDAO userDAO) {
+    /**
+     * Method that maps UserDAO to the TutorUser
+     * @param user UserDAO from the database
+     * @return TutorUser
+     */
+    public TutorUser mapToTutorUser(UserDAO user) {
         return TutorUser.builder()
-                .withFirstName(userDAO.firstName())
-                .withLastName(userDAO.lastName())
-                .withEmailAddress(userDAO.emailAddress())
-                .withPassword(userDAO.password())
-                .withDateOfBirth(userDAO.dateOfBirth())
-                .withAuthorities(userDAO.authorities())
-                .withIsAccountNonLocked(userDAO.isAccountNonLocked())
+                .withFirstName(user.firstName())
+                .withLastName(user.lastName())
+                .withEmailAddress(user.emailAddress())
+                .withPassword(user.password())
+                .withDateOfBirth(user.dateOfBirth())
+                .withAuthorities(user.authorities())
+                .withIsAccountNonLocked(user.isAccountNonLocked())
                 .build();
     }
 
-    private UserDAO mapStudentUserToStudentUserDao(User user) {
+    /**
+     * Method that maps domain User to the UserDAO
+     * @param user domain User from which will be created UserDAO
+     * @return UserDAO
+     */
+    public UserDAO mapFrom(User user) {
         return new UserDAO(user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
