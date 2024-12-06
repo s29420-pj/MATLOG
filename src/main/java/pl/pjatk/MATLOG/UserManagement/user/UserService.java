@@ -32,7 +32,8 @@ public class UserService {
     }
 
     /**
-     * Method that searches for the user with specified email address (username)
+     * Method that searches for the UserDAO with specified email address (username)
+     * and returns it as User
      * @param emailAddress email address of the user
      * @return User
      * @throws UserInvalidEmailAddressException when user with provided email address
