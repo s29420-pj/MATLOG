@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
-    private final UserDTOMapper userDTOMapper;
+    private final RegisterUserDTOMapper registerUserDTOMapper;
     private final AuthenticationProvider authProvider;
 
-    public UserController(UserService userService, UserDTOMapper userDTOMapper, AuthenticationProvider authProvider) {
+    public UserController(UserService userService, RegisterUserDTOMapper registerUserDTOMapper, AuthenticationProvider authProvider) {
         this.userService = userService;
-        this.userDTOMapper = userDTOMapper;
+        this.registerUserDTOMapper = registerUserDTOMapper;
         this.authProvider = authProvider;
     }
 
     @PostMapping("/create")
     public ResponseEntity<Void> createUser(@RequestBody UserRegisterDTO userRegisterDTO) {
-        userService.createUser(userDTOMapper.mapTo(userRegisterDTO));
+        userService.createUser(registerUserDTOMapper.mapTo(userRegisterDTO));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

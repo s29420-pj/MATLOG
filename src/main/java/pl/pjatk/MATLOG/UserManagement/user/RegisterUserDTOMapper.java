@@ -6,7 +6,7 @@ import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.Domain.User;
 
 @Component
-public class UserDTOMapper {
+public class RegisterUserDTOMapper {
 
     public User mapTo(UserRegisterDTO userRegisterDTO) {
         return switch (userRegisterDTO.role()) {
