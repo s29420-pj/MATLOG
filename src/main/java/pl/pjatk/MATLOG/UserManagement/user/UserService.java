@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserInvalidEmailAddressException;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.UserManagement.user.mappers.UserDAOMapper;
+import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.UserRepository;
 
 import java.util.Optional;
@@ -19,12 +21,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserPasswordValidator userPasswordValidator;
     private final PasswordEncoder passwordEncoder;
+    private final UserDAOMapper userMapper;
 
     public UserService(UserRepository userRepository, UserPasswordValidator userPasswordValidator,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder, UserDAOMapper userMapper) {
         this.userRepository = userRepository;
         this.userPasswordValidator = userPasswordValidator;
         this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -38,9 +42,12 @@ public class UserService {
         if (emailAddress == null || emailAddress.isEmpty()) {
             throw new UserInvalidEmailAddressException();
         }
-        Optional<User> user = userRepository.findByEmailAddress(emailAddress);
+        Optional<UserDAO> user = userRepository.findByEmailAddress(emailAddress);
         if (user.isEmpty()) throw new AuthenticationException("User with that email address does not exist.");
-        return user.get();
+        return switch (user.get().role()) {
+            case STUDENT -> userMapper.mapToStudentUser(user.get());
+            case TUTOR -> userMapper.mapToTutorUser(user.get());
+        };
     }
 
     /**
@@ -55,6 +62,6 @@ public class UserService {
         }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.changePassword(encodedPassword, userPasswordValidator);
-        userRepository.save(user);
+        userRepository.save(userMapper.mapFrom(user));
     }
 }

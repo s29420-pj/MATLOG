@@ -17,8 +17,11 @@ public class RegisterUserDTOMapper {
     }
 
     public UserRegistrationDTO mapFrom(User user) {
-        return new UserRegistrationDTO(user.getFirstName(), user.getLastName(),
-                user.getEmailAddress(), user.getPassword(), user.getDateOfBirth(),
+        return new UserRegistrationDTO(user.getFirstName(),
+                user.getLastName(),
+                user.getEmailAddress(),
+                user.getPassword(),
+                user.getDateOfBirth(),
                 user.getRole());
     }
 
