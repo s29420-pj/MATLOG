@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.domain.exceptions.lessonExceptions;
+package pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions;
 
 public class LessonInvalidTimeException extends RuntimeException {
     public LessonInvalidTimeException() {

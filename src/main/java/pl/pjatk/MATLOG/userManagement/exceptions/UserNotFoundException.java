@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.userManagement.exceptions;
+package pl.pjatk.MATLOG.UserManagement.Exceptions;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException() {

@@ -1,105 +1,94 @@
-package pl.pjatk.MATLOG.domain;
+package pl.pjatk.MATLOG.Domain;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.PrivateLessonInvalidEndTimeException;
-import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.PrivateLessonInvalidStartTimeException;
+import org.springframework.data.mongodb.core.mapping.MongoId;
+import pl.pjatk.MATLOG.Domain.Enums.PrivateLessonStatus;
+import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
+import pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions.*;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.List;
+import java.util.UUID;
 
 /**
- * Concrete representation of Lesson - Private Lesson.
- * Contains all the attribute as Lesson abstract class.
- * Mandatory fields of PrivateLesson are:
- * - startTime
- * - endTime
+ * Class representing Private Lesson in application.
+ * Private Lesson is a lesson that is taught by Tutor to Student.
+ * It can be created by Tutor to create slot in the calendar that can be booked by Student.
  */
-@Document("private_lesson")
 @Getter
-public final class PrivateLesson extends Lesson {
+@Setter
+@Document("privateLessons")
+public final class PrivateLesson {
 
-    private final LocalTime startTime;
-    private final LocalTime endTime;
+    @MongoId
+    private final String id;
+    private List<SchoolSubject> schoolSubjects;
+    private String tutorId;
+    private String studentId;
+    private String connectionCode;
+    private PrivateLessonStatus status;
+    private boolean isAvailableOffline;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private Double price;
 
     /**
-     * Constructor of PrivateLesson. It calls validateFields method to check
-     * if all required fields are set
-     * @param builder Builder of PrivateLesson class
+     * Private Constructor of the PrivateLesson. This constructor is used by the Builder.
+     *
+     * @param schoolSubjects List of SchoolSubjects that will be taught during the lesson.
+     * @param tutorId Identification of Tutor that will lead the lesson
+     * @param privateLessonStatus Status of the lesson
+     * @param isAvailableOffline Flag that tells if lesson can be taught offline
+     * @param startTime Start time of the lesson
+     * @param endTime End time of the lesson
+     * @param price Price of the lesson
+     *
+     * @throws PrivateLessonInvalidSchoolSubjectException When schoolSubjects are empty
+     * @throws PrivateLessonInvalidIdException When tutorId is empty
+     * @throws IllegalStateException When start time is empty
+     * @throws IllegalStateException When end time is empty
+     * @throws PrivateLessonInvalidStatusException When status is empty
+     * @throws PrivateLessonInvalidStartTimeException When start time is before current time
+     * @throws PrivateLessonInvalidEndTimeException When end time is before current time, before start time or equals start time
+     * @throws PrivateLessonInvalidPriceException When price is null or negative
      */
-    private PrivateLesson(PrivateLessonBuilder builder) {
-        super(builder);
-        validateFields(builder);
-        this.startTime = LocalTime.from(builder.startTime);
-        this.endTime = LocalTime.from(builder.endTime);
+    @Builder(setterPrefix = "with")
+    private PrivateLesson(List<SchoolSubject> schoolSubjects, String tutorId, PrivateLessonStatus privateLessonStatus, boolean isAvailableOffline, LocalDateTime startTime, LocalDateTime endTime, Double price) {
+        this.id = UUID.randomUUID().toString();
+        this.schoolSubjects = schoolSubjects;
+        this.tutorId = tutorId;
+        this.studentId = "not assigned yet";
+        this.connectionCode = "not assigned yet";
+        this.status = privateLessonStatus;
+        this.isAvailableOffline = isAvailableOffline;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.price = price;
+        validateFields();
     }
 
     /**
-     * Method that checks if all required fields are set by builder
-     * @param builder Builder
-     * @throws IllegalStateException when startTime or endTime is null
-     * @throws PrivateLessonInvalidStartTimeException when startTime is before present
-     * @throws PrivateLessonInvalidEndTimeException when endTime is before present or when is before startTime
-     * or is equal to startTime
+     * Method that validates all fields of the PrivateLesson.
      */
-    private void validateFields(PrivateLessonBuilder builder) {
-        if (builder.startTime == null) throw new IllegalStateException("Start time of private lesson is mandatory and must be set");
-        if (builder.endTime == null) throw new IllegalStateException("End time of private lesson is mandatory and must be set");
+    private void validateFields() {
+        if (schoolSubjects == null) throw new PrivateLessonInvalidSchoolSubjectException();
+        if (tutorId == null || tutorId.isEmpty()) throw new PrivateLessonInvalidIdException();
+        if (status == null) throw new PrivateLessonInvalidStatusException();
+        if (startTime == null) throw new IllegalStateException("Start time of private lesson is mandatory and must be set");
+        if (endTime == null) throw new IllegalStateException("End time of private lesson is mandatory and must be set");
+        if (price == null) {
+            throw new PrivateLessonInvalidPriceException("Price of private lesson is mandatory and must be set");
+        } else if (price < 0) {
+            throw new PrivateLessonInvalidPriceException();
+        }
 
-        LocalDateTime builderStartTime = builder.startTime;
-        LocalDateTime builderEndTime = builder.endTime;
-        if (builderStartTime.isBefore(LocalDateTime.now()))
+        if (startTime.isBefore(LocalDateTime.now()))
             throw new PrivateLessonInvalidStartTimeException();
 
-        if (builderEndTime.isBefore(LocalDateTime.now()) || builderEndTime.isBefore(builderStartTime) ||
-                builderEndTime.isEqual(builderStartTime))
+        if (endTime.isBefore(LocalDateTime.now()) || endTime.isBefore(startTime) || endTime.isEqual(startTime))
             throw new PrivateLessonInvalidEndTimeException();
-    }
-
-    /**
-     * Method that returns builder and starts chaining creation of the object
-     * @return PrivateLessonBuilder
-     */
-    public static PrivateLessonBuilder builder() {
-        return new PrivateLessonBuilder();
-    }
-
-    /**
-     * Concrete representation of the builder in Lesson abstract class
-     */
-    public static class PrivateLessonBuilder extends Builder<PrivateLessonBuilder> {
-
-        private LocalDateTime startTime;
-        private LocalDateTime endTime;
-
-        /**
-         * Method that sets PrivateLesson's start time
-         * @param startTime Time and date when private lesson begins
-         * @return PrivateLessonBuilder
-         */
-        public PrivateLessonBuilder withStartTime(LocalDateTime startTime) {
-            this.startTime = startTime;
-            return self();
-        }
-
-        /**
-         * Method that sets PrivateLesson's end time
-         * @param endTime Time and date when private lesson ends
-         * @return PrivateLessonBuilder
-         */
-        public PrivateLessonBuilder withEndTime(LocalDateTime endTime) {
-            this.endTime = endTime;
-            return self();
-        }
-
-        @Override
-        protected PrivateLessonBuilder self() {
-            return this;
-        }
-
-        @Override
-        protected PrivateLesson build() {
-            return new PrivateLesson(this);
-        }
     }
 }

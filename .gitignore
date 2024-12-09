@@ -38,5 +38,7 @@ replay_pid*
 application.properties
 compose.yaml
 
+htmlReport/
+javadoc/
 
 # End of file

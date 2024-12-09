@@ -1,10 +1,12 @@
-package pl.pjatk.MATLOG.domain;
+package pl.pjatk.MATLOG.Domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
-import pl.pjatk.MATLOG.userManagement.exceptions.UserUnsecurePasswordException;
+import pl.pjatk.MATLOG.Domain.Enums.Role;
+import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
+import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
+import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 
 import java.time.LocalDate;
 
@@ -85,7 +87,8 @@ public class UserAndStudentUserTests {
                 .withEmailAddress("example@example.com")
                 .withPassword("testP@ssword")
                 .build();
-        studentUser.changePassword("!09Acb");
+        UserPasswordValidator validator = new StandardUserPasswordValidator();
+        studentUser.changePassword("!09Acb", validator);
         assertAll(() -> {
             assertNotNull(studentUser.getId());
             assertEquals("Mark Twain", studentUser.getFullName());
@@ -206,21 +209,6 @@ public class UserAndStudentUserTests {
     // ------------------ date of birth tests ------------------------
 
     @Test
-    @DisplayName("Throws exception when date of birth is null")
-    void nullDateOfBirthStudent() {
-        assertThrows(UserInvalidDateOfBirthException.class, () -> {
-            new StudentUser.StudentUserBuilder()
-                    .withFirstName("Comapn")
-                    .withLastName("Gyurr")
-                    .withEmailAddress("test@example.com")
-                    .withPassword("Test!234")
-                    .withRole(Role.STUDENT)
-                    .withDateOfBirth(null)
-                    .build();
-        });
-    }
-
-    @Test
     @DisplayName("Throws exception when student is 0 years old")
     void ageEqualsTo0DateOfBirthStudent() {
         assertThrows(UserInvalidDateOfBirthException.class, () -> {
@@ -289,8 +277,9 @@ public class UserAndStudentUserTests {
                                         .withEmailAddress("test@example.com")
                                                 .withPassword("!23esFFDP")
                                                         .build();
+        UserPasswordValidator validator = new StandardUserPasswordValidator();
         assertThrows(UserEmptyPasswordException.class, () -> {
-            student.changePassword(null);
+            student.changePassword(null, validator);
         });
     }
 
@@ -302,8 +291,9 @@ public class UserAndStudentUserTests {
                 .withEmailAddress("test@example.com")
                 .withPassword("!23esFFDP")
                 .build();
+        UserPasswordValidator validator = new StandardUserPasswordValidator();
         assertThrows(UserEmptyPasswordException.class, () -> {
-            student.changePassword("");
+            student.changePassword("", validator);
         });
     }
 

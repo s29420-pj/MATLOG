@@ -1,7 +1,8 @@
-package pl.pjatk.MATLOG.domain;
+package pl.pjatk.MATLOG.Domain;
 
-import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import pl.pjatk.MATLOG.Domain.Enums.Role;
 
 import java.util.*;
 
@@ -12,15 +13,15 @@ import java.util.*;
  */
 public final class TutorUser extends User {
 
-    private final Set<Lesson> lessons;
+    private final Set<PrivateLesson> privateLessons;
     private final List<Review> reviews;
 
     /**
-     * Method that returns lessons.
-     * @return Copy of set containing lessons.
+     * Method that returns private lessons
+     * @return Copy of set containing private lessons
      */
-    public Set<Lesson> getPrivateLessons() {
-        return Set.copyOf(lessons);
+    public Set<PrivateLesson> getPrivateLessons() {
+        return Set.copyOf(privateLessons);
     }
 
     /**
@@ -33,31 +34,12 @@ public final class TutorUser extends User {
 
     /**
      * Method that adds lesson to set
-     * @param lesson instantiated lesson that will be added to set
-     * @return boolean - true if set doesn't contain specified lesson and was added
+     * @param privateLesson instantiated private lesson that will be added to set
+     * @return boolean - true if set doesn't contain specified private lesson and was added
      * or false if lesson couldn't be added
      */
-    public boolean addLesson(Lesson lesson) {
-        return lessons.add(lesson);
-    }
-
-    /**
-     * Method that removes provided lesson from Set.
-     * @param lesson lesson that needs to be removed
-     * @return true if lesson was removed, false otherwise.
-     */
-    public boolean removeLesson(Lesson lesson) {
-        return lessons.remove(lesson);
-    }
-
-    /**
-     * Method that removes selected lessons from Set.
-     * @param lesson lessons that need to be removed.
-     * @return true if all the lessons were removed, false otherwise.
-     */
-    public boolean removeSelectedLessons(Lesson ... lesson) {
-        List.of(lesson).forEach(lessons::remove);
-        return !lessons.containsAll(List.of(lesson));
+    public boolean addPrivateLesson(PrivateLesson privateLesson) {
+        return privateLessons.add(privateLesson);
     }
 
     /**
@@ -65,12 +47,12 @@ public final class TutorUser extends User {
      * It adds authority as TUTOR_USER and sets role to Tutor.
      * If privateLessons or reviews has not been initialized (or are set to null), creates empty collections.
      * Either way initialize collections with set ones in the builder.
-     * @param builder - TutorBuilder with set attributes.
+     * @param builder - TutorBuilder with set attributes
      */
     private TutorUser(TutorBuilder builder) {
         super(builder);
         addAuthority(new SimpleGrantedAuthority("TUTOR_USER"));
-        this.lessons = Objects.requireNonNullElseGet(builder.lessons, HashSet::new);
+        this.privateLessons = Objects.requireNonNullElseGet(builder.privateLessons, HashSet::new);
         this.reviews = Objects.requireNonNullElseGet(builder.reviews, ArrayList::new);
     }
 
@@ -88,16 +70,16 @@ public final class TutorUser extends User {
      */
     public static class TutorBuilder extends Builder<TutorBuilder> {
 
-        private Set<Lesson> lessons;
+        private Set<PrivateLesson> privateLessons;
         private List<Review> reviews;
 
         /**
          * Method that initialize set
-         * @param lessons Set with lessons
+         * @param privateLessons Set with private lessons
          * @return TutorBuilder
          */
-        public TutorBuilder withPrivateLessons(Set<Lesson> lessons) {
-            this.lessons = lessons;
+        public TutorBuilder withPrivateLessons(Set<PrivateLesson> privateLessons) {
+            this.privateLessons = privateLessons;
             return self();
         }
 

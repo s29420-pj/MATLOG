@@ -1,10 +1,11 @@
-package pl.pjatk.MATLOG.domain;
+package pl.pjatk.MATLOG.Domain;
 
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.pjatk.MATLOG.domain.exceptions.reviewExceptions.ReviewInvalidRateException;
-import pl.pjatk.MATLOG.domain.exceptions.reviewExceptions.ReviewInvalidStudentId;
-import pl.pjatk.MATLOG.domain.exceptions.reviewExceptions.ReviewInvalidTutorId;
+import pl.pjatk.MATLOG.Domain.Enums.Stars;
+import pl.pjatk.MATLOG.Domain.Exceptions.ReviewExceptions.ReviewInvalidRateException;
+import pl.pjatk.MATLOG.Domain.Exceptions.ReviewExceptions.ReviewInvalidStudentId;
+import pl.pjatk.MATLOG.Domain.Exceptions.ReviewExceptions.ReviewInvalidTutorId;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -13,8 +14,8 @@ import java.util.UUID;
  * Class representing Review of the Tutor in application.
  * It can be created by Student who attended to any kind of Lesson that was led by tutor.
  */
-@Document("review")
 @Getter
+@Document(collection = "reviews")
 public final class Review {
     private final String id;
     private final String comment;

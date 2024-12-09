@@ -1,14 +1,10 @@
-package pl.pjatk.MATLOG.domain;
+package pl.pjatk.MATLOG.Domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.annotation.PersistenceCreator;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
-import pl.pjatk.MATLOG.userManagement.UserPasswordValidator;
+import pl.pjatk.MATLOG.Domain.Enums.Role;
+import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
+import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -20,16 +16,16 @@ import java.util.UUID;
  * Abstract class that represents User in application.
  * User is meant to be extended by all concrete classes that want to represent a role.
  * Mandatory fields of User are:
- * - id
- * - first name
- * - last name
- * - email address
- * - password
+ * - id, which is set by application
+ * - first name, needs to be provided
+ * - last name, needs to be provided
+ * - email address, needs to be provided
+ * - password, needs to be provided
+ * - authorities, added USER and by concrete classes
+ * - role, set by concrete classes
  */
-@Document("user")
 public abstract class User {
 
-    @MongoId
     private final String id;
     private final String firstName;
     private final String lastName;
@@ -41,7 +37,8 @@ public abstract class User {
     private final Role role;
 
     /**
-     * Constructor of the User. Sets a random UUID as an id of user, basic SimpleGrantedAuthority which is a USER role,
+     * Constructor of the User. Sets a random UUID as an id of user,
+     * basic SimpleGrantedAuthority which is a USER role,
      * non-locked account, and other data provided in builder.
      * @param builder builder of extended class
      */
@@ -95,10 +92,11 @@ public abstract class User {
      * CAUTION! THIS METHOD SHOULD BE ONLY USED VIA USERSERVICE IN USERMANAGEMENT PACKAGE!
      * @param password new password
      */
-    public void changePassword(String password) {
+    public void changePassword(String password, UserPasswordValidator passwordValidator) {
         if (password == null || password.isEmpty()) {
             throw new UserEmptyPasswordException();
         }
+        if (!passwordValidator.isSecure(password)) throw new UserUnsecurePasswordException();
         this.password = password;
     }
 
@@ -150,6 +148,8 @@ public abstract class User {
         private String emailAddress;
         private String password;
         private LocalDate dateOfBirth;
+        private Set<GrantedAuthority> authorities;
+        private boolean isAccountNonLocked;
         private Role role;
 
         private static final int MIN_AGE = 1;
@@ -215,17 +215,36 @@ public abstract class User {
          * Method that sets User's date of birth
          * @param dateOfBirth - date of birth of the user
          * @return Builder
-         * @throws UserInvalidDateOfBirthException if date of birth is null or unreal ( x <= 0 or 100 < x)
+         * @throws UserInvalidDateOfBirthException if date of birth is unreal ( x <= 0 or 100 < x)
          * */
         public T withDateOfBirth(LocalDate dateOfBirth) {
-            if (dateOfBirth == null) {
-                throw new UserInvalidDateOfBirthException();
-            }
-            int age = (int)ChronoUnit.YEARS.between(dateOfBirth, LocalDate.now());
-            if (age < MIN_AGE || age > MAX_AGE) {
-                throw new UserInvalidDateOfBirthException();
+            if (dateOfBirth != null) {
+                int age = (int) ChronoUnit.YEARS.between(dateOfBirth, LocalDate.now());
+                if (age < MIN_AGE || age > MAX_AGE) {
+                    throw new UserInvalidDateOfBirthException();
+                }
             }
             this.dateOfBirth = dateOfBirth;
+            return self();
+        }
+
+        /**
+         * Method that sets User's set of granted authorities
+         * @param authorities authorities to add
+         * @return Builder
+         */
+        public T withAuthorities(Set<GrantedAuthority> authorities) {
+            this.authorities = authorities;
+            return self();
+        }
+
+        /**
+         * Method that sets User's account status. It can be blocked or not
+         * @param isAccountNonLocked status of an account
+         * @return Builder
+         */
+        public T withIsAccountNonLocked(boolean isAccountNonLocked) {
+            this.isAccountNonLocked = isAccountNonLocked;
             return self();
         }
 

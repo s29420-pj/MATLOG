@@ -1,10 +1,10 @@
-package pl.pjatk.MATLOG.domain;
+package pl.pjatk.MATLOG.Domain;
 
-import org.springframework.data.annotation.PersistenceCreator;
+import lombok.Getter;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import pl.pjatk.MATLOG.Domain.Enums.Role;
 
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -12,36 +12,24 @@ import java.util.Set;
  */
 public final class StudentUser extends User {
 
-    private final Set<Lesson> assignedLessons;
+    private final Set<PrivateLesson> privateLessons;
 
     /**
-     * Method that adds lesson to Set containing assignedLessons.
-     * @param lesson lesson to be added.
-     * @return true if lesson was added, false otherwise.
+     * Method that returns private lessons
+     * @return Copy of set containing private lessons
      */
-    public boolean addAssignedLesson(Lesson lesson) {
-        return assignedLessons.add(lesson);
+    public Set<PrivateLesson> getPrivateLessons() {
+        return Set.copyOf(privateLessons);
     }
 
     /**
-     * Method that removes lesson from Set containing assignedLessons.
-     * @param lesson lesson to be removed.
-     * @return true if lesson was successfully added, false otherwise.
+     * Method that adds lesson to set
+     * @param privateLesson instantiated private lesson that will be added to set
+     * @return boolean - true if set doesn't contain specified private lesson and was added
+     * or false if lesson couldn't be added
      */
-    public boolean removeAssignedLesson(Lesson lesson) {
-        return assignedLessons.remove(lesson);
-    }
-
-    /**
-     * StudentUser constructor that creates object.
-     * It adds authority as STUDENT_USER and sets role to Student.
-     * If in builder wasn't provided set with assigned lessons then new hash set is created.
-     * @param builder StudentBuilder with set attributes
-     */
-    private StudentUser(StudentUserBuilder builder) {
-        super(builder);
-        addAuthority(new SimpleGrantedAuthority("STUDENT_USER"));
-        this.assignedLessons = Objects.requireNonNullElseGet(builder.assignedLessons, HashSet::new);
+    public boolean addPrivateLesson(PrivateLesson privateLesson) {
+        return privateLessons.add(privateLesson);
     }
 
     /**
@@ -57,15 +45,10 @@ public final class StudentUser extends User {
      */
     public static class StudentUserBuilder extends Builder<StudentUserBuilder> {
 
-        private Set<Lesson> assignedLessons;
+        private Set<PrivateLesson> privateLessons;
 
-        /**
-         * Method that sets Student assignedLessons set.
-         * @param assignedLessons lessons that student is assigned to.
-         * @return StudentUserBuilder
-         */
-        public StudentUserBuilder withAssignedLessons(Set<Lesson> assignedLessons) {
-            this.assignedLessons = assignedLessons;
+        public StudentUserBuilder withPrivateLessons(Set<PrivateLesson> privateLessons) {
+            this.privateLessons = privateLessons;
             return self();
         }
 
@@ -84,4 +67,16 @@ public final class StudentUser extends User {
             return new StudentUser(this);
         }
     }
+
+    /**
+     * StudentUser constructor that creates object.
+     * It adds authority as STUDENT_USER and sets role to Student.
+     * @param builder StudentBuilder with set attributes
+     */
+    private StudentUser(StudentUserBuilder builder) {
+        super(builder);
+        this.privateLessons = builder.privateLessons;
+        addAuthority(new SimpleGrantedAuthority("STUDENT_USER"));
+    }
+
 }
