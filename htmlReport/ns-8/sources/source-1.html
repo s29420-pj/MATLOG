@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > MongoUserDetailsService</title>
+  <title>Coverage Report > UserEmptyPasswordException</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -19,10 +19,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">pl.pjatk.MATLOG.userManagement</a>
+    <a href="../index.html">pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions</a>
 </div>
 
-<h1>Coverage Summary for Class: MongoUserDetailsService (pl.pjatk.MATLOG.userManagement)</h1>
+<h1>Coverage Summary for Class: UserEmptyPasswordException (pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -41,29 +41,29 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">MongoUserDetailsService</td>
+  <td class="name">UserEmptyPasswordException</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/2)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/3)
+    (1/1)
   </span>
 </td>
 </tr>
@@ -75,25 +75,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package pl.pjatk.MATLOG.userManagement;
+<code class="sourceCode" id="sourceCode">&nbsp;package pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions;
 &nbsp;
-&nbsp;import org.springframework.security.core.userdetails.UserDetails;
-&nbsp;import org.springframework.security.core.userdetails.UserDetailsService;
-&nbsp;import org.springframework.security.core.userdetails.UsernameNotFoundException;
-&nbsp;import org.springframework.stereotype.Service;
-&nbsp;
-&nbsp;@Service
-&nbsp;public class MongoUserDetailsService implements UserDetailsService {
-&nbsp;
-&nbsp;    private final UserService userService;
-&nbsp;
-<b class="nc">&nbsp;    public MongoUserDetailsService(UserService userService) {</b>
-<b class="nc">&nbsp;        this.userService = userService;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    @Override
-&nbsp;    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-<b class="nc">&nbsp;        return new SecurityUser(userService.findUserByEmailAddress(username));</b>
+&nbsp;public class UserEmptyPasswordException extends RuntimeException {
+&nbsp;    public UserEmptyPasswordException() {
+<b class="fc">&nbsp;        super(&quot;Password cannot be empty. Please provide valid password&quot;);</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -119,7 +105,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-11-29 16:46</div>
+    <div style="float:right;">generated on 2024-12-09 18:22</div>
 </div>
 </body>
 </html>
