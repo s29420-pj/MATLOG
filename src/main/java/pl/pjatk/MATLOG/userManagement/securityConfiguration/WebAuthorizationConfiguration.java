@@ -3,6 +3,7 @@ package pl.pjatk.MATLOG.UserManagement.securityConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,6 +26,7 @@ public class WebAuthorizationConfiguration {
                 .cors(cors -> cors.disable())
                 .formLogin(e -> e
                         .successForwardUrl("/block"))
+                .oauth2Login(Customizer.withDefaults())
                 .authorizeHttpRequests(
                     auth -> auth
                             .requestMatchers("/user/controller/register").permitAll()

@@ -26,10 +26,9 @@ public class UserControllerTests {
     void helloMessage() throws Exception {
         mvc.perform(post("/user/controller/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(
+                .content(
                         new UserRegistrationDTO("testUser", "testsurname", "example@com",
-                                "TstPass@rod", LocalDate.now().minusYears(19), Role.STUDENT)
-                ))
+                                "TstPass@rod", LocalDate.now().minusYears(19), Role.STUDENT).toString())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
     }
