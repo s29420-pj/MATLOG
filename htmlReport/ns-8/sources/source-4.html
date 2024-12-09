@@ -77,10 +77,35 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions;
 &nbsp;
+<<<<<<< HEAD
 &nbsp;public class UserInvalidFirstNameException extends RuntimeException {
 &nbsp;  public UserInvalidFirstNameException() {
 <b class="fc">&nbsp;    super(&quot;Provided first name is incorrect. Please make sure that you enter real first name.&quot;);</b>
 &nbsp;  }
+=======
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;import pl.pjatk.MATLOG.Domain.User;
+&nbsp;
+&nbsp;@RestController(&quot;/usercontroller&quot;)
+&nbsp;public final class UserController {
+&nbsp;
+&nbsp;    private final UserService userService;
+&nbsp;
+<b class="nc">&nbsp;    public UserController(UserService userService) {</b>
+<b class="nc">&nbsp;        this.userService = userService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/create&quot;)
+&nbsp;    public ResponseEntity&lt;Void&gt; createUser(@RequestBody User user) {
+<b class="nc">&nbsp;        userService.createUser(user);</b>
+<b class="nc">&nbsp;        return ResponseEntity.status(HttpStatus.CREATED).build();</b>
+&nbsp;    }
+>>>>>>> 0c942eb69d91e7ba8408e2068483b3dc5d62ef64
 &nbsp;}
 </code>
 </pre>

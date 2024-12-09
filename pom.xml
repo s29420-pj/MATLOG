@@ -15,10 +15,21 @@
 	<description>MATLOG is an innovative e-learning platform designed to provide high-quality tutoring and educational resources to students of all ages, regardless of their location. The platform connects qualified and verified tutors with learners, enabling a personalized, secure, and effective learning experience.</description>
 	<url/>
 	<licenses>
-		<license/>
+		<license>
+			<name>Proprietary License</name>
+			<url>https://github.com/s29420-pj/MATLOG/blob/main/LICENSE</url>
+		</license>
 	</licenses>
 	<developers>
-		<developer/>
+		<developer>
+			<name>Mateusz Szotyński</name>
+		</developer>
+		<developer>
+			<name>Marek Lewańczyk</name>
+		</developer>
+		<developer>
+			<name>Katarzyna Kasperek</name>
+		</developer>
 	</developers>
 	<scm>
 		<connection/>

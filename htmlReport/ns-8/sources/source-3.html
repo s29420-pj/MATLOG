@@ -77,9 +77,49 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions;
 &nbsp;
+<<<<<<< HEAD
 &nbsp;public class UserInvalidEmailAddressException extends RuntimeException {
 &nbsp;    public UserInvalidEmailAddressException() {
 <b class="fc">&nbsp;        super(&quot;Provided email address is incorrect. Please make sure that you enter real email address.&quot;);</b>
+=======
+&nbsp;import org.springframework.security.core.GrantedAuthority;
+&nbsp;import org.springframework.security.core.userdetails.UserDetails;
+&nbsp;import pl.pjatk.MATLOG.Domain.StudentUser;
+&nbsp;import pl.pjatk.MATLOG.Domain.User;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;
+&nbsp;/**
+&nbsp; * Class that represents User in Spring Security.
+&nbsp; * It&#39;s used by framework to log in and register user.
+&nbsp; */
+&nbsp;public final class SecurityUser implements UserDetails {
+&nbsp;
+&nbsp;    private final User user;
+&nbsp;
+<b class="fc">&nbsp;    public SecurityUser(User user) {</b>
+<b class="fc">&nbsp;        this.user = user;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getUsername() {
+<b class="fc">&nbsp;        return user.getEmailAddress();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getPassword() {
+<b class="fc">&nbsp;        return user.getPassword();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {
+<b class="fc">&nbsp;        return user.getAuthorities();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean isAccountNonLocked() {
+<b class="fc">&nbsp;        return user.isAccountNonLocked();</b>
+>>>>>>> 0c942eb69d91e7ba8408e2068483b3dc5d62ef64
 &nbsp;    }
 &nbsp;}
 </code>

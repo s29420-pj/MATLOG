@@ -7,7 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
-import pl.pjatk.MATLOG.domain.StudentUser;
+import pl.pjatk.MATLOG.Domain.Enums.Role;
+import pl.pjatk.MATLOG.UserManagement.user.UserRegistrationDTO;
+
+import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,12 +26,10 @@ public class UserControllerTests {
     void helloMessage() throws Exception {
         mvc.perform(post("/user/controller/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(StudentUser.builder()
-                        .withFirstName("Matt")
-                        .withLastName("Thew")
-                        .withEmailAddress("example@example.com")
-                        .withPassword("testPassword!")
-                        .build()))
+                .content(new ObjectMapper().writeValueAsString(
+                        new UserRegistrationDTO("testUser", "testsurname", "example@com",
+                                "TstPass@rod", LocalDate.now().minusYears(19), Role.STUDENT)
+                ))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
     }

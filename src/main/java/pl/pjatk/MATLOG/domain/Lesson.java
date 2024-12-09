@@ -1,10 +1,8 @@
-package pl.pjatk.MATLOG.domain;
+package pl.pjatk.MATLOG.Domain;
 
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidOwnerIdException;
-import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.LessonInvalidPriceException;
+import pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions.*;
 
 import java.util.UUID;
 
@@ -41,7 +39,7 @@ public abstract class Lesson {
     /**
      * Method that validate if all required fields are set by builder
      * @param builder Builder passed in to constructor
-     * @throws LessonInvalidOwnerIdException when ownerId is null
+     * @throws IllegalStateException when ownerId is null
      */
     private void validateFields(Builder<?> builder) {
         if (builder.ownerId == null) throw new IllegalStateException("OwnerId is mandatory and must be set");
@@ -62,11 +60,11 @@ public abstract class Lesson {
          * Method that set's Lesson's owner
          * @param ownerId owner (Tutor) id
          * @return Builder
-         * @throws LessonInvalidOwnerIdException when ownerId is null or empty
+         * @throws LessonInvalidOwnerId when ownerId is null or empty
          */
         public T withOwnerId(String ownerId) {
             if (ownerId == null || ownerId.isEmpty()) {
-                throw new LessonInvalidOwnerIdException();
+                throw new LessonInvalidOwnerId();
             }
             this.ownerId = ownerId;
             return self();

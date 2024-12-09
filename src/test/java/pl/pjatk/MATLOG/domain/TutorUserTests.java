@@ -1,11 +1,12 @@
-package pl.pjatk.MATLOG.domain;
+package pl.pjatk.MATLOG.Domain;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import pl.pjatk.MATLOG.Domain.Enums.Role;
+import pl.pjatk.MATLOG.Domain.Enums.Stars;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,62 +41,6 @@ public class TutorUserTests {
             assertTrue(tutor.isAccountNonLocked());
             assertTrue(tutor.getAuthorities().contains(new SimpleGrantedAuthority("USER")));
             assertTrue(tutor.getAuthorities().contains(new SimpleGrantedAuthority("TUTOR_USER")));
-        });
-    }
-
-    @Test
-    void addPrivateLesson() {
-        TutorUser tutor = TutorUser.builder()
-                .withFirstName("Anthony")
-                .withLastName("Emmaus")
-                .withEmailAddress("example@example.com")
-                .withPassword("!pAssword!")
-                .withDateOfBirth(LocalDate.now().minusYears(21))
-                .build();
-
-        PrivateLesson privateLesson = PrivateLesson.builder()
-                .withOwnerId(tutor.getId())
-                .withStartTime(LocalDateTime.now().plusMonths(2))
-                .withEndTime(LocalDateTime.now().plusMonths(2).plusHours(1))
-                .build();
-
-        boolean isAdded = tutor.addLesson(privateLesson);
-
-        assertAll(() -> {
-            assertFalse(tutor.getPrivateLessons().isEmpty());
-            assertEquals(Role.TUTOR, tutor.getRole());
-            assertTrue(isAdded);
-            assertTrue(tutor.getPrivateLessons().contains(privateLesson));
-        });
-    }
-
-    @Test
-    void createTutorWithProvidedSet() {
-        Set<Lesson> set = new HashSet<>();
-
-        TutorUser tutor = TutorUser.builder()
-                .withFirstName("Anthony")
-                .withLastName("Emmaus")
-                .withEmailAddress("example@example.com")
-                .withPassword("!pAssword!")
-                .withPrivateLessons(set)
-                .build();
-
-        PrivateLesson lesson = PrivateLesson.builder()
-                .withOwnerId(tutor.getId())
-                .withStartTime(LocalDateTime.now().plusDays(2))
-                .withEndTime(LocalDateTime.now().plusDays(2).plusHours(1))
-                .build();
-
-        set.add(lesson);
-
-        assertAll(() -> {
-            assertNotNull(tutor.getId());
-            assertEquals("Anthony Emmaus", tutor.getFullName());
-            assertEquals("example@example.com", tutor.getEmailAddress());
-            assertEquals(Role.TUTOR, tutor.getRole());
-            assertFalse(tutor.getPrivateLessons().isEmpty());
-            assertTrue(tutor.getPrivateLessons().contains(lesson));
         });
     }
 
