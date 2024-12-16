@@ -42,7 +42,7 @@ public class TutorUserDAOMapper {
                 .withAuthorities(userDAO.authorities())
                 .withIsAccountNonLocked(userDAO.isAccountNonLocked())
                 .withPrivateLessons(privateLessonService.findByTutorId(userDAO.id()))
-                .withReviews(reviewService.findByTutorId(userDAO.id()))
+                .withReviews(reviewService.getTutorUserReviews(userDAO.id()))
                 .build();
     }
 }
