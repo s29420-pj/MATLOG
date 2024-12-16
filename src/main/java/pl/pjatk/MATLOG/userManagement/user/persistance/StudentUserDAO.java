@@ -9,15 +9,14 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Document("student_user")
-public record UserDAO(@MongoId String id,
+public record StudentUserDAO(@MongoId String id,
                       String firstName,
                       String lastName,
                       String emailAddress,
                       String password,
                       LocalDate dateOfBirth,
                       Set<GrantedAuthority> authorities,
-                      boolean isAccountNonLocked,
-                      Role role) {
+                      boolean isAccountNonLocked) {
 
-    public UserDAO {}
+    public StudentUserDAO {}
 }

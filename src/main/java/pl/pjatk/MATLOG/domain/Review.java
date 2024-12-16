@@ -14,8 +14,6 @@ import java.util.UUID;
  * Class representing Review of the Tutor in application.
  * It can be created by Student who attended to any kind of Lesson that was led by tutor.
  */
-@Getter
-@Document(collection = "reviews")
 public final class Review {
     private final String id;
     private final String comment;

@@ -44,7 +44,8 @@ public abstract class User {
      */
     protected User(Builder<?> builder) {
         validateFields(builder);
-        this.id = UUID.randomUUID().toString();
+        if (builder.id == null || builder.id.isEmpty()) this.id = UUID.randomUUID().toString();
+        else this.id = builder.id;
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.emailAddress = builder.emailAddress;
@@ -143,6 +144,7 @@ public abstract class User {
      * @param <T> - concrete user builder
      */
     public abstract static class Builder<T extends Builder<T>> {
+        private String id;
         private String firstName;
         private String lastName;
         private String emailAddress;
@@ -154,6 +156,11 @@ public abstract class User {
 
         private static final int MIN_AGE = 1;
         private static final int MAX_AGE = 100;
+
+        public T withId(String id) {
+            this.id = id;
+            return self();
+        }
 
         /**
          * Method that sets User's first name
