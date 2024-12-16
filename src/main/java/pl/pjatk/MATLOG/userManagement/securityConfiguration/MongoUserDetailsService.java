@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.Enums.Role;
 import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.UserManagement.user.SecurityUser;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.UserRepository;
 
 import java.util.Optional;

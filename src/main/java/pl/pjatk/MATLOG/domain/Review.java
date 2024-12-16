@@ -1,7 +1,5 @@
 package pl.pjatk.MATLOG.Domain;
 
-import lombok.Getter;
-import org.springframework.data.mongodb.core.mapping.Document;
 import pl.pjatk.MATLOG.Domain.Enums.Stars;
 import pl.pjatk.MATLOG.Domain.Exceptions.ReviewExceptions.ReviewInvalidRateException;
 import pl.pjatk.MATLOG.Domain.Exceptions.ReviewExceptions.ReviewInvalidStudentId;
@@ -85,4 +83,27 @@ public final class Review {
         this.tutorId = tutorId;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public Stars getRate() {
+        return rate;
+    }
+
+    public LocalDateTime getDateAndTimeOfComment() {
+        return dateAndTimeOfComment;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public String getTutorId() {
+        return tutorId;
+    }
 }

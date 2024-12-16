@@ -16,7 +16,7 @@ public record TutorUserDAO(@MongoId String id,
                            String password,
                            LocalDate dateOfBirth,
                            Set<GrantedAuthority> authorities,
-                           Boolean isAccountNonLocked) {
+                           Boolean isAccountNonLocked) implements UserDAO{
 
     public TutorUserDAO {}
 }

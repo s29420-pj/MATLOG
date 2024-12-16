@@ -26,20 +26,6 @@ public class RegisterUserDTOMapper {
     }
 
     /**
-     * Method that maps domain User to UserRegistrationDTO.
-     * @param user domain user that needs to be mapped
-     * @return UserRegistrationDTO
-     */
-    public UserRegistrationDTO mapFrom(User user) {
-        return new UserRegistrationDTO(user.getFirstName(),
-                user.getLastName(),
-                user.getEmailAddress(),
-                user.getPassword(),
-                user.getDateOfBirth(),
-                user.getRole());
-    }
-
-    /**
      * Method that maps UserRegistrationDTO to StudentUser
      * @param userRegistrationDTO DTO which is used for registration purpose
      * @return StudentUser

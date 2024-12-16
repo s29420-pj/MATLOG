@@ -16,7 +16,7 @@ public record StudentUserDAO(@MongoId String id,
                       String password,
                       LocalDate dateOfBirth,
                       Set<GrantedAuthority> authorities,
-                      boolean isAccountNonLocked) {
+                      Boolean isAccountNonLocked) implements UserDAO{
 
     public StudentUserDAO {}
 }

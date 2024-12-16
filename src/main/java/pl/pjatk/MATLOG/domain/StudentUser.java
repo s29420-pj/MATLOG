@@ -63,7 +63,6 @@ public final class StudentUser extends User {
          */
         @Override
         public StudentUser build() {
-            withRole(Role.STUDENT);
             return new StudentUser(this);
         }
     }
