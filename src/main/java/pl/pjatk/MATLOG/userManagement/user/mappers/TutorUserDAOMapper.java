@@ -20,7 +20,7 @@ public class TutorUserDAOMapper {
         this.reviewService = reviewService;
     }
 
-    public TutorUserDAO createTutorUserDAO(User user) {
+    public TutorUserDAO createTutorUserDAO(TutorUser user) {
         return new TutorUserDAO(user.getId(),
                 user.getFirstName(),
                 user.getLastName(),

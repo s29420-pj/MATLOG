@@ -34,7 +34,6 @@ public abstract class User {
     private final LocalDate dateOfBirth;
     private final Set<GrantedAuthority> authorities;
     private boolean isAccountNonLocked;
-    private final Role role;
 
     /**
      * Constructor of the User. Sets a random UUID as an id of user,
@@ -54,7 +53,6 @@ public abstract class User {
         this.authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority("USER"));
         this.isAccountNonLocked = true;
-        this.role = builder.role;
     }
 
     /**
@@ -113,12 +111,8 @@ public abstract class User {
         return isAccountNonLocked;
     }
 
-    protected boolean addAuthority(GrantedAuthority authority) {
+    public boolean addAuthority(GrantedAuthority authority) {
         return authorities.add(authority);
-    }
-
-    public Role getRole() {
-        return role;
     }
 
     /**
@@ -152,7 +146,6 @@ public abstract class User {
         private LocalDate dateOfBirth;
         private Set<GrantedAuthority> authorities;
         private boolean isAccountNonLocked;
-        private Role role;
 
         private static final int MIN_AGE = 1;
         private static final int MAX_AGE = 100;
@@ -252,20 +245,6 @@ public abstract class User {
          */
         public T withIsAccountNonLocked(boolean isAccountNonLocked) {
             this.isAccountNonLocked = isAccountNonLocked;
-            return self();
-        }
-
-        /**
-         * Method that sets User's role
-         * @param role role of the user
-         * @return Builder
-         * @throws UserInvalidRoleException when role is not provided or there is not such a role
-         */
-        protected T withRole(Role role) {
-            if (role == null) {
-                throw new UserInvalidRoleException();
-            }
-            this.role = role;
             return self();
         }
 

@@ -104,7 +104,6 @@ public final class TutorUser extends User {
          */
         @Override
         public TutorUser build() {
-            withRole(Role.TUTOR);
             return new TutorUser(this);
         }
     }
