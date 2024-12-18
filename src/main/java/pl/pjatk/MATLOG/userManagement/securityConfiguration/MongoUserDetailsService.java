@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.Enums.Role;
 import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.UserManagement.user.SecurityUser;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.UserRepository;
+import pl.pjatk.MATLOG.UserManagement.user.persistance.StudentUserRepository;
 
 import java.util.Optional;
 
@@ -16,11 +16,11 @@ import java.util.Optional;
 @Component
 public class MongoUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final StudentUserRepository studentUserRepository;
     private final UserDAOMapper userDAOMapper;
 
-    public MongoUserDetailsService(UserRepository userRepository, UserDAOMapper userDAOMapper) {
-        this.userRepository = userRepository;
+    public MongoUserDetailsService(StudentUserRepository studentUserRepository, UserDAOMapper userDAOMapper) {
+        this.studentUserRepository = studentUserRepository;
         this.userDAOMapper = userDAOMapper;
     }
 
@@ -31,7 +31,7 @@ public class MongoUserDetailsService implements UserDetailsService {
      */
     @Override
     public SecurityUser loadUserByUsername(String username) {
-        Optional<UserDAO> userDAO = userRepository.findByEmailAddress(username);
+        Optional<UserDAO> userDAO = studentUserRepository.findByEmailAddress(username);
         if (userDAO.isEmpty()) {
             throw new UsernameNotFoundException("User with that email address does not exist.");
         }
