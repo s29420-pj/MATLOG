@@ -1,10 +1,10 @@
-package pl.pjatk.MATLOG.UserManagement.user.mappers;
+package pl.pjatk.MATLOG.UserManagement.user.dto.mapper;
 
 import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.Domain.User;
-import pl.pjatk.MATLOG.UserManagement.user.UserRegistrationDTO;
+import pl.pjatk.MATLOG.UserManagement.user.dto.UserRegistrationDTO;
 
 /**
  * Component which is used to receive data from registration form and map it to the domain User.

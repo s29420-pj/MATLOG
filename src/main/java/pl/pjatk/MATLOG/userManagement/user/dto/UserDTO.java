@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.UserManagement.user.persistance;
+package pl.pjatk.MATLOG.UserManagement.user.dto;
 
 import pl.pjatk.MATLOG.Domain.Enums.Role;
 

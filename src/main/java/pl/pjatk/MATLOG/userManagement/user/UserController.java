@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.pjatk.MATLOG.UserManagement.user.mappers.RegisterUserDTOMapper;
+import pl.pjatk.MATLOG.UserManagement.user.dto.UserRegistrationDTO;
+import pl.pjatk.MATLOG.UserManagement.user.dto.mapper.RegisterUserDTOMapper;
 
 @RestController
 @RequestMapping("/user/controller")

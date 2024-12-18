@@ -1,11 +1,8 @@
-package pl.pjatk.MATLOG.UserManagement.user.mappers;
+package pl.pjatk.MATLOG.UserManagement.user.persistance.mapper;
 
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.TutorUser;
-import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.PrivateLessonManagment.PrivateLessonService;
-import pl.pjatk.MATLOG.UserManagement.user.UserRegistrationDTO;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.reviewManagement.ReviewService;
 
