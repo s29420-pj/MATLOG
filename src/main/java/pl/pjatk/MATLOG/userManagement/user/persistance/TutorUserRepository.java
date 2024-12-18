@@ -7,7 +7,7 @@ import pl.pjatk.MATLOG.Domain.TutorUser;
 import java.util.Optional;
 
 @Repository
-public interface TutorUserRepository extends MongoRepository<TutorUser, String> {
+public interface TutorUserRepository extends MongoRepository<TutorUserDAO, String> {
 
-    Optional<TutorUser> findByEmailAddress(String emailAddress);
+    Optional<UserDAO> findByEmailAddress(String emailAddress);
 }

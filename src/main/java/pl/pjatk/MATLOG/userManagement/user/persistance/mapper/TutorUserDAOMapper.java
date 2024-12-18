@@ -2,12 +2,14 @@ package pl.pjatk.MATLOG.UserManagement.user.persistance.mapper;
 
 import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.TutorUser;
+import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.PrivateLessonManagment.PrivateLessonService;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.TutorUserDAO;
+import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
 import pl.pjatk.MATLOG.reviewManagement.ReviewService;
 
 @Component
-public class TutorUserDAOMapper {
+public class TutorUserDAOMapper implements UserDAOMapper {
 
     private final PrivateLessonService privateLessonService;
     private final ReviewService reviewService;
@@ -17,7 +19,8 @@ public class TutorUserDAOMapper {
         this.reviewService = reviewService;
     }
 
-    public TutorUserDAO createTutorUserDAO(TutorUser user) {
+    @Override
+    public UserDAO createUserDAO(User user) {
         return new TutorUserDAO(user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
@@ -28,18 +31,20 @@ public class TutorUserDAOMapper {
                 user.isAccountNonLocked());
     }
 
-    public TutorUser createTutorUser(TutorUserDAO userDAO) {
+    @Override
+    public User createUser(UserDAO user) {
         return TutorUser.builder()
-                .withId(userDAO.id())
-                .withFirstName(userDAO.firstName())
-                .withLastName(userDAO.lastName())
-                .withEmailAddress(userDAO.emailAddress())
-                .withPassword(userDAO.password())
-                .withDateOfBirth(userDAO.dateOfBirth())
-                .withAuthorities(userDAO.authorities())
-                .withIsAccountNonLocked(userDAO.isAccountNonLocked())
-                .withPrivateLessons(privateLessonService.findByTutorId(userDAO.id()))
-                .withReviews(reviewService.getTutorUserReviews(userDAO.id()))
+                .withId(user.id())
+                .withFirstName(user.firstName())
+                .withLastName(user.lastName())
+                .withEmailAddress(user.emailAddress())
+                .withPassword(user.password())
+                .withDateOfBirth(user.dateOfBirth())
+                .withAuthorities(user.authorities())
+                .withIsAccountNonLocked(user.isAccountNonLocked())
+                .withPrivateLessons(privateLessonService.findByTutorId(user.id()))
+                .withReviews(reviewService.getTutorUserReviews(user.id()))
                 .build();
+
     }
 }
