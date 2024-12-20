@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.UserManagement.user;
 
 import org.apache.tomcat.websocket.AuthenticationException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.User;
@@ -16,9 +17,12 @@ import java.util.Optional;
 public class StudentUserService implements UserService {
 
     private final StudentUserRepository studentUserRepository;
+    private final UserMapperFactory userMapperFactory;
 
-    public StudentUserService(StudentUserRepository studentUserRepository) {
+    public StudentUserService(StudentUserRepository studentUserRepository,
+                              @Qualifier("studentUserMapperFactory") UserMapperFactory userMapperFactory) {
         this.studentUserRepository = studentUserRepository;
+        this.userMapperFactory = userMapperFactory;
     }
 
     @Override
@@ -30,7 +34,9 @@ public class StudentUserService implements UserService {
         if (user.isEmpty()) {
             throw new AuthenticationException("User with that email address does not exists.");
         }
-
+        return userMapperFactory
+                .getUserDAOMapper()
+                .createUser(user.get());
     }
 
     @Override

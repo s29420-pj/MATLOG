@@ -12,7 +12,7 @@ public class StudentUserMapperFactory implements UserMapperFactory {
     private final UserDTOMapper userDTOMapper;
 
     public StudentUserMapperFactory(@Qualifier("studentUserDAOMapper") UserDAOMapper userDAOMapper,
-                                    @Qualifier("") UserDTOMapper userDTOMapper) {
+                                    @Qualifier("studentUserDTOMapper") UserDTOMapper userDTOMapper) {
         this.userDAOMapper = userDAOMapper;
         this.userDTOMapper = userDTOMapper;
     }
