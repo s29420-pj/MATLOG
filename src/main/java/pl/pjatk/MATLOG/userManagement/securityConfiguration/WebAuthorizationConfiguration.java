@@ -29,7 +29,7 @@ public class WebAuthorizationConfiguration {
                 .oauth2Login(Customizer.withDefaults())
                 .authorizeHttpRequests(
                     auth -> auth
-                            .requestMatchers("/user/controller/register").permitAll()
+                            .requestMatchers("/student/user/controller/register").permitAll()
                             .requestMatchers("/hello").permitAll()
                             .anyRequest().authenticated()
                 );
