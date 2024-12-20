@@ -24,7 +24,7 @@ public class StudentUserController {
         if (userRegistrationDTO.role().equals(Role.STUDENT)) {
             studentUserService.registerUser(userRegistrationDTO);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body("User " + userRegistrationDTO.emailAddress() + " has been registered");
+                    .body("Student user " + userRegistrationDTO.emailAddress() + " has been registered");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Tried to create " + userRegistrationDTO.role() + " as StudentUser");
