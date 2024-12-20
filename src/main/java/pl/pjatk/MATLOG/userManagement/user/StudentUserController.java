@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.pjatk.MATLOG.Domain.Enums.Role;
+import pl.pjatk.MATLOG.UserManagement.user.dto.UserDTO;
 import pl.pjatk.MATLOG.UserManagement.user.dto.UserRegistrationDTO;
 
 @RestController

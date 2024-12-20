@@ -30,6 +30,7 @@ public class WebAuthorizationConfiguration {
                 .authorizeHttpRequests(
                     auth -> auth
                             .requestMatchers("/student/user/controller/register").permitAll()
+                            .requestMatchers("tutor/user/controller/register").permitAll()
                             .requestMatchers("/hello").permitAll()
                             .anyRequest().authenticated()
                 );
