@@ -29,6 +29,6 @@ public class StudentUserController {
                     .body("User " + userRegistrationDTO.emailAddress() + " has been registered");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Trying to create " + userRegistrationDTO.role() + " as StudentUser");
+                .body("Tried to create " + userRegistrationDTO.role() + " as StudentUser");
     }
 }
