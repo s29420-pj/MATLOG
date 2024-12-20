@@ -20,12 +20,12 @@ public class TutorUserMapperFactory implements UserMapperFactory {
     }
 
     @Override
-    public UserDAOMapper getUserDAOMapper() {
+    public TutorUserDAOMapper getUserDAOMapper() {
         return daoMapper;
     }
 
     @Override
-    public UserDTOMapper getUserDTOMapper() {
+    public TutorUserDTOMapper getUserDTOMapper() {
         return dtoMapper;
     }
 }

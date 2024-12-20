@@ -8,28 +8,26 @@ import pl.pjatk.MATLOG.UserManagement.Exceptions.UserAlreadyExistException;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserInvalidEmailAddressException;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.user.dto.UserDTO;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.StudentUserDAO;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.StudentUserRepository;
+import pl.pjatk.MATLOG.UserManagement.user.persistance.TutorUserDAO;
+import pl.pjatk.MATLOG.UserManagement.user.persistance.TutorUserRepository;
 
 @Service
-public class StudentUserService implements UserService {
+public class TutorUserService implements UserService {
 
-    private final StudentUserRepository studentUserRepository;
+    private final TutorUserRepository tutorUserRepository;
     private final UserRepositoryService userRepositoryService;
-    private final StudentUserMapperFactory studentUserMapperFactory;
-    private final UserPasswordValidator userPasswordValidator;
+    private final TutorUserMapperFactory tutorUserMapperFactory;
     private final PasswordEncoder passwordEncoder;
+    private final UserPasswordValidator passwordValidator;
 
-    public StudentUserService(StudentUserRepository studentUserRepository,
-                              UserRepositoryService userRepositoryService,
-                              StudentUserMapperFactory studentUserMapperFactory,
-                              UserPasswordValidator userPasswordValidator,
-                              PasswordEncoder passwordEncoder) {
-        this.studentUserRepository = studentUserRepository;
+    public TutorUserService(TutorUserRepository tutorUserRepository,
+                            UserRepositoryService userRepositoryService,
+                            TutorUserMapperFactory tutorUserMapperFactory, PasswordEncoder passwordEncoder, UserPasswordValidator passwordValidator) {
+        this.tutorUserRepository = tutorUserRepository;
         this.userRepositoryService = userRepositoryService;
-        this.studentUserMapperFactory = studentUserMapperFactory;
-        this.userPasswordValidator = userPasswordValidator;
+        this.tutorUserMapperFactory = tutorUserMapperFactory;
         this.passwordEncoder = passwordEncoder;
+        this.passwordValidator = passwordValidator;
     }
 
     @Override
@@ -37,11 +35,11 @@ public class StudentUserService implements UserService {
         if (emailAddress == null || emailAddress.isEmpty()) {
             throw new UserInvalidEmailAddressException();
         }
-        User user = userRepositoryService.findUserByEmailAddress(emailAddress);
-        if (user == null) {
+        User userFromDatabase = userRepositoryService.findUserByEmailAddress(emailAddress);
+        if (userFromDatabase == null) {
             throw new AuthenticationException("User with that email address does not exist.");
         }
-        return user;
+        return userFromDatabase;
     }
 
     @Override
@@ -53,16 +51,16 @@ public class StudentUserService implements UserService {
         if (user != null) {
             throw new UserAlreadyExistException();
         }
-        User domainUser = studentUserMapperFactory
+        User domainUser = tutorUserMapperFactory
                 .getUserDTOMapper()
                 .createUser(userDTO);
 
-        domainUser.changePassword(passwordEncoder.encode(userDTO.password()), userPasswordValidator);
+        domainUser.changePassword(passwordEncoder.encode(userDTO.password()), passwordValidator);
 
-        StudentUserDAO student = studentUserMapperFactory
+        TutorUserDAO tutor = tutorUserMapperFactory
                 .getUserDAOMapper()
                 .createUserDAO(domainUser);
 
-        studentUserRepository.save(student);
+        tutorUserRepository.save(tutor);
     }
 }
