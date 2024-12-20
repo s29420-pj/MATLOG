@@ -14,11 +14,9 @@ import pl.pjatk.MATLOG.UserManagement.user.dto.UserRegistrationDTO;
 public class StudentUserController {
 
     private final StudentUserService studentUserService;
-    private final StudentUserMapperFactory studentUserMapperFactory;
 
-    public StudentUserController(StudentUserService studentUserService, StudentUserMapperFactory studentUserMapperFactory) {
+    public StudentUserController(StudentUserService studentUserService) {
         this.studentUserService = studentUserService;
-        this.studentUserMapperFactory = studentUserMapperFactory;
     }
 
     @PostMapping("/register")
