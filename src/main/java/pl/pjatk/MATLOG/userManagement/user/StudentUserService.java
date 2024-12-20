@@ -8,20 +8,20 @@ import pl.pjatk.MATLOG.UserManagement.Exceptions.UserInvalidEmailAddressExceptio
 import pl.pjatk.MATLOG.UserManagement.user.dto.UserDTO;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.StudentUserRepository;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
-
-import java.util.Optional;
 
 @Service
 public class StudentUserService implements UserService {
 
     private final StudentUserRepository studentUserRepository;
+    private final UserRepositoryService userRepositoryService;
     private final StudentUserMapperFactory studentUserMapperFactory;
 
     public StudentUserService(StudentUserRepository studentUserRepository,
-                              StudentUserMapperFactory userMapperFactory) {
+                              UserRepositoryService userRepositoryService,
+                              StudentUserMapperFactory studentUserMapperFactory) {
         this.studentUserRepository = studentUserRepository;
-        this.studentUserMapperFactory = userMapperFactory;
+        this.userRepositoryService = userRepositoryService;
+        this.studentUserMapperFactory = studentUserMapperFactory;
     }
 
     @Override
@@ -29,13 +29,11 @@ public class StudentUserService implements UserService {
         if (emailAddress == null || emailAddress.isEmpty()) {
             throw new UserInvalidEmailAddressException();
         }
-        Optional<UserDAO> user = studentUserRepository.findByEmailAddress(emailAddress);
-        if (user.isEmpty()) {
-            throw new AuthenticationException("User with that email address does not exists.");
+        User user = userRepositoryService.findUserByEmailAddress(emailAddress);
+        if (user == null) {
+            throw new AuthenticationException("User with that email address does not exist.");
         }
-        return studentUserMapperFactory
-                .getUserDAOMapper()
-                .createUser(user.get());
+        return user;
     }
 
     @Override
@@ -43,12 +41,17 @@ public class StudentUserService implements UserService {
         if (userDTO == null) {
             throw new IllegalArgumentException("Please provide valid UserDTO");
         }
-        Optional<UserDAO> user = studentUserRepository.findByEmailAddress(userDTO.emailAddress());
-        if (user.isEmpty()) {
+        User user = userRepositoryService.findUserByEmailAddress(userDTO.emailAddress());
+        if (user != null) {
             throw new UserAlreadyExistException();
         }
-        User domainUser = studentUserMapperFactory.getUserDTOMapper().createUser(userDTO);
-        StudentUserDAO student = studentUserMapperFactory.getUserDAOMapper().createUserDAO(domainUser);
+        User domainUser = studentUserMapperFactory
+                .getUserDTOMapper()
+                .createUser(userDTO);
+        StudentUserDAO student = studentUserMapperFactory
+                .getUserDAOMapper()
+                .createUserDAO(domainUser);
+
         studentUserRepository.save(student);
     }
 }
