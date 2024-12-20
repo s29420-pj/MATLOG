@@ -1,16 +1,16 @@
 package pl.pjatk.MATLOG.UserManagement.user.dto.mapper;
 
 import org.springframework.stereotype.Component;
-import pl.pjatk.MATLOG.Domain.StudentUser;
+import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.UserManagement.user.dto.UserDTO;
 
 @Component
-public class RegisterStudentUserDTOMapper implements UserDTOMapper {
+public class TutorUserDTOMapper implements UserDTOMapper {
 
     @Override
     public User createUser(UserDTO userDTO) {
-        return StudentUser.builder()
+        return TutorUser.builder()
                 .withFirstName(userDTO.firstName())
                 .withLastName(userDTO.lastName())
                 .withEmailAddress(userDTO.emailAddress())

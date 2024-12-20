@@ -2,11 +2,13 @@ package pl.pjatk.MATLOG.UserManagement.user.persistance.mapper;
 
 import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.StudentUser;
+import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.PrivateLessonManagment.PrivateLessonService;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.StudentUserDAO;
+import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
 
 @Component
-public class StudentUserDAOMapper {
+public class StudentUserDAOMapper implements UserDAOMapper{
 
     private final PrivateLessonService privateLessonService;
 
@@ -14,7 +16,8 @@ public class StudentUserDAOMapper {
         this.privateLessonService = privateLessonService;
     }
 
-    public StudentUserDAO createStudentUserDAO(StudentUser user) {
+    @Override
+    public UserDAO createUserDAO(User user) {
         return new StudentUserDAO(user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
@@ -25,7 +28,8 @@ public class StudentUserDAOMapper {
                 user.isAccountNonLocked());
     }
 
-    public StudentUser createStudentUser(StudentUserDAO user) {
+    @Override
+    public User createUser(UserDAO user) {
         return StudentUser.builder()
                 .withId(user.id())
                 .withFirstName(user.firstName())
@@ -35,6 +39,7 @@ public class StudentUserDAOMapper {
                 .withDateOfBirth(user.dateOfBirth())
                 .withAuthorities(user.authorities())
                 .withIsAccountNonLocked(user.isAccountNonLocked())
+                .withPrivateLessons(privateLessonService.findByStudentId(user.id()))
                 .build();
     }
 }
