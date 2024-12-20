@@ -6,7 +6,7 @@ import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.UserManagement.user.dto.UserDTO;
 
 @Component
-public class RegisterTutorUserDTOMapper implements RegisterUserDTOMapper {
+public class RegisterTutorUserDTOMapper implements UserDTOMapper {
 
     @Override
     public User createUser(UserDTO userDTO) {

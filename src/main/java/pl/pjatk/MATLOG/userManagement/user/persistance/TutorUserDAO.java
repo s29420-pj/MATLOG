@@ -3,7 +3,6 @@ package pl.pjatk.MATLOG.UserManagement.user.persistance;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.security.core.GrantedAuthority;
-import pl.pjatk.MATLOG.Domain.User;
 
 import java.time.LocalDate;
 import java.util.Set;
