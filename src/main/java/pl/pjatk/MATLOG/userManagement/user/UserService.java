@@ -9,5 +9,5 @@ public interface UserService {
 
     User findUserByEmailAddress(String emailAddress) throws AuthenticationException;
 
-    boolean registerUser(UserDTO userDTO) throws IllegalArgumentException, UserAlreadyExistException;
+    void registerUser(UserDTO userDTO) throws IllegalArgumentException, UserAlreadyExistException;
 }

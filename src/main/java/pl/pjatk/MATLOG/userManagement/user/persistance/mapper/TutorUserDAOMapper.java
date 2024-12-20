@@ -20,7 +20,7 @@ public class TutorUserDAOMapper implements UserDAOMapper {
     }
 
     @Override
-    public UserDAO createUserDAO(User user) {
+    public TutorUserDAO createUserDAO(User user) {
         return new TutorUserDAO(user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
@@ -32,7 +32,7 @@ public class TutorUserDAOMapper implements UserDAOMapper {
     }
 
     @Override
-    public User createUser(UserDAO user) {
+    public TutorUser createUser(UserDAO user) {
         return TutorUser.builder()
                 .withId(user.id())
                 .withFirstName(user.firstName())

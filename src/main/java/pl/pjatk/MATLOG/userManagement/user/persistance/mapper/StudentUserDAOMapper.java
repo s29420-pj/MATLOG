@@ -17,7 +17,7 @@ public class StudentUserDAOMapper implements UserDAOMapper{
     }
 
     @Override
-    public UserDAO createUserDAO(User user) {
+    public StudentUserDAO createUserDAO(User user) {
         return new StudentUserDAO(user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
@@ -29,7 +29,7 @@ public class StudentUserDAOMapper implements UserDAOMapper{
     }
 
     @Override
-    public User createUser(UserDAO user) {
+    public StudentUser createUser(UserDAO user) {
         return StudentUser.builder()
                 .withId(user.id())
                 .withFirstName(user.firstName())

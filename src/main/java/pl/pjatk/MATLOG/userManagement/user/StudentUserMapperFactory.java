@@ -1,24 +1,24 @@
 package pl.pjatk.MATLOG.UserManagement.user;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import pl.pjatk.MATLOG.UserManagement.user.dto.mapper.StudentUserDTOMapper;
 import pl.pjatk.MATLOG.UserManagement.user.dto.mapper.UserDTOMapper;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.mapper.UserDAOMapper;
+import pl.pjatk.MATLOG.UserManagement.user.persistance.mapper.StudentUserDAOMapper;
 
 @Component
 public class StudentUserMapperFactory implements UserMapperFactory {
 
-    private final UserDAOMapper userDAOMapper;
-    private final UserDTOMapper userDTOMapper;
+    private final StudentUserDAOMapper userDAOMapper;
+    private final StudentUserDTOMapper userDTOMapper;
 
-    public StudentUserMapperFactory(@Qualifier("studentUserDAOMapper") UserDAOMapper userDAOMapper,
-                                    @Qualifier("studentUserDTOMapper") UserDTOMapper userDTOMapper) {
+    public StudentUserMapperFactory(StudentUserDAOMapper userDAOMapper,
+                                    StudentUserDTOMapper userDTOMapper) {
         this.userDAOMapper = userDAOMapper;
         this.userDTOMapper = userDTOMapper;
     }
 
     @Override
-    public UserDAOMapper getUserDAOMapper() {
+    public StudentUserDAOMapper getUserDAOMapper() {
         return userDAOMapper;
     }
 
