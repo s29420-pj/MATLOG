@@ -3,6 +3,7 @@ package pl.pjatk.MATLOG.UserManagement.user;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserAlreadyExistException;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserInvalidEmailAddressException;
@@ -12,7 +13,7 @@ import pl.pjatk.MATLOG.UserManagement.user.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.TutorUserRepository;
 
 @Service
-public class TutorUserService implements UserService {
+public class TutorUserService implements UserService{
 
     private final TutorUserRepository tutorUserRepository;
     private final UserRepositoryService userRepositoryService;
@@ -62,5 +63,10 @@ public class TutorUserService implements UserService {
                 .createUserDAO(domainUser);
 
         tutorUserRepository.save(tutor);
+    }
+
+    public void changePassword(TutorUser tutorUser, String rawPassword) {
+        tutorUser.changePassword(rawPassword, passwordValidator);
+        tutorUserRepository.save(tutorUserMapperFactory.getUserDAOMapper().createUserDAO(tutorUser));
     }
 }

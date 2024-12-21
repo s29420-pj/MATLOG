@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.PrivateLessonManagment.PrivateLessonService;
+import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
 
@@ -11,9 +12,11 @@ import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
 public class StudentUserDAOMapper implements UserDAOMapper{
 
     private final PrivateLessonService privateLessonService;
+    private final UserPasswordValidator userPasswordValidator;
 
-    public StudentUserDAOMapper(PrivateLessonService privateLessonService) {
+    public StudentUserDAOMapper(PrivateLessonService privateLessonService, UserPasswordValidator userPasswordValidator) {
         this.privateLessonService = privateLessonService;
+        this.userPasswordValidator = userPasswordValidator;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class StudentUserDAOMapper implements UserDAOMapper{
                 .withFirstName(user.firstName())
                 .withLastName(user.lastName())
                 .withEmailAddress(user.emailAddress())
-                .withPassword(user.password())
+                .withPassword(user.password(), userPasswordValidator)
                 .withDateOfBirth(user.dateOfBirth())
                 .withAuthorities(user.authorities())
                 .withIsAccountNonLocked(user.isAccountNonLocked())

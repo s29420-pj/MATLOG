@@ -2,6 +2,7 @@ package pl.pjatk.MATLOG.Domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.Domain.Enums.Role;
 import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
@@ -9,10 +10,15 @@ import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPassword
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserAndStudentUserTests {
+
+    private final UserPasswordValidator userPasswordValidator = new StandardUserPasswordValidator();
 
     // ------------------ happy tests ----------------------
 
@@ -22,8 +28,9 @@ public class UserAndStudentUserTests {
                 .withFirstName("Ethan")
                 .withLastName("Hovermann")
                 .withEmailAddress("example@example.com")
-                .withPassword("testPassword!")
+                .withPassword("testPassword!", userPasswordValidator)
                 .withDateOfBirth(LocalDate.now().minusYears(50))
+                .withIsAccountNonLocked(true)
                 .build();
         assertAll(() -> {
             assertNotNull(student.getId());
@@ -37,7 +44,6 @@ public class UserAndStudentUserTests {
             assertEquals(LocalDate.now().minusYears(50), student.getDateOfBirth());
             assertTrue(student.getAuthorities().contains(new SimpleGrantedAuthority("USER")));
             assertTrue(student.getAuthorities().contains(new SimpleGrantedAuthority("STUDENT_USER")));
-            assertEquals(Role.STUDENT, student.getRole());
         });
     }
 
@@ -47,7 +53,7 @@ public class UserAndStudentUserTests {
                 .withFirstName("Ethan")
                 .withLastName("Hovermann")
                 .withEmailAddress("test@example.com")
-                .withPassword("testP@ssword!")
+                .withPassword("testP@ssword!", userPasswordValidator)
                 .withDateOfBirth(LocalDate.now().minusYears(100))
                 .build();
         assertAll(() -> {
@@ -57,7 +63,6 @@ public class UserAndStudentUserTests {
             assertEquals("Ethan Hovermann", studentUser.getFullName());
             assertEquals("test@example.com", studentUser.getEmailAddress());
             assertEquals("testP@ssword!", studentUser.getPassword());
-            assertEquals(Role.STUDENT, studentUser.getRole());
             assertEquals(100, studentUser.getAge());
         });
     }
@@ -68,12 +73,11 @@ public class UserAndStudentUserTests {
                 .withFirstName("Mark")
                 .withLastName("Twain")
                 .withEmailAddress("example@example.com")
-                .withPassword("testP@ssword")
+                .withPassword("testP@ssword", userPasswordValidator)
                 .build();
         assertAll(() -> {
             assertNotNull(studentUser.getId());
             assertEquals("Mark Twain", studentUser.getFullName());
-            assertEquals(Role.STUDENT, studentUser.getRole());
             assertEquals("example@example.com", studentUser.getEmailAddress());
             assertEquals(-1, studentUser.getAge());
         });
@@ -85,18 +89,58 @@ public class UserAndStudentUserTests {
                 .withFirstName("Mark")
                 .withLastName("Twain")
                 .withEmailAddress("example@example.com")
-                .withPassword("testP@ssword")
+                .withPassword("testP@ssword", userPasswordValidator)
                 .build();
         UserPasswordValidator validator = new StandardUserPasswordValidator();
         studentUser.changePassword("!09Acb", validator);
         assertAll(() -> {
             assertNotNull(studentUser.getId());
             assertEquals("Mark Twain", studentUser.getFullName());
-            assertEquals(Role.STUDENT, studentUser.getRole());
             assertEquals("example@example.com", studentUser.getEmailAddress());
             assertEquals(-1, studentUser.getAge());
             assertEquals("!09Acb", studentUser.getPassword());
         });
+    }
+
+    // ------------------ id tests ----------------------
+
+    @Test
+    void setIdInBuilder() {
+        User user = StudentUser.builder()
+                .withId(UUID.randomUUID().toString())
+                .withFirstName("Matthew")
+                .withLastName("Johnatan")
+                .withPassword("!PdaD#@dff", userPasswordValidator)
+                .withEmailAddress("test@example.com")
+                .build();
+
+        assertNotNull(user.getId());
+    }
+
+    @Test
+    void setNullIdInBuilder() {
+        User user = StudentUser.builder()
+                .withId(null)
+                .withFirstName("Matthew")
+                .withLastName("Johnatan")
+                .withPassword("!PdaD#@dff", userPasswordValidator)
+                .withEmailAddress("test@example.com")
+                .build();
+
+        assertNotNull(user.getId());
+    }
+
+    @Test
+    void setEmptyIdInBuilder() {
+        User user = StudentUser.builder()
+                .withId("")
+                .withFirstName("Matthew")
+                .withLastName("Johnatan")
+                .withPassword("!PdaD#@dff", userPasswordValidator)
+                .withEmailAddress("test@example.com")
+                .build();
+
+        assertNotNull(user.getId());
     }
 
     // ------------------ first name tests ----------------------
@@ -125,7 +169,7 @@ public class UserAndStudentUserTests {
             StudentUser.builder()
                     .withLastName("Evans")
                     .withEmailAddress("test@example.com")
-                    .withPassword("P@ssword!")
+                    .withPassword("P@ssword!", userPasswordValidator)
                     .build();
         });
     }
@@ -157,8 +201,7 @@ public class UserAndStudentUserTests {
             StudentUser.builder()
                     .withFirstName("Roman")
                     .withEmailAddress("test@example.com")
-                    .withRole(Role.STUDENT)
-                    .withPassword("Test123!")
+                    .withPassword("Test123!", userPasswordValidator)
                     .build();
         });
     }
@@ -172,8 +215,7 @@ public class UserAndStudentUserTests {
                     .withFirstName("Comapn")
                     .withLastName("Gyurr")
                     .withEmailAddress(null)
-                    .withPassword("Test!234")
-                    .withRole(Role.STUDENT)
+                    .withPassword("Test!234", userPasswordValidator)
                     .withDateOfBirth(LocalDate.of(1990, 3, 12))
                     .build();
         });
@@ -186,8 +228,7 @@ public class UserAndStudentUserTests {
                     .withFirstName("Comapn")
                     .withLastName("Gyurr")
                     .withEmailAddress("")
-                    .withPassword("Test!234")
-                    .withRole(Role.STUDENT)
+                    .withPassword("Test!234", userPasswordValidator)
                     .withDateOfBirth(LocalDate.of(1965, 4, 19))
                     .build();
         });
@@ -199,14 +240,32 @@ public class UserAndStudentUserTests {
             StudentUser.builder()
                     .withFirstName("Brian")
                     .withLastName("Connor")
-                    .withPassword("@Pass!wor")
-                    .withRole(Role.STUDENT)
+                    .withPassword("@Pass!wor", userPasswordValidator)
                     .withDateOfBirth(LocalDate.of(1965, 4, 19))
                     .build();
         });
     }
 
     // ------------------ date of birth tests ------------------------
+
+    @Test
+    void nullDateOfBirthInBuilder() {
+        User user = StudentUser.builder()
+                .withFirstName("Brian")
+                .withLastName("Connor")
+                .withEmailAddress("example@com.pl")
+                .withPassword("@Pass!wor", userPasswordValidator)
+                .withDateOfBirth(null)
+                .build();
+
+        assertAll(() -> {
+            assertNotNull(user.getId());
+            assertEquals("Brian", user.getFirstName());
+            assertEquals("Connor", user.getLastName());
+            assertEquals("example@com.pl", user.getEmailAddress());
+            assertNull(user.getDateOfBirth());
+        });
+    }
 
     @Test
     @DisplayName("Throws exception when student is 0 years old")
@@ -241,10 +300,24 @@ public class UserAndStudentUserTests {
     // ------------------ password tests ------------------------
 
     @Test
+    void passwordChangeUnsecure() {
+        User user = StudentUser.builder()
+                .withFirstName("Brian")
+                .withLastName("Connor")
+                .withEmailAddress("test@example.com")
+                .withPassword("@Pass!wor", userPasswordValidator)
+                .withDateOfBirth(LocalDate.of(1965, 4, 19))
+                .build();
+
+        assertThrows(UserUnsecurePasswordException.class, () -> {
+            user.changePassword("dfs", userPasswordValidator);
+        });
+    }
+    @Test
     void passwordNullInBuilder() {
         assertThrows(UserEmptyPasswordException.class, () -> {
             StudentUser.builder()
-                    .withPassword(null)
+                    .withPassword(null, userPasswordValidator)
                     .build();
         });
     }
@@ -253,7 +326,7 @@ public class UserAndStudentUserTests {
     void passwordEmptyInBuilder() {
         assertThrows(UserEmptyPasswordException.class, () -> {
             StudentUser.builder()
-                    .withPassword("")
+                    .withPassword("", userPasswordValidator)
                     .build();
         });
     }
@@ -275,7 +348,7 @@ public class UserAndStudentUserTests {
                         .withFirstName("Derek")
                                 .withLastName("Terr")
                                         .withEmailAddress("test@example.com")
-                                                .withPassword("!23esFFDP")
+                                                .withPassword("!23esFFDP", userPasswordValidator)
                                                         .build();
         UserPasswordValidator validator = new StandardUserPasswordValidator();
         assertThrows(UserEmptyPasswordException.class, () -> {
@@ -289,7 +362,7 @@ public class UserAndStudentUserTests {
                 .withFirstName("Derek")
                 .withLastName("Terr")
                 .withEmailAddress("test@example.com")
-                .withPassword("!23esFFDP")
+                .withPassword("!23esFFDP", userPasswordValidator)
                 .build();
         UserPasswordValidator validator = new StandardUserPasswordValidator();
         assertThrows(UserEmptyPasswordException.class, () -> {
@@ -297,15 +370,38 @@ public class UserAndStudentUserTests {
         });
     }
 
-    // ------------------ Role tests ------------------------
-
     @Test
-    void nullRoleInBuilder() {
-        assertThrows(UserInvalidRoleException.class, () -> {
+    void unsecurePassword() {
+        assertThrows(UserUnsecurePasswordException.class, () -> {
             StudentUser.builder()
-                    .withRole(null)
+                    .withFirstName("Derek")
+                    .withLastName("Terr")
+                    .withEmailAddress("test@example.com")
+                    .withPassword("!23", userPasswordValidator)
                     .build();
         });
     }
 
+    // ------------------ authorities tests ------------------------
+
+    @Test
+    void setAuthoritiesInBuilder() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority("STUDENT"));
+        authorities.add(new SimpleGrantedAuthority("USER"));
+
+        User student = StudentUser.builder()
+                .withFirstName("Jack")
+                .withLastName("Harnn")
+                .withEmailAddress("example@com.com")
+                .withPassword("Tydses!223", userPasswordValidator)
+                .withAuthorities(authorities)
+                .build();
+        assertAll(() -> {
+            assertFalse(student.getAuthorities().isEmpty());
+            assertTrue(student.getAuthorities().contains(new SimpleGrantedAuthority("STUDENT")));
+            assertTrue(student.getAuthorities().contains(new SimpleGrantedAuthority("USER")));
+        });
+
+    }
 }

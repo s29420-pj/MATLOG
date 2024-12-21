@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.Domain.Enums.Role;
 import pl.pjatk.MATLOG.Domain.Enums.Stars;
+import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
+import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TutorUserTests {
 
+    private final UserPasswordValidator userPasswordValidator = new StandardUserPasswordValidator();
+
     // ------------------ happy tests ----------------------
 
     @Test
@@ -24,7 +28,8 @@ public class TutorUserTests {
                 .withFirstName("Emily")
                 .withLastName("Rose")
                 .withEmailAddress("example@example.com")
-                .withPassword("testP@ssword")
+                .withPassword("testP@ssword", userPasswordValidator)
+                .withIsAccountNonLocked(true)
                 .withDateOfBirth(LocalDate.now().minusYears(31))
                 .build();
         assertAll(() -> {
@@ -32,7 +37,6 @@ public class TutorUserTests {
             assertNotNull(tutor.getPrivateLessons());
             assertTrue(tutor.getPrivateLessons().isEmpty());
             assertEquals("Emily", tutor.getFirstName());
-            assertEquals(Role.TUTOR, tutor.getRole());
             assertEquals("Rose", tutor.getLastName());
             assertEquals("Emily Rose", tutor.getFullName());
             assertEquals("example@example.com", tutor.getEmailAddress());
@@ -53,7 +57,7 @@ public class TutorUserTests {
                 .withFirstName("Anthony")
                 .withLastName("Emmaus")
                 .withEmailAddress("example@example.com")
-                .withPassword("!pAssword!")
+                .withPassword("!pAssword!", userPasswordValidator)
                 .withReviews(reviews)
                 .build();
 
@@ -61,7 +65,7 @@ public class TutorUserTests {
             assertNotNull(tutor.getId());
             assertEquals("Anthony Emmaus", tutor.getFullName());
             assertEquals("example@example.com", tutor.getEmailAddress());
-            assertEquals(Role.TUTOR, tutor.getRole());
+            assertFalse(tutor.isAccountNonLocked());
             assertFalse(tutor.getReviews().isEmpty());
             assertTrue(tutor.getReviews().contains(review));
         });

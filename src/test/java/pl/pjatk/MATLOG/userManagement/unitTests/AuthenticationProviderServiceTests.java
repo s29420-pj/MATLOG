@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.AuthenticationProviderService;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.MongoUserDetailsService;
+import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
+import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.user.SecurityUser;
 
 import java.time.LocalDate;
@@ -26,6 +28,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthenticationProviderServiceTests {
+
+    private final UserPasswordValidator userPasswordValidator = new StandardUserPasswordValidator();
 
     @Mock
     private MongoUserDetailsService userDetailsService;
@@ -47,7 +51,7 @@ public class AuthenticationProviderServiceTests {
                 .withLastName("Stephen")
                 .withEmailAddress("test@example.com")
                 .withDateOfBirth(LocalDate.now().minusYears(19))
-                .withPassword("P@ssword12!")
+                .withPassword("P@ssword12!", userPasswordValidator)
                 .build());
         when(userDetailsService.loadUserByUsername("test@example.com"))
                 .thenReturn(user);

@@ -50,9 +50,12 @@ public abstract class User {
         this.emailAddress = builder.emailAddress;
         this.password = builder.password;
         this.dateOfBirth = builder.dateOfBirth;
-        this.authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("USER"));
-        this.isAccountNonLocked = true;
+        if (builder.authorities == null) {
+            this.authorities = new HashSet<>();
+            authorities.add(new SimpleGrantedAuthority("USER"));
+        }
+        else this.authorities = builder.authorities;
+        this.isAccountNonLocked = builder.isAccountNonLocked;
     }
 
     /**
@@ -86,11 +89,6 @@ public abstract class User {
         return password;
     }
 
-    /**
-     * Method that changes password of the User.
-     * CAUTION! THIS METHOD SHOULD BE ONLY USED VIA USERSERVICE IN USERMANAGEMENT PACKAGE!
-     * @param password new password
-     */
     public void changePassword(String password, UserPasswordValidator passwordValidator) {
         if (password == null || password.isEmpty()) {
             throw new UserEmptyPasswordException();
@@ -203,9 +201,12 @@ public abstract class User {
          * @return Builder
          * @throws UserEmptyPasswordException when password is null or blank
          */
-        public T withPassword(String password) {
+        public T withPassword(String password, UserPasswordValidator passwordValidator) {
             if (password == null || password.isBlank()) {
                 throw new UserEmptyPasswordException();
+            }
+            if (!passwordValidator.isSecure(password)) {
+                throw new UserUnsecurePasswordException();
             }
             this.password = password;
             return self();
