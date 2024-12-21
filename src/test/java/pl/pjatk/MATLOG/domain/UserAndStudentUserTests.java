@@ -48,6 +48,28 @@ public class UserAndStudentUserTests {
     }
 
     @Test
+    void createStudentUserWithProvidedRole() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority("STUDENT_USER"));
+
+        User student = StudentUser.builder()
+                .withFirstName("Ethan")
+                .withLastName("Hovermann")
+                .withEmailAddress("example@example.com")
+                .withPassword("testPassword!", userPasswordValidator)
+                .withDateOfBirth(LocalDate.now().minusYears(50))
+                .withIsAccountNonLocked(true)
+                .withAuthorities(authorities)
+                .build();
+
+        assertAll(() -> {
+            assertNotNull(student.getAuthorities());
+            assertTrue(student.getAuthorities().contains(new SimpleGrantedAuthority("USER")));
+            assertTrue(student.getAuthorities().contains(new SimpleGrantedAuthority("STUDENT_USER")));
+        });
+    }
+
+    @Test
     void ageEqualsTo100DateOfBirthStudent() {
         User studentUser = new StudentUser.StudentUserBuilder()
                 .withFirstName("Ethan")

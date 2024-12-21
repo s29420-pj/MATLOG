@@ -9,6 +9,7 @@ import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidato
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -50,11 +51,8 @@ public abstract class User {
         this.emailAddress = builder.emailAddress;
         this.password = builder.password;
         this.dateOfBirth = builder.dateOfBirth;
-        if (builder.authorities == null) {
-            this.authorities = new HashSet<>();
-            authorities.add(new SimpleGrantedAuthority("USER"));
-        }
-        else this.authorities = builder.authorities;
+        this.authorities = Objects.requireNonNullElseGet(builder.authorities, HashSet::new);
+        this.authorities.add(new SimpleGrantedAuthority("USER"));
         this.isAccountNonLocked = builder.isAccountNonLocked;
     }
 

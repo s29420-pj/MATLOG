@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.Domain;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.Domain.Enums.PrivateLessonStatus;
 import pl.pjatk.MATLOG.Domain.Enums.Role;
@@ -46,6 +47,27 @@ public class TutorUserTests {
             assertTrue(tutor.isAccountNonLocked());
             assertTrue(tutor.getAuthorities().contains(new SimpleGrantedAuthority("USER")));
             assertTrue(tutor.getAuthorities().contains(new SimpleGrantedAuthority("TUTOR_USER")));
+        });
+    }
+
+    @Test
+    void createTutorUserWithProvidedAuthority() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority("TUTOR_USER"));
+        TutorUser tutor = TutorUser.builder()
+                .withFirstName("Emily")
+                .withLastName("Rose")
+                .withEmailAddress("example@example.com")
+                .withPassword("testP@ssword", userPasswordValidator)
+                .withBiography("Im happy")
+                .withIsAccountNonLocked(true)
+                .withAuthorities(authorities)
+                .build();
+
+        assertAll(() -> {
+            assertNotNull(tutor.getAuthorities());
+            assertTrue(tutor.getAuthorities().contains(new SimpleGrantedAuthority("TUTOR_USER")));
+            assertTrue(tutor.getAuthorities().contains(new SimpleGrantedAuthority("USER")));
         });
     }
 
@@ -208,4 +230,175 @@ public class TutorUserTests {
         });
     }
 
+    @Test
+    void removePrivateLessonFromTutorUser() {
+        String uuid = UUID.randomUUID().toString();
+
+        PrivateLesson lesson = PrivateLesson.builder()
+                .withSchoolSubjects(List.of(SchoolSubject.LOGIC))
+                .withTutorId(uuid)
+                .withPrivateLessonStatus(PrivateLessonStatus.AVAILABLE)
+                .withIsAvailableOffline(true)
+                .withStartTime(LocalDateTime.now().plusDays(5))
+                .withEndTime(LocalDateTime.now().plusDays(5).plusHours(1))
+                .withPrice(71.5)
+                .build();
+
+        TutorUser tutor = TutorUser.builder()
+                .withId(uuid)
+                .withFirstName("Anthony")
+                .withLastName("Emmaus")
+                .withEmailAddress("example@example.com")
+                .withPassword("!pAssword!", userPasswordValidator)
+                .build();
+
+        tutor.addPrivateLesson(lesson);
+
+        tutor.removePrivateLesson(lesson);
+
+        assertAll(() -> {
+            assertFalse(tutor.getPrivateLessons().contains(lesson));
+            assertTrue(tutor.getPrivateLessons().isEmpty());
+        });
+    }
+
+    @Test
+    void removeCollectionOfPrivateLessonsFromTutorUser() {
+        String uuid = UUID.randomUUID().toString();
+
+        PrivateLesson lesson = PrivateLesson.builder()
+                .withSchoolSubjects(List.of(SchoolSubject.LOGIC))
+                .withTutorId(uuid)
+                .withPrivateLessonStatus(PrivateLessonStatus.AVAILABLE)
+                .withIsAvailableOffline(true)
+                .withStartTime(LocalDateTime.now().plusDays(5))
+                .withEndTime(LocalDateTime.now().plusDays(5).plusHours(1))
+                .withPrice(71.5)
+                .build();
+
+        PrivateLesson lesson2 = PrivateLesson.builder()
+                .withSchoolSubjects(List.of(SchoolSubject.LOGIC))
+                .withTutorId(uuid)
+                .withPrivateLessonStatus(PrivateLessonStatus.AVAILABLE)
+                .withIsAvailableOffline(true)
+                .withStartTime(LocalDateTime.now().plusDays(5))
+                .withEndTime(LocalDateTime.now().plusDays(5).plusHours(1))
+                .withPrice(71.5)
+                .build();
+
+        TutorUser tutor = TutorUser.builder()
+                .withId(uuid)
+                .withFirstName("Anthony")
+                .withLastName("Emmaus")
+                .withEmailAddress("example@example.com")
+                .withPassword("!pAssword!", userPasswordValidator)
+                .build();
+
+        tutor.addPrivateLesson(lesson);
+        tutor.addPrivateLesson(lesson2);
+
+        tutor.removePrivateLesson(Set.of(lesson, lesson2));
+
+        assertAll(() -> {
+            assertFalse(tutor.getPrivateLessons().contains(lesson));
+            assertTrue(tutor.getPrivateLessons().isEmpty());
+        });
+    }
+
+    // ----------------- TutorUser specialization tests ------------------------
+
+    @Test
+    void addSpecializationToTutorUser() {
+        String uuid = UUID.randomUUID().toString();
+
+        TutorUser tutor = TutorUser.builder()
+                .withId(uuid)
+                .withFirstName("Anthony")
+                .withLastName("Emmaus")
+                .withEmailAddress("example@example.com")
+                .withPassword("!pAssword!", userPasswordValidator)
+                .build();
+
+        tutor.addSpecializationItem(SchoolSubject.MATHEMATICS);
+
+        assertTrue(tutor.getSpecializations().contains(SchoolSubject.MATHEMATICS));
+    }
+
+    @Test
+    void addCollectionOfSpecializationsToTutorUser() {
+        String uuid = UUID.randomUUID().toString();
+
+        TutorUser tutor = TutorUser.builder()
+                .withId(uuid)
+                .withFirstName("Anthony")
+                .withLastName("Emmaus")
+                .withEmailAddress("example@example.com")
+                .withPassword("!pAssword!", userPasswordValidator)
+                .build();
+
+
+        tutor.addSpecializationItem(List.of(SchoolSubject.LOGIC, SchoolSubject.MATHEMATICS));
+
+        assertAll(() -> {
+            assertNotNull(tutor.getSpecializations());
+            assertTrue(tutor.getSpecializations().contains(SchoolSubject.LOGIC));
+            assertTrue(tutor.getSpecializations().contains(SchoolSubject.MATHEMATICS));
+        });
+    }
+
+    @Test
+    void removeSpecializationFromTutorUser() {
+        String uuid = UUID.randomUUID().toString();
+
+        TutorUser tutor = TutorUser.builder()
+                .withId(uuid)
+                .withFirstName("Anthony")
+                .withLastName("Emmaus")
+                .withEmailAddress("example@example.com")
+                .withPassword("!pAssword!", userPasswordValidator)
+                .build();
+
+        tutor.addSpecializationItem(SchoolSubject.MATHEMATICS);
+
+        tutor.removeSpecializationItem(SchoolSubject.MATHEMATICS);
+
+        assertTrue(tutor.getSpecializations().isEmpty());
+    }
+
+    @Test
+    void removeCollectionOfSpecializationsFromTutorUser() {
+        String uuid = UUID.randomUUID().toString();
+
+        TutorUser tutor = TutorUser.builder()
+                .withId(uuid)
+                .withFirstName("Anthony")
+                .withLastName("Emmaus")
+                .withEmailAddress("example@example.com")
+                .withPassword("!pAssword!", userPasswordValidator)
+                .build();
+
+
+        tutor.addSpecializationItem(List.of(SchoolSubject.LOGIC, SchoolSubject.MATHEMATICS));
+
+        tutor.removeSpecializationItem(List.of(SchoolSubject.LOGIC, SchoolSubject.MATHEMATICS));
+
+        assertTrue(tutor.getSpecializations().isEmpty());
+    }
+
+    // ----------------- TutorUser biography tests ------------------------
+
+    @Test
+    void changeBiographyOfTutorUser() {
+        TutorUser tutor = TutorUser.builder()
+                .withFirstName("Anthony")
+                .withLastName("Emmaus")
+                .withEmailAddress("example@example.com")
+                .withBiography("test")
+                .withPassword("!pAssword!", userPasswordValidator)
+                .build();
+
+        tutor.changeBiography("Hello");
+
+        assertEquals("Hello", tutor.getBiography());
+    }
 }
