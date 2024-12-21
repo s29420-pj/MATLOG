@@ -1,8 +1,7 @@
 package pl.pjatk.MATLOG.Domain;
 
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pl.pjatk.MATLOG.Domain.Enums.Role;
+import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
 
 import java.util.*;
 
@@ -16,6 +15,7 @@ public final class TutorUser extends User {
     private final Set<PrivateLesson> privateLessons;
     private final List<Review> reviews;
     private String biography;
+    private final Set<SchoolSubject> specializations;
 
     /**
      * Method that returns private lessons
@@ -34,6 +34,14 @@ public final class TutorUser extends User {
     }
 
     /**
+     * Method that returns specializationList.
+     * @return Copy of set containing specializations.
+     */
+    public Set<SchoolSubject> getSpecializations() {
+        return Set.copyOf(specializations);
+    }
+
+    /**
      * Method that returns biography of the Tutor
      * @return biography as String representation.
      */
@@ -49,6 +57,69 @@ public final class TutorUser extends User {
      */
     public boolean addPrivateLesson(PrivateLesson privateLesson) {
         return privateLessons.add(privateLesson);
+    }
+
+    /**
+     * Method that adds all private lessons to set.
+     * @param collectionOfPrivateLessons Collection of private lessons that will be added to set.
+     * @return boolean - true if collection has been successfully added to set. False otherwise.
+     */
+    public boolean addPrivateLesson(Collection<PrivateLesson> collectionOfPrivateLessons) {
+        return privateLessons.addAll(collectionOfPrivateLessons);
+    }
+
+    /**
+     * Method that removes lesson from set.
+     * @param privateLesson Private lesson to remove from set.
+     * @return boolean - true if object has been removed. False otherwise
+     */
+    public boolean removePrivateLesson(PrivateLesson privateLesson) {
+        return privateLessons.remove(privateLesson);
+    }
+
+    /**
+     * Method that removes all private lessons from set.
+     * @param collectionOfPrivateLessons Collection of private lessons that will be removed from set.
+     * @return boolean - true if collection has been successfully removed. False otherwise.
+     */
+    public boolean removePrivateLesson(Collection<PrivateLesson> collectionOfPrivateLessons) {
+        return privateLessons.removeAll(collectionOfPrivateLessons);
+    }
+
+    /**
+     * Method that adds specialization item to the list of specializations.
+     * @param specialization Specialization to add.
+     * @return boolean - true if specialization has been added. False otherwise.
+     */
+    public boolean addSpecializationItem(SchoolSubject specialization) {
+        return specializations.add(specialization);
+    }
+
+    /**
+     * Method that adds all specializations from collection to the specializations set.
+     * @param collectionOfSpecializations Collection of specializations of Tutor.
+     * @return boolean - true if all items have been added. False otherwise
+     */
+    public boolean addSpecializationItem(Collection<SchoolSubject> collectionOfSpecializations) {
+        return specializations.addAll(collectionOfSpecializations);
+    }
+
+    /**
+     * Method that removes specialization from the specializations set.
+     * @param specialization Specialization that needs to be removed.
+     * @return boolean - true if specialization has been successfully removed. False otherwise.
+     */
+    public boolean removeSpecializationItem(SchoolSubject specialization) {
+        return specializations.remove(specialization);
+    }
+
+    /**
+     * Method that removes all provided specializations from specializations set.
+     * @param collectionOfSpecializations Collection of specializations to remove.
+     * @return boolean - true if all items have been removed. False otherwise.
+     */
+    public boolean removeSpecializationItem(Collection<SchoolSubject> collectionOfSpecializations) {
+        return specializations.removeAll(collectionOfSpecializations);
     }
 
     /**
@@ -72,6 +143,7 @@ public final class TutorUser extends User {
         this.privateLessons = Objects.requireNonNullElseGet(builder.privateLessons, HashSet::new);
         this.reviews = Objects.requireNonNullElseGet(builder.reviews, ArrayList::new);
         this.biography = Objects.requireNonNullElseGet(builder.biography, String::new);
+        this.specializations = Objects.requireNonNullElseGet(builder.specializations, HashSet::new);
     }
 
     /**
@@ -91,6 +163,7 @@ public final class TutorUser extends User {
         private Set<PrivateLesson> privateLessons;
         private List<Review> reviews;
         private String biography;
+        private Set<SchoolSubject> specializations;
 
         /**
          * Method that initialize set
@@ -119,6 +192,16 @@ public final class TutorUser extends User {
          */
         public TutorBuilder withBiography(String biography) {
             this.biography = biography;
+            return self();
+        }
+
+        /**
+         * Method that initializes specializations set.
+         * @param specializations Set containing SchoolSubjects.
+         * @return TutorBuilder
+         */
+        public TutorBuilder withSpecializations(Set<SchoolSubject> specializations) {
+            this.specializations = specializations;
             return self();
         }
 
