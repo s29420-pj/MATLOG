@@ -146,6 +146,11 @@ public abstract class User {
         private static final int MIN_AGE = 1;
         private static final int MAX_AGE = 100;
 
+        /**
+         * Method that sets user's id
+         * @param id Identifier of a user.
+         * @return Builder
+         */
         public T withId(String id) {
             this.id = id;
             return self();
