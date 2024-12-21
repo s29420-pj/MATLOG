@@ -15,6 +15,7 @@ public final class TutorUser extends User {
 
     private final Set<PrivateLesson> privateLessons;
     private final List<Review> reviews;
+    private String biography;
 
     /**
      * Method that returns private lessons
@@ -33,6 +34,14 @@ public final class TutorUser extends User {
     }
 
     /**
+     * Method that returns biography of the Tutor
+     * @return biography as String representation.
+     */
+    public String getBiography() {
+        return biography;
+    }
+
+    /**
      * Method that adds lesson to set
      * @param privateLesson instantiated private lesson that will be added to set
      * @return boolean - true if set doesn't contain specified private lesson and was added
@@ -40,6 +49,14 @@ public final class TutorUser extends User {
      */
     public boolean addPrivateLesson(PrivateLesson privateLesson) {
         return privateLessons.add(privateLesson);
+    }
+
+    /**
+     * Method that changes biography of the Tutor.
+     * @param biography Biography to set.
+     */
+    public void changeBiography(String biography) {
+        this.biography = biography;
     }
 
     /**
@@ -54,6 +71,7 @@ public final class TutorUser extends User {
         addAuthority(new SimpleGrantedAuthority("TUTOR_USER"));
         this.privateLessons = Objects.requireNonNullElseGet(builder.privateLessons, HashSet::new);
         this.reviews = Objects.requireNonNullElseGet(builder.reviews, ArrayList::new);
+        this.biography = Objects.requireNonNullElseGet(builder.biography, String::new);
     }
 
     /**
@@ -72,6 +90,7 @@ public final class TutorUser extends User {
 
         private Set<PrivateLesson> privateLessons;
         private List<Review> reviews;
+        private String biography;
 
         /**
          * Method that initialize set
@@ -90,6 +109,16 @@ public final class TutorUser extends User {
          */
         public TutorBuilder withReviews(List<Review> reviews) {
             this.reviews = reviews;
+            return self();
+        }
+
+        /**
+         * Method that initializes biography.
+         * @param biography Biography of the Tutor
+         * @return TutorBuilder
+         */
+        public TutorBuilder withBiography(String biography) {
+            this.biography = biography;
             return self();
         }
 
