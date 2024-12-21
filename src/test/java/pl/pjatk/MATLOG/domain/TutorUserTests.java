@@ -85,8 +85,13 @@ public class TutorUserTests {
 
     @Test
     void createTutorWithProvidedReviews() {
-        Review review = Review.create(Stars.TWO, "comment", UUID.randomUUID().toString(),
-                UUID.randomUUID().toString());
+        Review review = Review.builder()
+                .withRate(Stars.FOUR)
+                .withComment("sfsdf")
+                .withTutorId(UUID.randomUUID().toString())
+                .withStudentId(UUID.randomUUID().toString())
+                .build();
+
         List<Review> reviews = List.of(review);
         TutorUser tutor = TutorUser.builder()
                 .withFirstName("Anthony")

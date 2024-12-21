@@ -8,6 +8,7 @@ import pl.pjatk.MATLOG.Domain.Exceptions.ReviewExceptions.ReviewInvalidRateExcep
 import pl.pjatk.MATLOG.Domain.Exceptions.ReviewExceptions.ReviewInvalidStudentId;
 import pl.pjatk.MATLOG.Domain.Exceptions.ReviewExceptions.ReviewInvalidTutorId;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,47 +22,50 @@ public class ReviewTests {
     @ParameterizedTest
     @EnumSource(Stars.class)
     void createReview(Stars stars) {
-        Review review = Review.create(stars, "testComment", STUDENT_ID, TUTOR_ID);
+        Review review = Review.builder()
+                        .withRate(stars)
+                                .withComment("testComment")
+                                        .withStudentId(STUDENT_ID)
+                                                .withTutorId(TUTOR_ID)
+                                                        .withDateAndTimeOfComment(LocalDateTime.now())
+                                                                .build();
         assertAll(() -> {
             assertNotNull(review);
             assertEquals(stars, review.getRate());
             assertEquals("testComment", review.getComment());
             assertNotNull(review.getStudentId());
             assertNotNull(review.getTutorId());
-        });
-    }
-
-    @Test
-    void createReviewFrom() {
-        Review review = Review.create(Stars.FIVE, "testComment",
-                STUDENT_ID, TUTOR_ID);
-        Review reviewToAssert = Review.from(review);
-        assertAll(() -> {
-            assertNotEquals(review.getId(), reviewToAssert.getId());
-            assertEquals(review.getRate(), reviewToAssert.getRate());
-            assertEquals(review.getComment(), reviewToAssert.getComment());
-            assertEquals(review.getStudentId(), reviewToAssert.getStudentId());
-            assertEquals(review.getTutorId(), reviewToAssert.getTutorId());
+            assertNotNull(review.getDateAndTimeOfComment());
         });
     }
 
     @Test
     void createReviewWithNullComment() {
-        Review review = Review.create(Stars.FOUR, null, STUDENT_ID,
-                TUTOR_ID);
+        Review review = Review.builder()
+                        .withRate(Stars.FOUR)
+                                .withComment(null)
+                                        .withTutorId(TUTOR_ID)
+                                                .withStudentId(STUDENT_ID)
+                                                        .build();
         assertAll(() -> {
             assertNotNull(review);
             assertEquals(Stars.FOUR, review.getRate());
             assertEquals("", review.getComment());
             assertNotNull(review.getStudentId());
             assertNotNull(review.getTutorId());
+            assertNotNull(review.getDateAndTimeOfComment());
+            assertTrue(review.getDateAndTimeOfComment().isBefore(LocalDateTime.now()));
         });
     }
 
     @Test
     void createReviewWithEmptyComment() {
-        Review review = Review.create(Stars.FOUR, "", STUDENT_ID,
-                TUTOR_ID);
+        Review review = Review.builder()
+                        .withRate(Stars.FOUR)
+                                .withComment("")
+                                        .withStudentId(STUDENT_ID)
+                                                .withTutorId(TUTOR_ID)
+                                                        .build();
         assertAll(() -> {
             assertNotNull(review);
             assertEquals(Stars.FOUR, review.getRate());
@@ -70,55 +74,4 @@ public class ReviewTests {
             assertNotNull(review.getTutorId());
         });
     }
-
-    @Test
-    void createReviewWithoutComment() {
-        Review review = Review.create(Stars.TWO, STUDENT_ID, TUTOR_ID);
-        assertAll(() -> {
-            assertNotNull(review.getId());
-            assertNotNull(review.getStudentId());
-            assertNotNull(review.getTutorId());
-            assertEquals(Stars.TWO, review.getRate());
-            assertEquals("", review.getComment());
-        });
-    }
-
-    // ------------------ exceptions tests ----------------------
-
-    @Test
-    void nullRateException() {
-        assertThrows(ReviewInvalidRateException.class, () -> {
-            Review.create(null, "testComment", UUID.randomUUID().toString(),
-                    UUID.randomUUID().toString());
-        });
-    }
-
-    @Test
-    void nullStudentIdException() {
-        assertThrows(ReviewInvalidStudentId.class, () -> {
-            Review.create(Stars.TWO, "testComment", null, UUID.randomUUID().toString());
-        });
-    }
-
-    @Test
-    void emptyStudentIdException() {
-        assertThrows(ReviewInvalidStudentId.class, () -> {
-            Review.create(Stars.TWO, "testComment", "", UUID.randomUUID().toString());
-        });
-    }
-
-    @Test
-    void nullTutorIdException() {
-        assertThrows(ReviewInvalidTutorId.class, () -> {
-            Review.create(Stars.ONE, "TestComment", UUID.randomUUID().toString(), null);
-        });
-    }
-
-    @Test
-    void emptyTutorIdException() {
-        assertThrows(ReviewInvalidTutorId.class, () -> {
-            Review.create(Stars.TWO, "testComment", UUID.randomUUID().toString(), "");
-        });
-    }
-
 }

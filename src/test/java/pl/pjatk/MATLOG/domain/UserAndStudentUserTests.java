@@ -424,6 +424,5 @@ public class UserAndStudentUserTests {
             assertTrue(student.getAuthorities().contains(new SimpleGrantedAuthority("STUDENT")));
             assertTrue(student.getAuthorities().contains(new SimpleGrantedAuthority("USER")));
         });
-
     }
 }
