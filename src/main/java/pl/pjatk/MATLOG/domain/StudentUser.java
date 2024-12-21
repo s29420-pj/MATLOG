@@ -75,7 +75,8 @@ public final class StudentUser extends User {
     private StudentUser(StudentUserBuilder builder) {
         super(builder);
         this.privateLessons = builder.privateLessons;
-        addAuthority(new SimpleGrantedAuthority("STUDENT_USER"));
+        if (!getAuthorities().contains(new SimpleGrantedAuthority("TUTOR_USER")))
+            addAuthority(new SimpleGrantedAuthority("TUTOR_USER"));
     }
 
 }

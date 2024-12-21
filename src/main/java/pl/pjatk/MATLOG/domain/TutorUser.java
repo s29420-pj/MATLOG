@@ -139,7 +139,8 @@ public final class TutorUser extends User {
      */
     private TutorUser(TutorBuilder builder) {
         super(builder);
-        addAuthority(new SimpleGrantedAuthority("TUTOR_USER"));
+        if (!getAuthorities().contains(new SimpleGrantedAuthority("TUTOR_USER")))
+            addAuthority(new SimpleGrantedAuthority("TUTOR_USER"));
         this.privateLessons = Objects.requireNonNullElseGet(builder.privateLessons, HashSet::new);
         this.reviews = Objects.requireNonNullElseGet(builder.reviews, ArrayList::new);
         this.biography = Objects.requireNonNullElseGet(builder.biography, String::new);
