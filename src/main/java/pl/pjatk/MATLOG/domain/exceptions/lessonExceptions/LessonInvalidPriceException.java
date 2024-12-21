@@ -1,7 +1,11 @@
-package pl.pjatk.MATLOG.domain.exceptions.lessonExceptions;
+package pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions;
 
 public class LessonInvalidPriceException extends RuntimeException {
     public LessonInvalidPriceException() {
-        super("Lesson can be free, but price of the lesson cannot be below 0.");
+        super("Price of the lesson cannot be below 0.");
+    }
+
+    public LessonInvalidPriceException(String message) {
+        super(message);
     }
 }

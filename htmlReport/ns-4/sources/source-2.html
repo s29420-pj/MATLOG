@@ -19,15 +19,18 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">pl.pjatk.MATLOG.domain</a>
+    <a href="../index.html">pl.pjatk.MATLOG.Domain</a>
 </div>
 
-<h1>Coverage Summary for Class: PrivateLesson (pl.pjatk.MATLOG.domain)</h1>
+<h1>Coverage Summary for Class: PrivateLesson (pl.pjatk.MATLOG.Domain)</h1>
 
 <table class="coverageStats">
-
 <tr>
   <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
 <th class="coverageStat 
 ">
   Method, %
@@ -45,75 +48,38 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">PrivateLesson</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/3)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/12)
+    (2/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    66.7%
   </span>
   <span class="absValue">
-    (0/14)
+    (16/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    84%
+  </span>
+  <span class="absValue">
+    (21/25)
   </span>
 </td>
 </tr>
-  <tr>
-    <td class="name">PrivateLesson$PrivateLessonBuilder</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/5)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/7)
-  </span>
-</td>
-  </tr>
-<tr>
-  <td class="name"><strong>Total</strong></td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/8)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/12)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/21)
-  </span>
-</td>
-</tr>
+
 </table>
 
 <br/>
@@ -121,109 +87,98 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package pl.pjatk.MATLOG.domain;
+<code class="sourceCode" id="sourceCode">&nbsp;package pl.pjatk.MATLOG.Domain;
 &nbsp;
+&nbsp;import lombok.Builder;
 &nbsp;import lombok.Getter;
+&nbsp;import lombok.Setter;
 &nbsp;import org.springframework.data.mongodb.core.mapping.Document;
-&nbsp;import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.PrivateLessonInvalidEndTimeException;
-&nbsp;import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.PrivateLessonInvalidStartTimeException;
+&nbsp;import org.springframework.data.mongodb.core.mapping.MongoId;
+&nbsp;import pl.pjatk.MATLOG.Domain.Enums.PrivateLessonStatus;
+&nbsp;import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
+&nbsp;import pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions.*;
 &nbsp;
 &nbsp;import java.time.LocalDateTime;
-&nbsp;import java.time.LocalTime;
+&nbsp;import java.util.List;
+&nbsp;import java.util.UUID;
 &nbsp;
 &nbsp;/**
-&nbsp; * Concrete representation of Lesson - Private Lesson.
-&nbsp; * Contains all the attribute as Lesson abstract class.
-&nbsp; * Mandatory fields of PrivateLesson are:
-&nbsp; * - startTime
-&nbsp; * - endTime
+&nbsp; * Class representing Private Lesson in application.
+&nbsp; * Private Lesson is a lesson that is taught by Tutor to Student.
+&nbsp; * It can be created by Tutor to create slot in the calendar that can be booked by Student.
 &nbsp; */
-&nbsp;@Document(&quot;private_lesson&quot;)
 &nbsp;@Getter
-&nbsp;public final class PrivateLesson extends Lesson {
+&nbsp;@Setter
+&nbsp;@Document(&quot;privateLessons&quot;)
+&nbsp;public final class PrivateLesson {
 &nbsp;
-&nbsp;    private final LocalTime startTime;
-&nbsp;    private final LocalTime endTime;
+&nbsp;    @MongoId
+&nbsp;    private final String id;
+&nbsp;    private List&lt;SchoolSubject&gt; schoolSubjects;
+&nbsp;    private String tutorId;
+&nbsp;    private String studentId;
+&nbsp;    private String connectionCode;
+&nbsp;    private PrivateLessonStatus status;
+&nbsp;    private boolean isAvailableOffline;
+&nbsp;    private LocalDateTime startTime;
+&nbsp;    private LocalDateTime endTime;
+&nbsp;    private Double price;
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Constructor of PrivateLesson. It calls validateFields method to check
-&nbsp;     * if all required fields are set
-&nbsp;     * @param builder Builder of PrivateLesson class
+&nbsp;     * Private Constructor of the PrivateLesson. This constructor is used by the Builder.
+&nbsp;     *
+&nbsp;     * @param schoolSubjects List of SchoolSubjects that will be taught during the lesson.
+&nbsp;     * @param tutorId Identification of Tutor that will lead the lesson
+&nbsp;     * @param privateLessonStatus Status of the lesson
+&nbsp;     * @param isAvailableOffline Flag that tells if lesson can be taught offline
+&nbsp;     * @param startTime Start time of the lesson
+&nbsp;     * @param endTime End time of the lesson
+&nbsp;     * @param price Price of the lesson
+&nbsp;     *
+&nbsp;     * @throws PrivateLessonInvalidSchoolSubjectException When schoolSubjects are empty
+&nbsp;     * @throws PrivateLessonInvalidIdException When tutorId is empty
+&nbsp;     * @throws IllegalStateException When start time is empty
+&nbsp;     * @throws IllegalStateException When end time is empty
+&nbsp;     * @throws PrivateLessonInvalidStatusException When status is empty
+&nbsp;     * @throws PrivateLessonInvalidStartTimeException When start time is before current time
+&nbsp;     * @throws PrivateLessonInvalidEndTimeException When end time is before current time, before start time or equals start time
+&nbsp;     * @throws PrivateLessonInvalidPriceException When price is null or negative
 &nbsp;     */
-&nbsp;    private PrivateLesson(PrivateLessonBuilder builder) {
-<b class="nc">&nbsp;        super(builder);</b>
-<b class="nc">&nbsp;        validateFields(builder);</b>
-<b class="nc">&nbsp;        this.startTime = LocalTime.from(builder.startTime);</b>
-<b class="nc">&nbsp;        this.endTime = LocalTime.from(builder.endTime);</b>
+&nbsp;    @Builder(setterPrefix = &quot;with&quot;)
+<b class="fc">&nbsp;    private PrivateLesson(List&lt;SchoolSubject&gt; schoolSubjects, String tutorId, PrivateLessonStatus privateLessonStatus, boolean isAvailableOffline, LocalDateTime startTime, LocalDateTime endTime, Double price) {</b>
+<b class="fc">&nbsp;        this.id = UUID.randomUUID().toString();</b>
+<b class="fc">&nbsp;        this.schoolSubjects = schoolSubjects;</b>
+<b class="fc">&nbsp;        this.tutorId = tutorId;</b>
+<b class="fc">&nbsp;        this.studentId = &quot;not assigned yet&quot;;</b>
+<b class="fc">&nbsp;        this.connectionCode = &quot;not assigned yet&quot;;</b>
+<b class="fc">&nbsp;        this.status = privateLessonStatus;</b>
+<b class="fc">&nbsp;        this.isAvailableOffline = isAvailableOffline;</b>
+<b class="fc">&nbsp;        this.startTime = startTime;</b>
+<b class="fc">&nbsp;        this.endTime = endTime;</b>
+<b class="fc">&nbsp;        this.price = price;</b>
+<b class="fc">&nbsp;        validateFields();</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Method that checks if all required fields are set by builder
-&nbsp;     * @param builder Builder
-&nbsp;     * @throws IllegalStateException when startTime or endTime is null
-&nbsp;     * @throws PrivateLessonInvalidStartTimeException when startTime is before present
-&nbsp;     * @throws PrivateLessonInvalidEndTimeException when endTime is before present or when is before startTime
-&nbsp;     * or is equal to startTime
+&nbsp;     * Method that validates all fields of the PrivateLesson.
 &nbsp;     */
-&nbsp;    private void validateFields(PrivateLessonBuilder builder) {
-<b class="nc">&nbsp;        if (builder.startTime == null) throw new IllegalStateException(&quot;Start time of private lesson is mandatory and must be set&quot;);</b>
-<b class="nc">&nbsp;        if (builder.endTime == null) throw new IllegalStateException(&quot;End time of private lesson is mandatory and must be set&quot;);</b>
+&nbsp;    private void validateFields() {
+<b class="fc">&nbsp;        if (schoolSubjects == null) throw new PrivateLessonInvalidSchoolSubjectException();</b>
+<b class="fc">&nbsp;        if (tutorId == null || tutorId.isEmpty()) throw new PrivateLessonInvalidIdException();</b>
+<b class="fc">&nbsp;        if (status == null) throw new PrivateLessonInvalidStatusException();</b>
+<b class="pc">&nbsp;        if (startTime == null) throw new IllegalStateException(&quot;Start time of private lesson is mandatory and must be set&quot;);</b>
+<b class="pc">&nbsp;        if (endTime == null) throw new IllegalStateException(&quot;End time of private lesson is mandatory and must be set&quot;);</b>
+<b class="pc">&nbsp;        if (price == null) {</b>
+<b class="nc">&nbsp;            throw new PrivateLessonInvalidPriceException(&quot;Price of private lesson is mandatory and must be set&quot;);</b>
+<b class="pc">&nbsp;        } else if (price &lt; 0) {</b>
+<b class="nc">&nbsp;            throw new PrivateLessonInvalidPriceException();</b>
+&nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        LocalDateTime builderStartTime = builder.startTime;</b>
-<b class="nc">&nbsp;        LocalDateTime builderEndTime = builder.endTime;</b>
-<b class="nc">&nbsp;        if (builderStartTime.isBefore(LocalDateTime.now()))</b>
+<b class="pc">&nbsp;        if (startTime.isBefore(LocalDateTime.now()))</b>
 <b class="nc">&nbsp;            throw new PrivateLessonInvalidStartTimeException();</b>
 &nbsp;
-<b class="nc">&nbsp;        if (builderEndTime.isBefore(LocalDateTime.now()) || builderEndTime.isBefore(builderStartTime) ||</b>
-<b class="nc">&nbsp;                builderEndTime.isEqual(builderStartTime))</b>
+<b class="pc">&nbsp;        if (endTime.isBefore(LocalDateTime.now()) || endTime.isBefore(startTime) || endTime.isEqual(startTime))</b>
 <b class="nc">&nbsp;            throw new PrivateLessonInvalidEndTimeException();</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Method that returns builder and starts chaining creation of the object
-&nbsp;     * @return PrivateLessonBuilder
-&nbsp;     */
-&nbsp;    public static PrivateLessonBuilder builder() {
-<b class="nc">&nbsp;        return new PrivateLessonBuilder();</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Concrete representation of the builder in Lesson abstract class
-&nbsp;     */
-<b class="nc">&nbsp;    public static class PrivateLessonBuilder extends Builder&lt;PrivateLessonBuilder&gt; {</b>
-&nbsp;
-&nbsp;        private LocalDateTime startTime;
-&nbsp;        private LocalDateTime endTime;
-&nbsp;
-&nbsp;        /**
-&nbsp;         * Method that sets PrivateLesson&#39;s start time
-&nbsp;         * @param startTime Time and date when private lesson begins
-&nbsp;         * @return PrivateLessonBuilder
-&nbsp;         */
-&nbsp;        public PrivateLessonBuilder withStartTime(LocalDateTime startTime) {
-<b class="nc">&nbsp;            this.startTime = startTime;</b>
-<b class="nc">&nbsp;            return self();</b>
-&nbsp;        }
-&nbsp;
-&nbsp;        /**
-&nbsp;         * Method that sets PrivateLesson&#39;s end time
-&nbsp;         * @param endTime Time and date when private lesson ends
-&nbsp;         * @return PrivateLessonBuilder
-&nbsp;         */
-&nbsp;        public PrivateLessonBuilder withEndTime(LocalDateTime endTime) {
-<b class="nc">&nbsp;            this.endTime = endTime;</b>
-<b class="nc">&nbsp;            return self();</b>
-&nbsp;        }
-&nbsp;
-&nbsp;        @Override
-&nbsp;        protected PrivateLessonBuilder self() {
-<b class="nc">&nbsp;            return this;</b>
-&nbsp;        }
-&nbsp;
-&nbsp;        @Override
-&nbsp;        protected PrivateLesson build() {
-<b class="nc">&nbsp;            return new PrivateLesson(this);</b>
-&nbsp;        }
 &nbsp;    }
 &nbsp;}
 </code>
@@ -249,7 +204,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-11-29 16:46</div>
+    <div style="float:right;">generated on 2024-12-21 13:40</div>
 </div>
 </body>
 </html>

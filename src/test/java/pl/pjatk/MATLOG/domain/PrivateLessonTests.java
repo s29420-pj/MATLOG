@@ -1,96 +1,122 @@
-package pl.pjatk.MATLOG.domain;
+package pl.pjatk.MATLOG.Domain;
 
 import org.junit.jupiter.api.Test;
-import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.*;
+import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
+import pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.List;
+import java.util.Arrays;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PrivateLessonTests {
 
-    private static final String OWNER_ID = UUID.randomUUID().toString();
-
     // ------------------ happy tests ----------------------
 
     @Test
     void createPrivateLesson() {
-        PrivateLesson privateLesson = PrivateLesson.builder()
-                .withOwnerId(OWNER_ID)
+        List<SchoolSubject> testList = Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC);
+
+        PrivateLesson testPrivateLesson = PrivateLesson.builder()
+                .withSchoolSubjects(testList)
+                .withTutorId(UUID.randomUUID().toString())
                 .withStartTime(LocalDateTime.now().plusDays(1))
-                .withEndTime(LocalDateTime.now().plusDays(1).plusHours(2))
-                .withTitle("testTitle")
-                .withDescription("testDescription")
-                .withPrice(85.0)
+                .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
+                .withPrice(80.0)
                 .build();
-        assertAll(() -> {
-            assertNotNull(privateLesson.getOwnerId());
-            assertEquals("testTitle", privateLesson.getTitle());
-            assertEquals("testDescription", privateLesson.getDescription());
-            assertNotNull(privateLesson.getStartTime());
-            assertNotNull(privateLesson.getEndTime());
-            assertEquals(85.0, privateLesson.getPrice());
-        });
+
+        assertNotNull(testPrivateLesson);
     }
 
     // ------------------ exceptions tests ----------------------
 
     @Test
-    void nullOwnerIdException() {
-        assertThrows(LessonInvalidOwnerIdException.class, () -> {
+    void nullSchoolSubjects() {
+        assertThrows(PrivateLessonInvalidSchoolSubjectException.class, () -> {
             PrivateLesson.builder()
-                    .withOwnerId(null)
+                    .withSchoolSubjects(null)
+                    .withTutorId(UUID.randomUUID().toString())
+                    .withStartTime(LocalDateTime.now().plusDays(1))
+                    .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
+                    .withPrice(80.0)
                     .build();
         });
     }
 
     @Test
-    void emptyOwnerIdException() {
-        assertThrows(LessonInvalidOwnerIdException.class, () -> {
+    void nullTutorId() {
+        assertThrows(PrivateLessonInvalidIdException.class, () -> {
             PrivateLesson.builder()
-                    .withOwnerId("")
+                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                    .withTutorId(null)
+                    .withStartTime(LocalDateTime.now().plusDays(1))
+                    .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
+                    .withPrice(80.0)
                     .build();
         });
     }
 
     @Test
-    void notSetOwnerIdInBuilder() {
+    void emptyTutorId() {
+        assertThrows(PrivateLessonInvalidIdException.class, () -> {
+            PrivateLesson.builder()
+                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                    .withTutorId("")
+                    .withStartTime(LocalDateTime.now().plusDays(1))
+                    .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
+                    .withPrice(80.0)
+                    .build();
+        });
+    }
+
+    @Test
+    void studentIdNotAssigned() {
+        PrivateLesson testPrivateLesson = PrivateLesson.builder()
+                .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                .withTutorId(UUID.randomUUID().toString())
+                .withStartTime(LocalDateTime.now().plusDays(1))
+                .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
+                .withPrice(80.0)
+                .build();
+
+        assertEquals("not assigned yet", testPrivateLesson.getStudentId());
+    }
+
+    @Test
+    void connectionCodeNotAssigned() {
+        PrivateLesson testPrivateLesson = PrivateLesson.builder()
+                .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                .withTutorId(UUID.randomUUID().toString())
+                .withStartTime(LocalDateTime.now().plusDays(1))
+                .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
+                .withPrice(80.0)
+                .build();
+
+        assertEquals("not assigned yet", testPrivateLesson.getConnectionCode());
+    }
+
+    @Test
+    void startTimeNotSet() {
         assertThrows(IllegalStateException.class, () -> {
             PrivateLesson.builder()
-                    .withStartTime(LocalDateTime.now().plusHours(1))
-                    .withEndTime(LocalDateTime.now().plusHours(2))
+                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                    .withTutorId(UUID.randomUUID().toString())
+                    .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
+                    .withPrice(80.0)
                     .build();
         });
     }
 
     @Test
-    void priceBelow0Test() {
-        assertThrows(LessonInvalidPriceException.class, () -> {
-            PrivateLesson.builder()
-                    .withPrice(-1.1)
-                    .build();
-        });
-    }
-
-    @Test
-    void notSetStartTimeInBuilder() {
-        assertThrows(IllegalStateException.class,() -> {
-            PrivateLesson.builder()
-                    .withOwnerId(OWNER_ID)
-                    .withEndTime(LocalDateTime.now().plusHours(3))
-                    .build();
-        });
-    }
-
-    @Test
-    void notSetEndTimeInBuilder() {
+    void endTimeNotSet() {
         assertThrows(IllegalStateException.class, () -> {
             PrivateLesson.builder()
-                    .withOwnerId(OWNER_ID)
-                    .withStartTime(LocalDateTime.now().plusHours(3))
+                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                    .withTutorId(UUID.randomUUID().toString())
+                    .withStartTime(LocalDateTime.now().plusDays(1))
+                    .withPrice(80.0)
                     .build();
         });
     }
@@ -99,20 +125,24 @@ public class PrivateLessonTests {
     void startTimeIsBeforeNow() {
         assertThrows(PrivateLessonInvalidStartTimeException.class, () -> {
             PrivateLesson.builder()
-                    .withOwnerId(OWNER_ID)
+                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                    .withTutorId(UUID.randomUUID().toString())
                     .withStartTime(LocalDateTime.now().minusHours(1))
                     .withEndTime(LocalDateTime.now())
+                    .withPrice(80.0)
                     .build();
         });
     }
 
     @Test
-    void startTimeIsBeforeEndTime() {
+    void startTimeIsAfterEndTime() {
         assertThrows(PrivateLessonInvalidEndTimeException.class, () -> {
             PrivateLesson.builder()
-                    .withOwnerId(OWNER_ID)
-                    .withStartTime(LocalDateTime.now().plusHours(3))
-                    .withEndTime(LocalDateTime.now().plusHours(1))
+                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                    .withTutorId(UUID.randomUUID().toString())
+                    .withStartTime(LocalDateTime.now().plusDays(1))
+                    .withEndTime(LocalDateTime.now().plusDays(1).minusHours(1))
+                    .withPrice(80.0)
                     .build();
         });
     }
@@ -121,20 +151,11 @@ public class PrivateLessonTests {
     void endTimeIsBeforeNow() {
         assertThrows(PrivateLessonInvalidEndTimeException.class, () -> {
             PrivateLesson.builder()
-                    .withOwnerId(OWNER_ID)
-                    .withStartTime(LocalDateTime.now().plusHours(1))
+                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                    .withTutorId(UUID.randomUUID().toString())
+                    .withStartTime(LocalDateTime.now().plusDays(1))
                     .withEndTime(LocalDateTime.now().minusHours(1))
-                    .build();
-        });
-    }
-
-    @Test
-    void endTimeIsBeforeStartTime() {
-        assertThrows(PrivateLessonInvalidEndTimeException.class, () -> {
-            PrivateLesson.builder()
-                    .withOwnerId(OWNER_ID)
-                    .withStartTime(LocalDateTime.now().plusHours(3))
-                    .withEndTime(LocalDateTime.now().plusHours(1))
+                    .withPrice(80.0)
                     .build();
         });
     }
@@ -144,10 +165,52 @@ public class PrivateLessonTests {
         LocalDateTime sameDateTime = LocalDateTime.now().plusHours(1);
         assertThrows(PrivateLessonInvalidEndTimeException.class, () -> {
             PrivateLesson.builder()
-                    .withOwnerId(OWNER_ID)
+                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                    .withTutorId(UUID.randomUUID().toString())
                     .withStartTime(sameDateTime)
                     .withEndTime(sameDateTime)
+                    .withPrice(80.0)
                     .build();
         });
     }
+
+    @Test
+    void priceIsNull() {
+        assertThrows(PrivateLessonInvalidPriceException.class, () -> {
+            PrivateLesson.builder()
+                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                    .withTutorId(UUID.randomUUID().toString())
+                    .withStartTime(LocalDateTime.now().plusDays(1))
+                    .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
+                    .withPrice(null)
+                    .build();
+        });
+    }
+
+    @Test
+    void priceBelowZero() {
+        assertThrows(PrivateLessonInvalidPriceException.class, () -> {
+            PrivateLesson.builder()
+                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                    .withTutorId(UUID.randomUUID().toString())
+                    .withStartTime(LocalDateTime.now().plusDays(1))
+                    .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
+                    .withPrice(-1.1)
+                    .build();
+        });
+    }
+
+    @Test
+    void priceEqualToZero() {
+        PrivateLesson testPrivateLesson = PrivateLesson.builder()
+                .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
+                .withTutorId(UUID.randomUUID().toString())
+                .withStartTime(LocalDateTime.now().plusDays(1))
+                .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
+                .withPrice(0.0)
+                .build();
+
+        assertEquals(0.0, testPrivateLesson.getPrice());
+    }
+
 }
