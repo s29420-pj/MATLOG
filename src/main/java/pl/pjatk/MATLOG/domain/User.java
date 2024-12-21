@@ -58,7 +58,7 @@ public abstract class User {
 
     /**
      * Method that is being used by User constructor to check if mandatory fields are set.
-     * @throws IllegalStateException if there is no first name, last name, email address, date of birth or it's blank
+     * @throws IllegalStateException if there is no first name, last name, email address, date of birth, or it's blank
      */
     private void validateFields(Builder<?> builder) {
         if (builder.firstName == null) throw new IllegalStateException("First name of user is mandatory and must be set");
