@@ -11,10 +11,7 @@ import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidato
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -137,7 +134,78 @@ public class TutorUserTests {
             assertFalse(tutor.getPrivateLessons().isEmpty());
             assertTrue(tutor.getPrivateLessons().contains(lesson));
         });
+    }
 
+    // ----------------- TutorUser private lessons tests ------------------------
+
+    @Test
+    void addPrivateLessonToTutorUserSet() {
+        String uuid = UUID.randomUUID().toString();
+
+        PrivateLesson lesson = PrivateLesson.builder()
+                .withSchoolSubjects(List.of(SchoolSubject.MATHEMATICS))
+                .withTutorId(uuid)
+                .withPrivateLessonStatus(PrivateLessonStatus.AVAILABLE)
+                .withIsAvailableOffline(true)
+                .withStartTime(LocalDateTime.now().plusDays(3))
+                .withEndTime(LocalDateTime.now().plusDays(3).plusHours(1))
+                .withPrice(32.5)
+                .build();
+
+        TutorUser tutor = TutorUser.builder()
+                .withId(uuid)
+                .withFirstName("Anthony")
+                .withLastName("Emmaus")
+                .withEmailAddress("example@example.com")
+                .withPassword("!pAssword!", userPasswordValidator)
+                .build();
+
+        tutor.addPrivateLesson(lesson);
+
+        assertAll(() -> {
+            assertNotNull(tutor.getPrivateLessons());
+            assertTrue(tutor.getPrivateLessons().contains(lesson));
+        });
+    }
+
+    @Test
+    void addCollectionOfPrivateLessonsToTutorUser() {
+        String uuid = UUID.randomUUID().toString();
+
+        PrivateLesson lesson1 = PrivateLesson.builder()
+                .withSchoolSubjects(List.of(SchoolSubject.MATHEMATICS))
+                .withTutorId(uuid)
+                .withPrivateLessonStatus(PrivateLessonStatus.AVAILABLE)
+                .withIsAvailableOffline(true)
+                .withStartTime(LocalDateTime.now().plusDays(3))
+                .withEndTime(LocalDateTime.now().plusDays(3).plusHours(1))
+                .withPrice(32.5)
+                .build();
+
+        PrivateLesson lesson2 = PrivateLesson.builder()
+                .withSchoolSubjects(List.of(SchoolSubject.LOGIC))
+                .withTutorId(uuid)
+                .withPrivateLessonStatus(PrivateLessonStatus.AVAILABLE)
+                .withIsAvailableOffline(true)
+                .withStartTime(LocalDateTime.now().plusDays(5))
+                .withEndTime(LocalDateTime.now().plusDays(5).plusHours(1))
+                .withPrice(71.5)
+                .build();
+
+        TutorUser tutor = TutorUser.builder()
+                .withId(uuid)
+                .withFirstName("Anthony")
+                .withLastName("Emmaus")
+                .withEmailAddress("example@example.com")
+                .withPassword("!pAssword!", userPasswordValidator)
+                .build();
+
+        tutor.addPrivateLesson(List.of(lesson1, lesson2));
+
+        assertAll(() -> {
+            assertNotNull(tutor.getPrivateLessons());
+            assertTrue(tutor.getPrivateLessons().containsAll(List.of(lesson1, lesson2)));
+        });
     }
 
 }
