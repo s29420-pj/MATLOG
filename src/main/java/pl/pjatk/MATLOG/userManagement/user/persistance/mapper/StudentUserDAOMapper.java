@@ -8,6 +8,9 @@ import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidato
 import pl.pjatk.MATLOG.UserManagement.user.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
 
+/**
+ * Mapper that is used to map StudentUser to StudentUserDAO and vice versa.
+ */
 @Component
 public class StudentUserDAOMapper implements UserDAOMapper{
 
@@ -19,6 +22,11 @@ public class StudentUserDAOMapper implements UserDAOMapper{
         this.userPasswordValidator = userPasswordValidator;
     }
 
+    /**
+     * Method that maps User to StudentUserDAO which can be saved in database
+     * @param user User representation of StudentUser
+     * @return StudentUserDAO
+     */
     @Override
     public StudentUserDAO createUserDAO(User user) {
         return new StudentUserDAO(user.getId(),
@@ -31,6 +39,11 @@ public class StudentUserDAOMapper implements UserDAOMapper{
                 user.isAccountNonLocked());
     }
 
+    /**
+     * Method that maps UserDAO to StudentUser which can be used in application.
+     * @param user UserDAO which is database representation.
+     * @return StudentUser
+     */
     @Override
     public StudentUser createUser(UserDAO user) {
         return StudentUser.builder()
