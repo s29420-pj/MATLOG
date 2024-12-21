@@ -4,9 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import pl.pjatk.MATLOG.Domain.Enums.Stars;
-import pl.pjatk.MATLOG.Domain.Exceptions.ReviewExceptions.ReviewInvalidRateException;
-import pl.pjatk.MATLOG.Domain.Exceptions.ReviewExceptions.ReviewInvalidStudentId;
-import pl.pjatk.MATLOG.Domain.Exceptions.ReviewExceptions.ReviewInvalidTutorId;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -27,7 +24,7 @@ public class ReviewTests {
                                 .withComment("testComment")
                                         .withStudentId(STUDENT_ID)
                                                 .withTutorId(TUTOR_ID)
-                                                        .withDateAndTimeOfComment(LocalDateTime.now())
+                                                        .withDateAndTimeOfReview(LocalDateTime.now())
                                                                 .build();
         assertAll(() -> {
             assertNotNull(review);
