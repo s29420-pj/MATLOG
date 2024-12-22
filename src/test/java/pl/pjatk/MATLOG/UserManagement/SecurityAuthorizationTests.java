@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.userManagement;
+package pl.pjatk.MATLOG.UserManagement;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

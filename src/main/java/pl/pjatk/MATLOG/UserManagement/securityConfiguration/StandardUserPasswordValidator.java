@@ -1,5 +1,6 @@
 package pl.pjatk.MATLOG.UserManagement.securityConfiguration;
 
+
 /**
  * Implementation of standard checking if password is secure.
  */
