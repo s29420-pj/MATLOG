@@ -2,9 +2,7 @@ package pl.pjatk.MATLOG.UserManagement.user;
 
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.User;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.StudentUserRepository;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.TutorUserRepository;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
+import pl.pjatk.MATLOG.UserManagement.user.persistance.*;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.mapper.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.mapper.TutorUserDAOMapper;
 
@@ -29,13 +27,13 @@ public class UserRepositoryService {
     }
 
     public User findUserByEmailAddress(String emailAddress) {
-        Optional<UserDAO> userFromDatabase = studentUserRepository.findByEmailAddress(emailAddress);
-        if (userFromDatabase.isPresent()) {
-            return studentUserDAOMapper.createUser(userFromDatabase.get());
+        Optional<StudentUserDAO> studentFromDatabase = studentUserRepository.findByEmailAddress(emailAddress);
+        if (studentFromDatabase.isPresent()) {
+            return studentUserDAOMapper.createUser(studentFromDatabase.get());
         }
-        userFromDatabase = tutorUserRepository.findByEmailAddress(emailAddress);
-        if (userFromDatabase.isPresent()) {
-            return tutorUserDAOMapper.createUser(userFromDatabase.get());
+        Optional<TutorUserDAO> tutorFromDatabase = tutorUserRepository.findByEmailAddress(emailAddress);
+        if (tutorFromDatabase.isPresent()) {
+            return tutorUserDAOMapper.createUser(tutorFromDatabase.get());
         }
         return null;
     }

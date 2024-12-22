@@ -8,11 +8,12 @@ import pl.pjatk.MATLOG.UserManagement.Exceptions.UserAlreadyExistException;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserInvalidEmailAddressException;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.user.dto.UserDTO;
+import pl.pjatk.MATLOG.UserManagement.user.dto.UserRegistrationDTO;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.StudentUserRepository;
 
 @Service
-public class StudentUserService implements UserService {
+public class StudentUserService {
 
     private final StudentUserRepository studentUserRepository;
     private final UserRepositoryService userRepositoryService;
@@ -32,7 +33,6 @@ public class StudentUserService implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
     public User findUserByEmailAddress(String emailAddress) throws AuthenticationException, UserInvalidEmailAddressException {
         if (emailAddress == null || emailAddress.isEmpty()) {
             throw new UserInvalidEmailAddressException();
@@ -44,8 +44,7 @@ public class StudentUserService implements UserService {
         return user;
     }
 
-    @Override
-    public void registerUser(UserDTO userDTO) throws IllegalArgumentException, UserAlreadyExistException {
+    public void registerUser(UserRegistrationDTO userDTO) throws IllegalArgumentException, UserAlreadyExistException {
         if (userDTO == null) {
             throw new IllegalArgumentException("Please provide valid UserDTO");
         }
@@ -53,9 +52,9 @@ public class StudentUserService implements UserService {
         if (user != null) {
             throw new UserAlreadyExistException();
         }
+
         User domainUser = studentUserMapperFactory
-                .getUserDTOMapper()
-                .createUser(userDTO);
+                .getUserDTOMapper().createUser(userDTO);
 
         domainUser.changePassword(passwordEncoder.encode(userDTO.password()), userPasswordValidator);
 

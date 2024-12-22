@@ -13,7 +13,7 @@ import pl.pjatk.MATLOG.reviewManagement.ReviewService;
  * Mapper that is used to map TutorUser to TutorUserDAO and vice versa.
  */
 @Component
-public class TutorUserDAOMapper implements UserDAOMapper {
+public class TutorUserDAOMapper {
 
     private final PrivateLessonService privateLessonService;
     private final ReviewService reviewService;
@@ -31,14 +31,15 @@ public class TutorUserDAOMapper implements UserDAOMapper {
      * @param user User representation of TutorUser
      * @return TutorUserDAO
      */
-    @Override
-    public TutorUserDAO createUserDAO(User user) {
+    public TutorUserDAO createUserDAO(TutorUser user) {
         return new TutorUserDAO(user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmailAddress(),
                 user.getPassword(),
                 user.getDateOfBirth(),
+                user.getBiography(),
+                user.getSpecializations(),
                 user.getAuthorities(),
                 user.isAccountNonLocked());
     }
@@ -48,8 +49,7 @@ public class TutorUserDAOMapper implements UserDAOMapper {
      * @param user UserDAO which is database representation.
      * @return TutorUser
      */
-    @Override
-    public TutorUser createUser(UserDAO user) {
+    public TutorUser createUser(TutorUserDAO user) {
         return TutorUser.builder()
                 .withId(user.id())
                 .withFirstName(user.firstName())
@@ -57,6 +57,8 @@ public class TutorUserDAOMapper implements UserDAOMapper {
                 .withEmailAddress(user.emailAddress())
                 .withPassword(user.password(), userPasswordValidator)
                 .withDateOfBirth(user.dateOfBirth())
+                .withBiography(user.biography())
+                .withSpecializations(user.specializations())
                 .withAuthorities(user.authorities())
                 .withIsAccountNonLocked(user.isAccountNonLocked())
                 .withPrivateLessons(privateLessonService.findByTutorId(user.id()))

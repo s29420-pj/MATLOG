@@ -2,17 +2,19 @@ package pl.pjatk.MATLOG.UserManagement.user.persistance.mapper;
 
 import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.StudentUser;
+import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.PrivateLessonManagment.PrivateLessonService;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.StudentUserDAO;
+import pl.pjatk.MATLOG.UserManagement.user.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
 
 /**
  * Mapper that is used to map StudentUser to StudentUserDAO and vice versa.
  */
 @Component
-public class StudentUserDAOMapper implements UserDAOMapper{
+public class StudentUserDAOMapper {
 
     private final PrivateLessonService privateLessonService;
     private final UserPasswordValidator userPasswordValidator;
@@ -27,7 +29,6 @@ public class StudentUserDAOMapper implements UserDAOMapper{
      * @param user User representation of StudentUser
      * @return StudentUserDAO
      */
-    @Override
     public StudentUserDAO createUserDAO(User user) {
         return new StudentUserDAO(user.getId(),
                 user.getFirstName(),
@@ -44,7 +45,6 @@ public class StudentUserDAOMapper implements UserDAOMapper{
      * @param user UserDAO which is database representation.
      * @return StudentUser
      */
-    @Override
     public StudentUser createUser(UserDAO user) {
         return StudentUser.builder()
                 .withId(user.id())
