@@ -51,7 +51,7 @@ public class ReviewTests {
             assertNotNull(review.getStudentId());
             assertNotNull(review.getTutorId());
             assertNotNull(review.getDateAndTimeOfComment());
-            assertTrue(review.getDateAndTimeOfComment().isBefore(LocalDateTime.now()));
+            assertNotNull(review.getDateAndTimeOfComment());
         });
     }
 

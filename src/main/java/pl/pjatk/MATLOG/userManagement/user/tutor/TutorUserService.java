@@ -1,17 +1,15 @@
-package pl.pjatk.MATLOG.UserManagement.user;
+package pl.pjatk.MATLOG.UserManagement.user.tutor;
 
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.TutorUser;
-import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserAlreadyExistException;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserInvalidEmailAddressException;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.user.dto.UserDTO;
 import pl.pjatk.MATLOG.UserManagement.user.dto.UserRegistrationDTO;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.TutorUserDAO;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.TutorUserRepository;
+import pl.pjatk.MATLOG.UserManagement.user.tutor.persistance.TutorUserDAO;
+import pl.pjatk.MATLOG.UserManagement.user.tutor.persistance.TutorUserRepository;
 
 import java.util.Optional;
 

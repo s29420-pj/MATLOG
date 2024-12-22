@@ -1,23 +1,23 @@
-package pl.pjatk.MATLOG.UserManagement.user.dto.mapper;
+package pl.pjatk.MATLOG.UserManagement.user.tutor.mapper;
 
 import org.springframework.stereotype.Component;
-import pl.pjatk.MATLOG.Domain.StudentUser;
-import pl.pjatk.MATLOG.Domain.User;
+import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.user.dto.UserDTO;
+import pl.pjatk.MATLOG.UserManagement.user.dto.UserDTOMapper;
 
 @Component
-public class StudentUserDTOMapper implements UserDTOMapper {
+public class TutorUserDTOMapper implements UserDTOMapper {
 
-    private UserPasswordValidator userPasswordValidator;
+    private final UserPasswordValidator userPasswordValidator;
 
-    public StudentUserDTOMapper(UserPasswordValidator userPasswordValidator) {
+    public TutorUserDTOMapper(UserPasswordValidator userPasswordValidator) {
         this.userPasswordValidator = userPasswordValidator;
     }
 
     @Override
-    public User createUser(UserDTO userDTO) {
-        return StudentUser.builder()
+    public TutorUser createUser(UserDTO userDTO) {
+        return TutorUser.builder()
                 .withFirstName(userDTO.firstName())
                 .withLastName(userDTO.lastName())
                 .withEmailAddress(userDTO.emailAddress())
