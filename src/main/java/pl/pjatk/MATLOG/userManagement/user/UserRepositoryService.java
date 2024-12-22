@@ -37,7 +37,7 @@ public class UserRepositoryService {
      * @param emailAddress email address of the user
      * @return User
      */
-    public User findUserByEmailAddress(String emailAddress) {
+    public User finqdUserByEmailAddress(String emailAddress) {
         Optional<StudentUserDAO> studentFromDatabase = studentUserRepository.findByEmailAddress(emailAddress);
         if (studentFromDatabase.isPresent()) {
             return studentUserDAOMapper.createUser(studentFromDatabase.get());
