@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.Domain.Enums;
+package pl.pjatk.MATLOG.domain.enums;
 
 /**
  * Enum that represents rate of the tutor as stars

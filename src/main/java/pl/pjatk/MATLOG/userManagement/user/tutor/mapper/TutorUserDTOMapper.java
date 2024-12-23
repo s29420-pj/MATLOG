@@ -1,10 +1,10 @@
-package pl.pjatk.MATLOG.UserManagement.user.tutor.mapper;
+package pl.pjatk.MATLOG.userManagement.user.tutor.mapper;
 
 import org.springframework.stereotype.Component;
-import pl.pjatk.MATLOG.Domain.TutorUser;
-import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.user.dto.UserDTO;
-import pl.pjatk.MATLOG.UserManagement.user.dto.UserDTOMapper;
+import pl.pjatk.MATLOG.domain.TutorUser;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.user.dto.UserDTO;
+import pl.pjatk.MATLOG.userManagement.user.dto.UserDTOMapper;
 
 @Component
 public class TutorUserDTOMapper implements UserDTOMapper {

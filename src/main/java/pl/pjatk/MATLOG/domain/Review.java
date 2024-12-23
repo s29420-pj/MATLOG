@@ -1,6 +1,6 @@
-package pl.pjatk.MATLOG.Domain;
+package pl.pjatk.MATLOG.domain;
 
-import pl.pjatk.MATLOG.Domain.Enums.Stars;
+import pl.pjatk.MATLOG.domain.enums.Stars;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

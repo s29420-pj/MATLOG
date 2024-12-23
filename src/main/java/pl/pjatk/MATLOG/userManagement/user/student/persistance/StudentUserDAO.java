@@ -1,9 +1,9 @@
-package pl.pjatk.MATLOG.UserManagement.user.student.persistance;
+package pl.pjatk.MATLOG.userManagement.user.student.persistance;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.security.core.GrantedAuthority;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
+import pl.pjatk.MATLOG.userManagement.user.persistance.UserDAO;
 
 import java.time.LocalDate;
 import java.util.Set;

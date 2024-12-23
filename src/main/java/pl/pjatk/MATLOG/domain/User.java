@@ -1,10 +1,10 @@
-package pl.pjatk.MATLOG.Domain;
+package pl.pjatk.MATLOG.domain;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pl.pjatk.MATLOG.Domain.Enums.Role;
-import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
-import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.domain.enums.Role;
+import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;

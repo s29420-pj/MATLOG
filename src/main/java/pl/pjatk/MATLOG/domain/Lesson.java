@@ -1,8 +1,8 @@
-package pl.pjatk.MATLOG.Domain;
+package pl.pjatk.MATLOG.domain;
 
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
-import pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions.*;
+import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.*;
 
 import java.util.UUID;
 

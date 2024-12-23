@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.Domain.Exceptions.ReviewExceptions;
+package pl.pjatk.MATLOG.domain.exceptions.reviewExceptions;
 
 public class ReviewInvalidTutorId extends RuntimeException {
     public ReviewInvalidTutorId() {

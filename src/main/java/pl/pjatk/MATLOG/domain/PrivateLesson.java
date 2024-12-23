@@ -1,13 +1,13 @@
-package pl.pjatk.MATLOG.Domain;
+package pl.pjatk.MATLOG.domain;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
-import pl.pjatk.MATLOG.Domain.Enums.PrivateLessonStatus;
-import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
-import pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions.*;
+import pl.pjatk.MATLOG.domain.enums.PrivateLessonStatus;
+import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
+import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.*;
 
 import java.time.LocalDateTime;
 import java.util.List;

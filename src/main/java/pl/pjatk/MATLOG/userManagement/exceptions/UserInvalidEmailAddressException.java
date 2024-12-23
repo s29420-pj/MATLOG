@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.UserManagement.Exceptions;
+package pl.pjatk.MATLOG.userManagement.exceptions;
 
 public class UserInvalidEmailAddressException extends RuntimeException {
     public UserInvalidEmailAddressException() {

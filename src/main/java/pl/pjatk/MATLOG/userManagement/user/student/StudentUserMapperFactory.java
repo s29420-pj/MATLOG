@@ -1,8 +1,8 @@
-package pl.pjatk.MATLOG.UserManagement.user.student;
+package pl.pjatk.MATLOG.userManagement.user.student;
 
 import org.springframework.stereotype.Component;
-import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserDTOMapper;
-import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserDAOMapper;
+import pl.pjatk.MATLOG.userManagement.user.student.mapper.StudentUserDTOMapper;
+import pl.pjatk.MATLOG.userManagement.user.student.mapper.StudentUserDAOMapper;
 
 @Component
 public class StudentUserMapperFactory {

@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.Configuration;
+package pl.pjatk.MATLOG.configuration;
 
 import org.springframework.context.annotation.Configuration;
 

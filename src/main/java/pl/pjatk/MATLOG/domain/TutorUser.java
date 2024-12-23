@@ -1,7 +1,7 @@
-package pl.pjatk.MATLOG.Domain;
+package pl.pjatk.MATLOG.domain;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
+import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 
 import java.util.*;
 

@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions;
+package pl.pjatk.MATLOG.domain.exceptions.lessonExceptions;
 
 public class LessonInvalidPriceException extends RuntimeException {
     public LessonInvalidPriceException() {

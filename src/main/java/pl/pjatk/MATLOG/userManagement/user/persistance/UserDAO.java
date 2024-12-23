@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.UserManagement.user.persistance;
+package pl.pjatk.MATLOG.userManagement.user.persistance;
 
 import org.springframework.security.core.GrantedAuthority;
 

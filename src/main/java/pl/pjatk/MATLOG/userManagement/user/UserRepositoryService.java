@@ -1,13 +1,13 @@
-package pl.pjatk.MATLOG.UserManagement.user;
+package pl.pjatk.MATLOG.userManagement.user;
 
 import org.springframework.stereotype.Service;
-import pl.pjatk.MATLOG.Domain.User;
-import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserDAOMapper;
-import pl.pjatk.MATLOG.UserManagement.user.tutor.mapper.TutorUserDAOMapper;
-import pl.pjatk.MATLOG.UserManagement.user.student.persistance.StudentUserDAO;
-import pl.pjatk.MATLOG.UserManagement.user.student.persistance.StudentUserRepository;
-import pl.pjatk.MATLOG.UserManagement.user.tutor.persistance.TutorUserDAO;
-import pl.pjatk.MATLOG.UserManagement.user.tutor.persistance.TutorUserRepository;
+import pl.pjatk.MATLOG.domain.User;
+import pl.pjatk.MATLOG.userManagement.user.student.mapper.StudentUserDAOMapper;
+import pl.pjatk.MATLOG.userManagement.user.tutor.mapper.TutorUserDAOMapper;
+import pl.pjatk.MATLOG.userManagement.user.student.persistance.StudentUserDAO;
+import pl.pjatk.MATLOG.userManagement.user.student.persistance.StudentUserRepository;
+import pl.pjatk.MATLOG.userManagement.user.tutor.persistance.TutorUserDAO;
+import pl.pjatk.MATLOG.userManagement.user.tutor.persistance.TutorUserRepository;
 
 import java.util.Optional;
 

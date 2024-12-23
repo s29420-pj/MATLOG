@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.UserManagement.securityConfiguration;
+package pl.pjatk.MATLOG.userManagement.securityConfiguration;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pl.pjatk.MATLOG.UserManagement.user.SecurityUser;
+import pl.pjatk.MATLOG.userManagement.user.SecurityUser;
 
 /**
  * Component that is responsible for handling data evaluation. It checks

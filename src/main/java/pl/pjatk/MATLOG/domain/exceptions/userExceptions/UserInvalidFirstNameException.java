@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions;
+package pl.pjatk.MATLOG.domain.exceptions.userExceptions;
 
 public class UserInvalidFirstNameException extends RuntimeException {
   public UserInvalidFirstNameException() {

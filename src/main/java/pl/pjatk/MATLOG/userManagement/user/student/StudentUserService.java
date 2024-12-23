@@ -1,16 +1,16 @@
-package pl.pjatk.MATLOG.UserManagement.user.student;
+package pl.pjatk.MATLOG.userManagement.user.student;
 
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.pjatk.MATLOG.Domain.User;
-import pl.pjatk.MATLOG.UserManagement.Exceptions.UserAlreadyExistException;
-import pl.pjatk.MATLOG.UserManagement.Exceptions.UserInvalidEmailAddressException;
-import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.user.UserRepositoryService;
-import pl.pjatk.MATLOG.UserManagement.user.dto.UserRegistrationDTO;
-import pl.pjatk.MATLOG.UserManagement.user.student.persistance.StudentUserDAO;
-import pl.pjatk.MATLOG.UserManagement.user.student.persistance.StudentUserRepository;
+import pl.pjatk.MATLOG.domain.User;
+import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistException;
+import pl.pjatk.MATLOG.userManagement.exceptions.UserInvalidEmailAddressException;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.user.UserRepositoryService;
+import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
+import pl.pjatk.MATLOG.userManagement.user.student.persistance.StudentUserDAO;
+import pl.pjatk.MATLOG.userManagement.user.student.persistance.StudentUserRepository;
 
 @Service
 public class StudentUserService {

@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.UserManagement.securityConfiguration;
+package pl.pjatk.MATLOG.userManagement.securityConfiguration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.Domain.Exceptions.ReviewExceptions;
+package pl.pjatk.MATLOG.domain.exceptions.reviewExceptions;
 
 public class ReviewInvalidRateException extends RuntimeException {
     public ReviewInvalidRateException() {

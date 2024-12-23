@@ -1,10 +1,10 @@
-package pl.pjatk.MATLOG.UserManagement.user;
+package pl.pjatk.MATLOG.userManagement.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import pl.pjatk.MATLOG.UserManagement.Exceptions.UserAlreadyExistException;
+import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistException;
 
 @ControllerAdvice
 public class UserExceptionHandler {

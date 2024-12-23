@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.UserManagement.user.tutor.persistance;
+package pl.pjatk.MATLOG.userManagement.user.tutor.persistance;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

@@ -1,10 +1,10 @@
-package pl.pjatk.MATLOG.UserManagement.user.tutor.persistance;
+package pl.pjatk.MATLOG.userManagement.user.tutor.persistance;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.security.core.GrantedAuthority;
-import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
+import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
+import pl.pjatk.MATLOG.userManagement.user.persistance.UserDAO;
 
 import java.time.LocalDate;
 import java.util.Set;

@@ -2,7 +2,7 @@ package pl.pjatk.MATLOG.PrivateLessonManagment;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import pl.pjatk.MATLOG.Domain.PrivateLesson;
+import pl.pjatk.MATLOG.domain.PrivateLesson;
 
 import java.util.List;
 import java.util.Set;

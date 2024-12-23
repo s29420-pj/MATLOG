@@ -1,7 +1,7 @@
-package pl.pjatk.MATLOG.UserManagement.user.dto;
+package pl.pjatk.MATLOG.userManagement.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import pl.pjatk.MATLOG.Domain.Enums.Role;
+import pl.pjatk.MATLOG.domain.enums.Role;
 
 import java.time.LocalDate;
 

@@ -1,9 +1,9 @@
-package pl.pjatk.MATLOG.Domain;
+package pl.pjatk.MATLOG.domain;
 
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pl.pjatk.MATLOG.Domain.Enums.Role;
+import pl.pjatk.MATLOG.domain.enums.Role;
 
 import java.util.Set;
 
