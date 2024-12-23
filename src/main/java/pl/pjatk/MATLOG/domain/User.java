@@ -1,18 +1,15 @@
-package pl.pjatk.MATLOG.domain;
+package pl.pjatk.MATLOG.Domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.annotation.PersistenceCreator;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
-import pl.pjatk.MATLOG.userManagement.UserPasswordValidator;
+import pl.pjatk.MATLOG.Domain.Enums.Role;
+import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
+import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,16 +17,16 @@ import java.util.UUID;
  * Abstract class that represents User in application.
  * User is meant to be extended by all concrete classes that want to represent a role.
  * Mandatory fields of User are:
- * - id
- * - first name
- * - last name
- * - email address
- * - password
+ * - id, which is set by application
+ * - first name, needs to be provided
+ * - last name, needs to be provided
+ * - email address, needs to be provided
+ * - password, needs to be provided
+ * - authorities, added USER and by concrete classes
+ * - role, set by concrete classes
  */
-@Document("user")
 public abstract class User {
 
-    @MongoId
     private final String id;
     private final String firstName;
     private final String lastName;
@@ -38,30 +35,30 @@ public abstract class User {
     private final LocalDate dateOfBirth;
     private final Set<GrantedAuthority> authorities;
     private boolean isAccountNonLocked;
-    private final Role role;
 
     /**
-     * Constructor of the User. Sets a random UUID as an id of user, basic SimpleGrantedAuthority which is a USER role,
+     * Constructor of the User. Sets a random UUID as an id of user,
+     * basic SimpleGrantedAuthority which is a USER role,
      * non-locked account, and other data provided in builder.
      * @param builder builder of extended class
      */
     protected User(Builder<?> builder) {
         validateFields(builder);
-        this.id = UUID.randomUUID().toString();
+        if (builder.id == null || builder.id.isEmpty()) this.id = UUID.randomUUID().toString();
+        else this.id = builder.id;
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.emailAddress = builder.emailAddress;
         this.password = builder.password;
         this.dateOfBirth = builder.dateOfBirth;
-        this.authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("USER"));
-        this.isAccountNonLocked = true;
-        this.role = builder.role;
+        this.authorities = Objects.requireNonNullElseGet(builder.authorities, HashSet::new);
+        this.authorities.add(new SimpleGrantedAuthority("USER"));
+        this.isAccountNonLocked = builder.isAccountNonLocked;
     }
 
     /**
      * Method that is being used by User constructor to check if mandatory fields are set.
-     * @throws IllegalStateException if there is no first name, last name, email address, date of birth or it's blank
+     * @throws IllegalStateException if there is no first name, last name, email address, date of birth, or it's blank
      */
     private void validateFields(Builder<?> builder) {
         if (builder.firstName == null) throw new IllegalStateException("First name of user is mandatory and must be set");
@@ -90,15 +87,11 @@ public abstract class User {
         return password;
     }
 
-    /**
-     * Method that changes password of the User.
-     * CAUTION! THIS METHOD SHOULD BE ONLY USED VIA USERSERVICE IN USERMANAGEMENT PACKAGE!
-     * @param password new password
-     */
-    public void changePassword(String password) {
+    public void changePassword(String password, UserPasswordValidator passwordValidator) {
         if (password == null || password.isEmpty()) {
             throw new UserEmptyPasswordException();
         }
+        if (!passwordValidator.isSecure(password)) throw new UserUnsecurePasswordException();
         this.password = password;
     }
 
@@ -114,12 +107,8 @@ public abstract class User {
         return isAccountNonLocked;
     }
 
-    protected boolean addAuthority(GrantedAuthority authority) {
+    public boolean addAuthority(GrantedAuthority authority) {
         return authorities.add(authority);
-    }
-
-    public Role getRole() {
-        return role;
     }
 
     /**
@@ -145,15 +134,27 @@ public abstract class User {
      * @param <T> - concrete user builder
      */
     public abstract static class Builder<T extends Builder<T>> {
+        private String id;
         private String firstName;
         private String lastName;
         private String emailAddress;
         private String password;
         private LocalDate dateOfBirth;
-        private Role role;
+        private Set<GrantedAuthority> authorities;
+        private boolean isAccountNonLocked;
 
         private static final int MIN_AGE = 1;
         private static final int MAX_AGE = 100;
+
+        /**
+         * Method that sets user's id
+         * @param id Identifier of a user.
+         * @return Builder
+         */
+        public T withId(String id) {
+            this.id = id;
+            return self();
+        }
 
         /**
          * Method that sets User's first name
@@ -203,9 +204,12 @@ public abstract class User {
          * @return Builder
          * @throws UserEmptyPasswordException when password is null or blank
          */
-        public T withPassword(String password) {
+        public T withPassword(String password, UserPasswordValidator passwordValidator) {
             if (password == null || password.isBlank()) {
                 throw new UserEmptyPasswordException();
+            }
+            if (!passwordValidator.isSecure(password)) {
+                throw new UserUnsecurePasswordException();
             }
             this.password = password;
             return self();
@@ -215,31 +219,36 @@ public abstract class User {
          * Method that sets User's date of birth
          * @param dateOfBirth - date of birth of the user
          * @return Builder
-         * @throws UserInvalidDateOfBirthException if date of birth is null or unreal ( x <= 0 or 100 < x)
+         * @throws UserInvalidDateOfBirthException if date of birth is unreal ( x <= 0 or 100 < x)
          * */
         public T withDateOfBirth(LocalDate dateOfBirth) {
-            if (dateOfBirth == null) {
-                throw new UserInvalidDateOfBirthException();
-            }
-            int age = (int)ChronoUnit.YEARS.between(dateOfBirth, LocalDate.now());
-            if (age < MIN_AGE || age > MAX_AGE) {
-                throw new UserInvalidDateOfBirthException();
+            if (dateOfBirth != null) {
+                int age = (int) ChronoUnit.YEARS.between(dateOfBirth, LocalDate.now());
+                if (age < MIN_AGE || age > MAX_AGE) {
+                    throw new UserInvalidDateOfBirthException();
+                }
             }
             this.dateOfBirth = dateOfBirth;
             return self();
         }
 
         /**
-         * Method that sets User's role
-         * @param role role of the user
+         * Method that sets User's set of granted authorities
+         * @param authorities authorities to add
          * @return Builder
-         * @throws UserInvalidRoleException when role is not provided or there is not such a role
          */
-        protected T withRole(Role role) {
-            if (role == null) {
-                throw new UserInvalidRoleException();
-            }
-            this.role = role;
+        public T withAuthorities(Set<GrantedAuthority> authorities) {
+            this.authorities = authorities;
+            return self();
+        }
+
+        /**
+         * Method that sets User's account status. It can be blocked or not
+         * @param isAccountNonLocked status of an account
+         * @return Builder
+         */
+        public T withIsAccountNonLocked(boolean isAccountNonLocked) {
+            this.isAccountNonLocked = isAccountNonLocked;
             return self();
         }
 
