@@ -1,10 +1,10 @@
-package pl.pjatk.MATLOG.PrivateLessonManagment;
+package pl.pjatk.MATLOG.privateLessonManagment;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.pjatk.MATLOG.Domain.PrivateLesson;
-import pl.pjatk.MATLOG.Domain.Enums.PrivateLessonStatus;
-import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
+import pl.pjatk.MATLOG.domain.PrivateLesson;
+import pl.pjatk.MATLOG.domain.enums.PrivateLessonStatus;
+import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 
 import java.time.LocalDateTime;
 import java.util.List;

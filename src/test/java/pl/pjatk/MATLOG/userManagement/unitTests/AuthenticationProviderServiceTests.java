@@ -13,12 +13,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.pjatk.MATLOG.Domain.StudentUser;
-import pl.pjatk.MATLOG.UserManagement.securityConfiguration.AuthenticationProviderService;
-import pl.pjatk.MATLOG.UserManagement.securityConfiguration.MongoUserDetailsService;
-import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.user.SecurityUser;
+import pl.pjatk.MATLOG.domain.StudentUser;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.AuthenticationProviderService;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.MongoUserDetailsService;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.StandardUserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.user.SecurityUser;
 
 import java.time.LocalDate;
 

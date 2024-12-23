@@ -1,10 +1,9 @@
-package pl.pjatk.MATLOG.PrivateLessonManagment;
+package pl.pjatk.MATLOG.privateLessonManagment;
 
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.domain.PrivateLesson;
 import pl.pjatk.MATLOG.domain.enums.PrivateLessonStatus;
 
-import java.util.List;
 import java.util.Set;
 
 @Service

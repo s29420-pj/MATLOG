@@ -1,8 +1,8 @@
-package pl.pjatk.MATLOG.Domain;
+package pl.pjatk.MATLOG.domain;
 
 import org.junit.jupiter.api.Test;
-import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
-import pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions.*;
+import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
+import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.*;
 
 import java.time.LocalDateTime;
 import java.util.List;

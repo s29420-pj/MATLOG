@@ -2,7 +2,7 @@ package pl.pjatk.MATLOG.userManagement.user.tutor.mapper;
 
 import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.domain.TutorUser;
-import pl.pjatk.MATLOG.PrivateLessonManagment.PrivateLessonService;
+import pl.pjatk.MATLOG.privateLessonManagment.PrivateLessonService;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.user.tutor.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.reviewManagement.ReviewService;

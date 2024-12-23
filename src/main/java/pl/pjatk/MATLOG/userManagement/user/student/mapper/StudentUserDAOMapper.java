@@ -3,7 +3,7 @@ package pl.pjatk.MATLOG.userManagement.user.student.mapper;
 import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.domain.User;
-import pl.pjatk.MATLOG.PrivateLessonManagment.PrivateLessonService;
+import pl.pjatk.MATLOG.privateLessonManagment.PrivateLessonService;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.user.student.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.userManagement.user.persistance.UserDAO;
