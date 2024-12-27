@@ -1,12 +1,21 @@
 package pl.pjatk.MATLOG.reviewManagement.mapper;
 
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.Review;
+import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserDAOMapper;
+import pl.pjatk.MATLOG.UserManagement.user.tutor.mapper.TutorUserDAOMapper;
 import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
 
 @Component
 public class ReviewDAOMapper {
+
+    private final TutorUserDAOMapper tutorUserDAOMapper;
+    private final StudentUserDAOMapper studentUserDAOMapper;
+
+    public ReviewDAOMapper(TutorUserDAOMapper tutorUserDAOMapper, StudentUserDAOMapper studentUserDAOMapper) {
+        this.tutorUserDAOMapper = tutorUserDAOMapper;
+        this.studentUserDAOMapper = studentUserDAOMapper;
+    }
 
     public ReviewDAO create(Review review) {
         return new ReviewDAO(
@@ -14,8 +23,8 @@ public class ReviewDAOMapper {
                 review.getComment(),
                 review.getRate(),
                 review.getDateAndTimeOfComment(),
-                new ObjectId(review.getStudentId()),
-                new ObjectId(review.getTutorId()));
+                studentUserDAOMapper.createUserDAO(review.getStudentUser()),
+                tutorUserDAOMapper.createUserDAO(review.getTutorId());
     }
 
     public Review create(ReviewDAO reviewDAO) {
@@ -24,8 +33,8 @@ public class ReviewDAOMapper {
                 .withComment(reviewDAO.comment())
                 .withRate(reviewDAO.rate())
                 .withDateAndTimeOfReview(reviewDAO.dateAndTimeOfComment())
-                .withStudentId(reviewDAO.studentId().toString())
-                .withTutorId(reviewDAO.tutorId().toString())
+                .withStudentId(studentUserDAOMapper.createUser(reviewDAO.student()))
+                .withTutorId(tutorUserDAOMapper.createUser(reviewDAO.tutor()))
                 .build();
     }
 }

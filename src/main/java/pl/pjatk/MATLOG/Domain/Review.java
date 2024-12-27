@@ -15,8 +15,8 @@ public final class Review {
     private final String comment;
     private final Stars rate;
     private final LocalDateTime dateAndTimeOfComment;
-    private final String studentId;
-    private final String tutorId;
+    private final StudentUser studentUser;
+    private final TutorUser tutorUser;
 
     public String getId() {
         return id;
@@ -34,12 +34,12 @@ public final class Review {
         return dateAndTimeOfComment;
     }
 
-    public String getStudentId() {
-        return studentId;
+    public StudentUser getStudentUser() {
+        return studentUser;
     }
 
-    public String getTutorId() {
-        return tutorId;
+    public TutorUser getTutorId() {
+        return tutorUser;
     }
 
     /**
@@ -57,8 +57,8 @@ public final class Review {
         this.comment = Objects.requireNonNullElseGet(builder.comment, String::new);
         this.rate = Objects.requireNonNull(builder.rate);
         this.dateAndTimeOfComment = Objects.requireNonNullElseGet(builder.dateAndTimeOfComment, LocalDateTime::now);
-        this.studentId = Objects.requireNonNull(builder.studentId);
-        this.tutorId = Objects.requireNonNull(builder.tutorId);
+        this.studentUser = Objects.requireNonNull(builder.studentUser);
+        this.tutorUser = Objects.requireNonNull(builder.tutorUser);
     }
 
     /**
@@ -74,8 +74,8 @@ public final class Review {
         private String comment;
         private Stars rate;
         private LocalDateTime dateAndTimeOfComment;
-        private String studentId;
-        private String tutorId;
+        private StudentUser studentUser;
+        private TutorUser tutorUser;
 
         /**
          * Sets Review's id.
@@ -119,21 +119,21 @@ public final class Review {
 
         /**
          * Sets review's student
-         * @param studentId Identifier of a student, who created this review.
+         * @param studentUser Identifier of a student, who created this review.
          * @return Builder
          */
-        public Builder withStudentId(String studentId) {
-            this.studentId = studentId;
+        public Builder withStudentId(StudentUser studentUser) {
+            this.studentUser = studentUser;
             return this;
         }
 
         /**
          * Sets review tutor.
-         * @param tutorId Identifier of a tutor
+         * @param tutorUser Identifier of a tutor
          * @return Builder
          */
-        public Builder withTutorId(String tutorId) {
-            this.tutorId = tutorId;
+        public Builder withTutorId(TutorUser tutorUser) {
+            this.tutorUser = tutorUser;
             return this;
         }
 

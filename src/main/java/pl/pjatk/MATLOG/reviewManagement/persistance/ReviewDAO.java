@@ -9,11 +9,13 @@ import pl.pjatk.MATLOG.UserManagement.user.tutor.persistance.TutorUserDAO;
 import java.time.LocalDateTime;
 
 @Document("review")
-public record ReviewDAO(@MongoId String id,
+public record ReviewDAO(@MongoId
+                        String id,
                         String comment,
                         Stars rate,
                         LocalDateTime dateAndTimeOfComment,
-                        @DocumentReference()
-                        ObjectId studentId,
-                        ObjectId tutorId) {
+                        @DBRef
+                        StudentUserDAO student,
+                        @DBRef
+                        TutorUserDAO tutor) {
 }

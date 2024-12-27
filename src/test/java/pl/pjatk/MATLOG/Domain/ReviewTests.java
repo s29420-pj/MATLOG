@@ -30,7 +30,7 @@ public class ReviewTests {
             assertNotNull(review);
             assertEquals(stars, review.getRate());
             assertEquals("testComment", review.getComment());
-            assertNotNull(review.getStudentId());
+            assertNotNull(review.getStudentUser());
             assertNotNull(review.getTutorId());
             assertNotNull(review.getDateAndTimeOfComment());
         });
@@ -48,7 +48,7 @@ public class ReviewTests {
             assertNotNull(review);
             assertEquals(Stars.FOUR, review.getRate());
             assertEquals("", review.getComment());
-            assertNotNull(review.getStudentId());
+            assertNotNull(review.getStudentUser());
             assertNotNull(review.getTutorId());
             assertNotNull(review.getDateAndTimeOfComment());
             assertNotNull(review.getDateAndTimeOfComment());
@@ -67,7 +67,7 @@ public class ReviewTests {
             assertNotNull(review);
             assertEquals(Stars.FOUR, review.getRate());
             assertEquals("", review.getComment());
-            assertNotNull(review.getStudentId());
+            assertNotNull(review.getStudentUser());
             assertNotNull(review.getTutorId());
         });
     }
