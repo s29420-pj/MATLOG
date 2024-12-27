@@ -1,16 +1,21 @@
 package pl.pjatk.MATLOG.reviewManagement.mapper;
 
 import pl.pjatk.MATLOG.Domain.Review;
+import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserReviewDTOMapper;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
 
 public class ReviewDTOMapper {
 
+    private final StudentUserReviewDTOMapper studentUserReviewDTOMapper;
 
+    public ReviewDTOMapper(StudentUserReviewDTOMapper studentUserReviewDTOMapper) {
+        this.studentUserReviewDTOMapper = studentUserReviewDTOMapper;
+    }
 
     public ReviewDTO create(Review review) {
         return new ReviewDTO(review.getComment(),
                 review.getRate(),
                 review.getDateAndTimeOfComment(),
-                review.getStudentUser())
+                studentUserReviewDTOMapper.create(review.getStudentUser()));
     }
 }
