@@ -12,26 +12,8 @@ import java.util.*;
  */
 public final class TutorUser extends User {
 
-    private final Set<PrivateLesson> privateLessons;
-    private final List<Review> reviews;
     private String biography;
     private final Set<SchoolSubject> specializations;
-
-    /**
-     * Method that returns private lessons
-     * @return Copy of set containing private lessons
-     */
-    public Set<PrivateLesson> getPrivateLessons() {
-        return Set.copyOf(privateLessons);
-    }
-
-    /**
-     * Method that returns reviews
-     * @return Copy of list containing reviews from students
-     */
-    public List<Review> getReviews() {
-        return List.copyOf(reviews);
-    }
 
     /**
      * Method that returns specializationList.
@@ -49,42 +31,6 @@ public final class TutorUser extends User {
         return biography;
     }
 
-    /**
-     * Method that adds lesson to set
-     * @param privateLesson instantiated private lesson that will be added to set
-     * @return boolean - true if set doesn't contain specified private lesson and was added
-     * or false if lesson couldn't be added
-     */
-    public boolean addPrivateLesson(PrivateLesson privateLesson) {
-        return privateLessons.add(privateLesson);
-    }
-
-    /**
-     * Method that adds all private lessons to set.
-     * @param collectionOfPrivateLessons Collection of private lessons that will be added to set.
-     * @return boolean - true if collection has been successfully added to set. False otherwise.
-     */
-    public boolean addPrivateLesson(Collection<PrivateLesson> collectionOfPrivateLessons) {
-        return privateLessons.addAll(collectionOfPrivateLessons);
-    }
-
-    /**
-     * Method that removes lesson from set.
-     * @param privateLesson Private lesson to remove from set.
-     * @return boolean - true if object has been removed. False otherwise
-     */
-    public boolean removePrivateLesson(PrivateLesson privateLesson) {
-        return privateLessons.remove(privateLesson);
-    }
-
-    /**
-     * Method that removes all private lessons from set.
-     * @param collectionOfPrivateLessons Collection of private lessons that will be removed from set.
-     * @return boolean - true if collection has been successfully removed. False otherwise.
-     */
-    public boolean removePrivateLesson(Collection<PrivateLesson> collectionOfPrivateLessons) {
-        return privateLessons.removeAll(collectionOfPrivateLessons);
-    }
 
     /**
      * Method that adds specialization item to the list of specializations.
@@ -141,8 +87,6 @@ public final class TutorUser extends User {
         super(builder);
         if (!getAuthorities().contains(new SimpleGrantedAuthority("TUTOR_USER")))
             addAuthority(new SimpleGrantedAuthority("TUTOR_USER"));
-        this.privateLessons = Objects.requireNonNullElseGet(builder.privateLessons, HashSet::new);
-        this.reviews = Objects.requireNonNullElseGet(builder.reviews, ArrayList::new);
         this.biography = Objects.requireNonNullElseGet(builder.biography, String::new);
         this.specializations = Objects.requireNonNullElseGet(builder.specializations, HashSet::new);
     }
@@ -161,30 +105,8 @@ public final class TutorUser extends User {
      */
     public static class TutorBuilder extends Builder<TutorBuilder> {
 
-        private Set<PrivateLesson> privateLessons;
-        private List<Review> reviews;
         private String biography;
         private Set<SchoolSubject> specializations;
-
-        /**
-         * Method that initialize set
-         * @param privateLessons Set with private lessons
-         * @return TutorBuilder
-         */
-        public TutorBuilder withPrivateLessons(Set<PrivateLesson> privateLessons) {
-            this.privateLessons = privateLessons;
-            return self();
-        }
-
-        /**
-         * Method that initialize reviews
-         * @param reviews List with Tutor reviews
-         * @return TutorBuilder
-         */
-        public TutorBuilder withReviews(List<Review> reviews) {
-            this.reviews = reviews;
-            return self();
-        }
 
         /**
          * Method that initializes biography.
