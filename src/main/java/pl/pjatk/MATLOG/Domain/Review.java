@@ -38,7 +38,7 @@ public final class Review {
         return studentUser;
     }
 
-    public TutorUser getTutorId() {
+    public TutorUser getTutor() {
         return tutorUser;
     }
 
@@ -122,7 +122,7 @@ public final class Review {
          * @param studentUser Identifier of a student, who created this review.
          * @return Builder
          */
-        public Builder withStudentId(StudentUser studentUser) {
+        public Builder withStudent(StudentUser studentUser) {
             this.studentUser = studentUser;
             return this;
         }
@@ -132,7 +132,7 @@ public final class Review {
          * @param tutorUser Identifier of a tutor
          * @return Builder
          */
-        public Builder withTutorId(TutorUser tutorUser) {
+        public Builder withTutor(TutorUser tutorUser) {
             this.tutorUser = tutorUser;
             return this;
         }
