@@ -14,11 +14,9 @@ import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
 @Component
 public class StudentUserDAOMapper {
 
-    private final PrivateLessonService privateLessonService;
     private final UserPasswordValidator userPasswordValidator;
 
-    public StudentUserDAOMapper(PrivateLessonService privateLessonService, UserPasswordValidator userPasswordValidator) {
-        this.privateLessonService = privateLessonService;
+    public StudentUserDAOMapper(UserPasswordValidator userPasswordValidator) {
         this.userPasswordValidator = userPasswordValidator;
     }
 
@@ -53,7 +51,6 @@ public class StudentUserDAOMapper {
                 .withDateOfBirth(user.dateOfBirth())
                 .withAuthorities(user.authorities())
                 .withIsAccountNonLocked(user.isAccountNonLocked())
-                .withPrivateLessons(privateLessonService.findByStudentId(user.id()))
                 .build();
     }
 }

@@ -49,7 +49,7 @@ public class ReviewTests {
             assertEquals(Stars.FIVE, review.getRate());
             assertEquals(testDateTime, review.getDateAndTimeOfComment());
             assertEquals(testStudent, review.getStudentUser());
-            assertEquals(testTutor, review.getTutor());
+            assertEquals(testTutor, review.getTutorUser());
         });
     }
 }

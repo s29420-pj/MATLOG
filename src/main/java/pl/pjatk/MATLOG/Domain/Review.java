@@ -38,7 +38,7 @@ public final class Review {
         return studentUser;
     }
 
-    public TutorUser getTutor() {
+    public TutorUser getTutorUser() {
         return tutorUser;
     }
 
