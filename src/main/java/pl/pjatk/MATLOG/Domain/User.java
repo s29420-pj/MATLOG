@@ -51,7 +51,7 @@ public abstract class User {
         this.password = builder.password;
         this.dateOfBirth = builder.dateOfBirth;
         this.authorities = Objects.requireNonNullElseGet(builder.authorities, HashSet::new);
-        this.authorities.add(new SimpleGrantedAuthority("USER"));
+        addAuthority(new SimpleGrantedAuthority("USER"));
         this.isAccountNonLocked = builder.isAccountNonLocked;
     }
 
@@ -99,7 +99,7 @@ public abstract class User {
     }
 
     public Set<GrantedAuthority> getAuthorities() {
-        return Set.copyOf(authorities);
+        return authorities;
     }
 
     public boolean isAccountNonLocked() {
