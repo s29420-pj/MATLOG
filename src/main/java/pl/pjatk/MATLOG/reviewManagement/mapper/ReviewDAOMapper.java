@@ -24,7 +24,7 @@ public class ReviewDAOMapper {
                 review.getRate(),
                 review.getDateAndTimeOfComment(),
                 studentUserDAOMapper.createUserDAO(review.getStudentUser()),
-                tutorUserDAOMapper.createUserDAO(review.getTutorId());
+                tutorUserDAOMapper.createUserDAO(review.getTutorId()));
     }
 
     public Review create(ReviewDAO reviewDAO) {

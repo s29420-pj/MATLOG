@@ -14,7 +14,5 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
     }
 
-    public List<Review> getTutorUserReviews(String tutorUserId) {
-        return reviewRepository.findByTutorId(tutorUserId);
-    }
+
 }
