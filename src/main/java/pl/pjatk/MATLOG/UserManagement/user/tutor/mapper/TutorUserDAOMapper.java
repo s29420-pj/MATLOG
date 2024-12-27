@@ -13,14 +13,9 @@ import pl.pjatk.MATLOG.reviewManagement.ReviewService;
 @Component
 public class TutorUserDAOMapper {
 
-    private final PrivateLessonService privateLessonService;
-    private final ReviewService reviewService;
     private final UserPasswordValidator userPasswordValidator;
 
-
-    public TutorUserDAOMapper(PrivateLessonService privateLessonService, ReviewService reviewService, UserPasswordValidator userPasswordValidator) {
-        this.privateLessonService = privateLessonService;
-        this.reviewService = reviewService;
+    public TutorUserDAOMapper(UserPasswordValidator userPasswordValidator) {
         this.userPasswordValidator = userPasswordValidator;
     }
 
@@ -59,9 +54,6 @@ public class TutorUserDAOMapper {
                 .withSpecializations(user.specializations())
                 .withAuthorities(user.authorities())
                 .withIsAccountNonLocked(user.isAccountNonLocked())
-                .withPrivateLessons(privateLessonService.findByTutorId(user.id()))
-                .withReviews(reviewService.getTutorUserReviews(user.id()))
                 .build();
-
     }
 }
