@@ -47,7 +47,7 @@ public final class PrivateLesson {
      * @param price Price of the lesson
      *
      * @throws PrivateLessonInvalidSchoolSubjectException When schoolSubjects are empty
-     * @throws PrivateLessonInvalidIdException When tutorId is empty
+     * @throws PrivateLessonInvalidIdException When tutor is empty
      * @throws IllegalStateException When start time is empty
      * @throws IllegalStateException When end time is empty
      * @throws PrivateLessonInvalidStatusException When status is empty

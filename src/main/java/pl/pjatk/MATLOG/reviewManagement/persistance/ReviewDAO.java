@@ -15,7 +15,7 @@ public record ReviewDAO(@MongoId String id,
                         Stars rate,
                         LocalDateTime dateAndTimeOfComment,
                         @DBRef
-                        StudentUserDAO studentId,
+                        StudentUserDAO student,
                         @DBRef
-                        TutorUserDAO tutorId) {
+                        TutorUserDAO tutor) {
 }

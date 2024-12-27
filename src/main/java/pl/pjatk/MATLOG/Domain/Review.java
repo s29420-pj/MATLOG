@@ -48,7 +48,7 @@ public final class Review {
      * If comment is not provided in builder then new empty string is created.
      * If dateAndTimeOfComment is not provided in builder then LocalDateTime.now() is instantiated.
      * @param builder created builder
-     * @throws NullPointerException if rate or studentId or tutorId is null
+     * @throws NullPointerException if rate or student or tutor is null
      */
     private Review(Builder builder) {
         if (builder.id == null || builder.id.isEmpty())
@@ -118,7 +118,7 @@ public final class Review {
         }
 
         /**
-         * Sets review's studentId
+         * Sets review's student
          * @param studentId Identifier of a student, who created this review.
          * @return Builder
          */
@@ -128,7 +128,7 @@ public final class Review {
         }
 
         /**
-         * Sets review tutorId.
+         * Sets review tutor.
          * @param tutorId Identifier of a tutor
          * @return Builder
          */
