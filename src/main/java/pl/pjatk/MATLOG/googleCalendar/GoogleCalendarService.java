@@ -6,19 +6,13 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
-import pl.pjatk.MATLOG.domain.StudentUser;
-import pl.pjatk.MATLOG.domain.User;
 import pl.pjatk.MATLOG.domain.enums.PrivateLessonStatus;
-import pl.pjatk.MATLOG.domain.enums.Role;
-import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 import pl.pjatk.MATLOG.googleCalendar.dto.PrivateLessonCalendarDTO;
 import pl.pjatk.MATLOG.googleCalendar.dto.UserCalendarDTO;
+import pl.pjatk.MATLOG.googleCalendar.mapper.DateTimeUtil;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Google Calendar service is responsible for handling all the operations related to Google Calendar API.
@@ -82,9 +76,9 @@ public class GoogleCalendarService {
                 .setSummary(buildSummary(privateLessonCalendarDTO.status()))
                 .setId(privateLessonCalendarDTO.id())
                 .setDescription(buildDescription(privateLessonCalendarDTO))
-                .setColorId(EventColorManager(privateLessonCalendarDTO.status()))
-                .setStart(new EventDateTime().setDateTime(new DateTime(privateLessonCalendarDTO.startTime().toString())))
-                .setEnd(new EventDateTime().setDateTime(new DateTime(privateLessonCalendarDTO.endTime().toString())));
+                .setColorId(eventColorManager(privateLessonCalendarDTO.status()))
+                .setStart(new EventDateTime().setDateTime(DateTimeUtil.toGoogleDateTime(privateLessonCalendarDTO.startTime())))
+                .setEnd(new EventDateTime().setDateTime(DateTimeUtil.toGoogleDateTime(privateLessonCalendarDTO.endTime())));
 
         createEvent(privateLessonCalendarDTO.tutorId(), event);
     }
@@ -95,7 +89,7 @@ public class GoogleCalendarService {
 
         event.setSummary(buildSummary(privateLessonCalendarDTO.status(), userCalendarDTO))
                 .setDescription(buildDescription(privateLessonCalendarDTO))
-                .setColorId(EventColorManager(privateLessonCalendarDTO.status()));
+                .setColorId(eventColorManager(privateLessonCalendarDTO.status()));
 
         updateEvent(privateLessonCalendarDTO.tutorId(), event);
     }
@@ -106,7 +100,7 @@ public class GoogleCalendarService {
 
         event.setSummary(buildSummary(privateLessonCalendarDTO.status(), userCalendarDTO))
                 .setDescription(buildDescription(privateLessonCalendarDTO))
-                .setColorId(EventColorManager(privateLessonCalendarDTO.status()));
+                .setColorId(eventColorManager(privateLessonCalendarDTO.status()));
 
         updateEvent(privateLessonCalendarDTO.tutorId(), event);
         createEvent(privateLessonCalendarDTO.studentId(), event);
@@ -118,25 +112,25 @@ public class GoogleCalendarService {
 
         event.setSummary(buildSummary(privateLessonCalendarDTO.status(), userCalendarDTO))
                 .setDescription(buildDescription(privateLessonCalendarDTO))
-                .setColorId(EventColorManager(privateLessonCalendarDTO.status()));
+                .setColorId(eventColorManager(privateLessonCalendarDTO.status()));
 
         updateEvent(privateLessonCalendarDTO.tutorId(), event);
-        createEvent(privateLessonCalendarDTO.studentId(), event);
+        updateEvent(privateLessonCalendarDTO.studentId(), event);
     }
 
-    public void testConnection() {
-        try {
-            gCalendar.getCalendarService().calendarList().list().execute();
-        } catch (Exception e) {
-            throw new RuntimeException("Error while getting calendar list", e);
-        }
-    }
+//    public void testConnection() {
+//        try {
+//            gCalendar.getCalendarService().calendarList().list().execute();
+//        } catch (Exception e) {
+//            throw new RuntimeException("Error while getting calendar list", e);
+//        }
+//    }
 
     /** Set Event color based on PrivateLessonStatus
      * @param status status of the lesson
      * @return color id
      * */
-    private String EventColorManager(PrivateLessonStatus status) {
+     protected String eventColorManager(PrivateLessonStatus status) {
         return switch (status) {
             case AVAILABLE -> "2"; // sage
             case BOOKED -> "5"; // banana
@@ -150,7 +144,7 @@ public class GoogleCalendarService {
      * @param userCalendarDTO user data
      * @return event summary
      * */
-    private static String buildSummary(PrivateLessonStatus status, UserCalendarDTO userCalendarDTO) {
+    protected static String buildSummary(PrivateLessonStatus status, UserCalendarDTO userCalendarDTO) {
         return switch (status) {
             case AVAILABLE -> "WOLNE MIEJSCE";
             case BOOKED -> "ZAREZERWOWANE (NIEOPŁACONE) - " + userCalendarDTO.firstName() + " " + userCalendarDTO.lastName();
@@ -159,10 +153,10 @@ public class GoogleCalendarService {
         };
     }
 
-    private static String buildSummary(PrivateLessonStatus status) {
+    protected static String buildSummary(PrivateLessonStatus status) {
         return switch (status) {
             case AVAILABLE -> "WOLNE MIEJSCE";
-            case BOOKED, CANCELLED, PAID -> null;
+            default -> "NIEZNANY STATUS / NIE ZDEFINIOWANO DANYCH UŻYTKOWNIKA";
         };
     }
 
@@ -170,7 +164,7 @@ public class GoogleCalendarService {
      * @param privateLessonCalendarDTO private lesson data
      * @return event description
      * */
-    private static String buildDescription(PrivateLessonCalendarDTO privateLessonCalendarDTO) {
+    protected static String buildDescription(PrivateLessonCalendarDTO privateLessonCalendarDTO) {
         return "Start lekcji: " + privateLessonCalendarDTO.startTime() +
                 "\nKoniec lekcji: " + privateLessonCalendarDTO.endTime() +
                 "\nKod Spotkania: " + privateLessonCalendarDTO.connectionCode() +
