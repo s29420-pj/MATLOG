@@ -1,8 +1,7 @@
 package pl.pjatk.MATLOG.reviewManagement;
 
 import org.springframework.stereotype.Service;
-import pl.pjatk.MATLOG.Domain.Review;
-import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
+import pl.pjatk.MATLOG.reviewManagement.dto.ReviewLookUpDTO;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDAOMapper;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDTOMapper;
 
@@ -21,17 +20,19 @@ public class ReviewService {
         this.dtoMapper = dtoMapper;
     }
 
-    public List<ReviewDTO> getTutorReviewsDTOByEmailAddress(String emailAddress) {
+    public List<ReviewLookUpDTO> getTutorReviewsDTOByEmailAddress(String emailAddress) {
         return reviewRepository.findAllByTutor_EmailAddress(emailAddress).stream()
                 .map(daoMapper::create)
                 .map(dtoMapper::create)
                 .toList();
     }
 
-    public List<ReviewDTO> getStudentReviewsDTOByEmailAddress(String emailAddress) {
+    public List<ReviewLookUpDTO> getStudentReviewsDTOByEmailAddress(String emailAddress) {
         return reviewRepository.findAllByStudent_EmailAddress(emailAddress).stream()
                 .map(daoMapper::create)
                 .map(dtoMapper::create)
                 .toList();
     }
+
+    public void saveReview(ReviewLookUpDTO)
 }
