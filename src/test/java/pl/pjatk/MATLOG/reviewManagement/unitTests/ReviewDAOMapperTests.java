@@ -2,10 +2,7 @@ package pl.pjatk.MATLOG.reviewManagement.unitTests;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.pjatk.MATLOG.Domain.Enums.Stars;
@@ -35,27 +32,26 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ReviewDAOMapperTests {
 
     @Autowired
+    private ReviewDAOMapper reviewDAOMapper;
+    @Autowired
     private TutorUserDAOMapper tutorUserDAOMapper;
     @Autowired
     private StudentUserDAOMapper studentUserDAOMapper;
-    @Autowired
-    private UserPasswordValidator passwordValidator;
-    @Autowired
-    private ReviewDAOMapper reviewDAOMapper;
 
+    private UserPasswordValidator userPasswordValidator = new StandardUserPasswordValidator();
 
-    private static final String testComment = "testComment";
-    private static final LocalDateTime testDateTime = LocalDateTime.now().minusHours(3);
-    private static final UserPasswordValidator userPasswordValidator = new StandardUserPasswordValidator();
-    private static final StudentUser testStudent = StudentUser.builder()
+    private final String testComment = "testComment";
+    private final LocalDateTime testDateTime = LocalDateTime.now().minusHours(3);
+    private final StudentUser testStudent = StudentUser.builder()
             .withFirstName("Ethan")
-            .withLastName("Hovermann")
-            .withEmailAddress("example@example.com")
-            .withPassword("testPassword!", userPasswordValidator)
-            .withDateOfBirth(LocalDate.now().minusYears(50))
+                .withLastName("Hovermann")
+                .withEmailAddress("example@example.com")
+                .withPassword("testPassword!", userPasswordValidator)
+                .withDateOfBirth(LocalDate.now().minusYears(50))
             .withIsAccountNonLocked(true)
-            .build();
-    private static final StudentUserDAO testStudentDAO = new StudentUserDAO(testStudent.getId(),
+                .build();
+    private final StudentUserDAO testStudentDAO = new StudentUserDAO(
+            testStudent.getId(),
             testStudent.getFirstName(),
             testStudent.getLastName(),
             testStudent.getEmailAddress(),
@@ -63,7 +59,7 @@ public class ReviewDAOMapperTests {
             testStudent.getDateOfBirth(),
             testStudent.getAuthorities(),
             testStudent.isAccountNonLocked());
-    private static final TutorUser testTutor = TutorUser.builder()
+    private final TutorUser testTutor = TutorUser.builder()
             .withFirstName("Emily")
             .withLastName("Rose")
             .withEmailAddress("example@example.com")
@@ -71,8 +67,8 @@ public class ReviewDAOMapperTests {
             .withBiography("Im happy")
             .withIsAccountNonLocked(true)
             .withDateOfBirth(LocalDate.now().minusYears(31))
-            .build();
-    private static final TutorUserDAO testTutorDAO = new TutorUserDAO(testTutor.getId(),
+            .build();;
+    private final TutorUserDAO testTutorDAO = new TutorUserDAO(testTutor.getId(),
             testTutor.getFirstName(),
             testTutor.getLastName(),
             testTutor.getEmailAddress(),
@@ -82,6 +78,7 @@ public class ReviewDAOMapperTests {
             testTutor.getSpecializations(),
             testTutor.getAuthorities(),
             testTutor.isAccountNonLocked());
+
 
     @Test
     void createReviewFromReviewDAO() {
