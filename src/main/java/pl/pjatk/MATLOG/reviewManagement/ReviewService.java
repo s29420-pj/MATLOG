@@ -3,6 +3,10 @@ package pl.pjatk.MATLOG.reviewManagement;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.TutorUser;
+import pl.pjatk.MATLOG.UserManagement.user.student.dto.StudentUserReviewCreationDTO;
+import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserReviewDTOMapper;
+import pl.pjatk.MATLOG.UserManagement.user.tutor.dto.TutorUserReviewCreationDTO;
+import pl.pjatk.MATLOG.UserManagement.user.tutor.mapper.TutorUserReviewDTOMapper;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewLookUpDTO;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewCreationDTOMapper;
@@ -20,7 +24,10 @@ public class ReviewService {
     private final ReviewLookUpDTOMapper reviewLookUpDTOMapper;
     private final ReviewCreationDTOMapper reviewCreationDTOMapper;
 
-    public ReviewService(ReviewRepository reviewRepository, ReviewDAOMapper reviewDAOMapper, ReviewLookUpDTOMapper reviewLookUpDTOMapper, ReviewCreationDTOMapper reviewCreationDTOMapper) {
+
+    public ReviewService(ReviewRepository reviewRepository, ReviewDAOMapper reviewDAOMapper,
+                         ReviewLookUpDTOMapper reviewLookUpDTOMapper,
+                         ReviewCreationDTOMapper reviewCreationDTOMapper) {
         this.reviewRepository = reviewRepository;
         this.reviewDAOMapper = reviewDAOMapper;
         this.reviewLookUpDTOMapper = reviewLookUpDTOMapper;
@@ -41,8 +48,9 @@ public class ReviewService {
                 .toList();
     }
 
-    public void saveReview(ReviewCreationDTO creationDTO, StudentUser studentUser, TutorUser tutorUser) {
-        ReviewDAO reviewDAO = reviewDAOMapper.create(reviewCreationDTOMapper.create(creationDTO, studentUser, tutorUser));
+    public void saveReview(ReviewCreationDTO creationDTO, StudentUserReviewCreationDTO studentUser, TutorUserReviewCreationDTO tutorUser) {
+
+
         reviewRepository.save(reviewDAO);
     }
 }
