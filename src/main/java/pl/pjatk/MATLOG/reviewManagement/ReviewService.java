@@ -3,8 +3,10 @@ package pl.pjatk.MATLOG.reviewManagement;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.TutorUser;
+import pl.pjatk.MATLOG.UserManagement.user.student.StudentUserService;
 import pl.pjatk.MATLOG.UserManagement.user.student.dto.StudentUserReviewCreationDTO;
 import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserReviewDTOMapper;
+import pl.pjatk.MATLOG.UserManagement.user.tutor.TutorUserService;
 import pl.pjatk.MATLOG.UserManagement.user.tutor.dto.TutorUserReviewCreationDTO;
 import pl.pjatk.MATLOG.UserManagement.user.tutor.mapper.TutorUserReviewDTOMapper;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
@@ -23,15 +25,19 @@ public class ReviewService {
     private final ReviewDAOMapper reviewDAOMapper;
     private final ReviewLookUpDTOMapper reviewLookUpDTOMapper;
     private final ReviewCreationDTOMapper reviewCreationDTOMapper;
+    private final StudentUserService studentUserService;
+    private final TutorUserService tutorUserService;
 
 
     public ReviewService(ReviewRepository reviewRepository, ReviewDAOMapper reviewDAOMapper,
                          ReviewLookUpDTOMapper reviewLookUpDTOMapper,
-                         ReviewCreationDTOMapper reviewCreationDTOMapper) {
+                         ReviewCreationDTOMapper reviewCreationDTOMapper, StudentUserService studentUserService, TutorUserService tutorUserService) {
         this.reviewRepository = reviewRepository;
         this.reviewDAOMapper = reviewDAOMapper;
         this.reviewLookUpDTOMapper = reviewLookUpDTOMapper;
         this.reviewCreationDTOMapper = reviewCreationDTOMapper;
+        this.studentUserService = studentUserService;
+        this.tutorUserService = tutorUserService;
     }
 
     public List<ReviewLookUpDTO> getTutorReviewsDTOByEmailAddress(String emailAddress) {
@@ -50,7 +56,5 @@ public class ReviewService {
 
     public void saveReview(ReviewCreationDTO creationDTO, StudentUserReviewCreationDTO studentUser, TutorUserReviewCreationDTO tutorUser) {
 
-
-        reviewRepository.save(reviewDAO);
     }
 }
