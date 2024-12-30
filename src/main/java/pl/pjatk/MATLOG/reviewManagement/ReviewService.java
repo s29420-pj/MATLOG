@@ -22,6 +22,13 @@ public class ReviewService {
     }
 
     public List<ReviewDTO> getTutorReviewsDTOByEmailAddress(String emailAddress) {
+        return reviewRepository.findAllByTutor_EmailAddress(emailAddress).stream()
+                .map(daoMapper::create)
+                .map(dtoMapper::create)
+                .toList();
+    }
+
+    public List<ReviewDTO> getStudentReviewsDTOByEmailAddress(String emailAddress) {
         return reviewRepository.findAllByStudent_EmailAddress(emailAddress).stream()
                 .map(daoMapper::create)
                 .map(dtoMapper::create)

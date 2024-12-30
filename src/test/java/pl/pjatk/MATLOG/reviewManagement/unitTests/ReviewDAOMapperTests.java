@@ -55,6 +55,14 @@ public class ReviewDAOMapperTests {
             .withDateOfBirth(LocalDate.now().minusYears(50))
             .withIsAccountNonLocked(true)
             .build();
+    private static final StudentUserDAO testStudentDAO = new StudentUserDAO(testStudent.getId(),
+            testStudent.getFirstName(),
+            testStudent.getLastName(),
+            testStudent.getEmailAddress(),
+            testStudent.getPassword(),
+            testStudent.getDateOfBirth(),
+            testStudent.getAuthorities(),
+            testStudent.isAccountNonLocked());
     private static final TutorUser testTutor = TutorUser.builder()
             .withFirstName("Emily")
             .withLastName("Rose")
@@ -64,29 +72,19 @@ public class ReviewDAOMapperTests {
             .withIsAccountNonLocked(true)
             .withDateOfBirth(LocalDate.now().minusYears(31))
             .build();
+    private static final TutorUserDAO testTutorDAO = new TutorUserDAO(testTutor.getId(),
+            testTutor.getFirstName(),
+            testTutor.getLastName(),
+            testTutor.getEmailAddress(),
+            testTutor.getPassword(),
+            testTutor.getDateOfBirth(),
+            testTutor.getBiography(),
+            testTutor.getSpecializations(),
+            testTutor.getAuthorities(),
+            testTutor.isAccountNonLocked());
 
     @Test
     void createReviewFromReviewDAO() {
-        StudentUserDAO testStudentDAO = new StudentUserDAO(testStudent.getId(),
-                testStudent.getFirstName(),
-                testStudent.getLastName(),
-                testStudent.getEmailAddress(),
-                testStudent.getPassword(),
-                testStudent.getDateOfBirth(),
-                testStudent.getAuthorities(),
-                testStudent.isAccountNonLocked());
-
-        TutorUserDAO testTutorDAO = new TutorUserDAO(testTutor.getId(),
-                testTutor.getFirstName(),
-                testTutor.getLastName(),
-                testTutor.getEmailAddress(),
-                testTutor.getPassword(),
-                testTutor.getDateOfBirth(),
-                testTutor.getBiography(),
-                testTutor.getSpecializations(),
-                testTutor.getAuthorities(),
-                testTutor.isAccountNonLocked());
-
         ReviewDAO reviewDAO = new ReviewDAO(UUID.randomUUID().toString(),
                 testComment, Stars.FIVE, testDateTime, testStudentDAO, testTutorDAO);
 
@@ -100,6 +98,28 @@ public class ReviewDAOMapperTests {
             assertEquals(reviewDAO.dateAndTimeOfComment(), reviewFromMapper.getDateAndTimeOfComment());
             assertEquals(reviewDAO.student().id(), reviewFromMapper.getStudentUser().getId());
             assertEquals(reviewDAO.tutor().id(), reviewFromMapper.getTutorUser().getId());
+        });
+    }
+
+    @Test
+    void createReviewDAOFromReview() {
+        Review review = Review.builder()
+                .withComment(testComment)
+                .withRate(Stars.FOUR)
+                .withDateAndTimeOfReview(testDateTime)
+                .withStudent(testStudent)
+                .withTutor(testTutor)
+                .build();
+
+        ReviewDAO reviewDAO = reviewDAOMapper.create(review);
+
+        assertAll(() -> {
+            assertEquals(review.getId(), reviewDAO.id());
+            assertEquals(review.getComment(), reviewDAO.comment());
+            assertEquals(review.getRate(), reviewDAO.rate());
+            assertEquals(review.getDateAndTimeOfComment(), reviewDAO.dateAndTimeOfComment());
+            assertEquals(review.getStudentUser().getId(), reviewDAO.student().id());
+            assertEquals(review.getTutorUser().getId(), reviewDAO.tutor().id());
         });
     }
 }
