@@ -13,7 +13,7 @@ import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPassword
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserReviewDTOMapper;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewLookUpDTO;
-import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDTOMapper;
+import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewLookUpDTOMapper;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,13 +24,13 @@ import static org.mockito.Mockito.mock;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
-        ReviewDTOMapper.class,
+        ReviewLookUpDTOMapper.class,
         StudentUserReviewDTOMapper.class,
         StandardUserPasswordValidator.class})
 public class ReviewLookUpDTOMapperTests {
 
     @Autowired
-    private ReviewDTOMapper reviewDTOMapper;
+    private ReviewLookUpDTOMapper reviewLookUpDTOMapper;
 
     @Autowired
     private UserPasswordValidator userPasswordValidator = new StandardUserPasswordValidator();
@@ -64,7 +64,7 @@ public class ReviewLookUpDTOMapperTests {
                 .withTutor(testTutor)
                 .build();
 
-        ReviewLookUpDTO reviewLookUpDTO = reviewDTOMapper.create(review);
+        ReviewLookUpDTO reviewLookUpDTO = reviewLookUpDTOMapper.create(review);
 
         assertAll(() -> {
             assertEquals(review.getComment(), reviewLookUpDTO.comment());

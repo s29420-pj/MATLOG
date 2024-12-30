@@ -3,7 +3,7 @@ package pl.pjatk.MATLOG.reviewManagement;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewLookUpDTO;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDAOMapper;
-import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDTOMapper;
+import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewLookUpDTOMapper;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ReviewDAOMapper daoMapper;
-    private final ReviewDTOMapper dtoMapper;
+    private final ReviewLookUpDTOMapper dtoMapper;
 
-    public ReviewService(ReviewRepository reviewRepository, ReviewDAOMapper daoMapper, ReviewDTOMapper dtoMapper) {
+    public ReviewService(ReviewRepository reviewRepository, ReviewDAOMapper daoMapper, ReviewLookUpDTOMapper dtoMapper) {
         this.reviewRepository = reviewRepository;
         this.daoMapper = daoMapper;
         this.dtoMapper = dtoMapper;

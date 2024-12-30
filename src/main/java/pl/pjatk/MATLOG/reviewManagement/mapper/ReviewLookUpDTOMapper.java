@@ -6,11 +6,11 @@ import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserReviewDTOMa
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewLookUpDTO;
 
 @Component
-public class ReviewDTOMapper {
+public class ReviewLookUpDTOMapper {
 
     private final StudentUserReviewDTOMapper studentUserReviewDTOMapper;
 
-    public ReviewDTOMapper(StudentUserReviewDTOMapper studentUserReviewDTOMapper) {
+    public ReviewLookUpDTOMapper(StudentUserReviewDTOMapper studentUserReviewDTOMapper) {
         this.studentUserReviewDTOMapper = studentUserReviewDTOMapper;
     }
 

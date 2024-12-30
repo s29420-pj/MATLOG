@@ -23,7 +23,7 @@ import pl.pjatk.MATLOG.reviewManagement.ReviewRepository;
 import pl.pjatk.MATLOG.reviewManagement.ReviewService;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewLookUpDTO;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDAOMapper;
-import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDTOMapper;
+import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewLookUpDTOMapper;
 import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
 
 import java.time.LocalDate;
@@ -55,7 +55,7 @@ public class ReviewServiceTests {
     @Autowired
     private ReviewDAOMapper reviewDAOMapper;
     @Autowired
-    private ReviewDTOMapper reviewDTOMapper;
+    private ReviewLookUpDTOMapper reviewLookUpDTOMapper;
     @Autowired
     private ReviewService reviewService;
 
