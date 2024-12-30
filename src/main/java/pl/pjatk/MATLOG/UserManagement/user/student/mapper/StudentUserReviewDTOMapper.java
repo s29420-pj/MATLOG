@@ -8,11 +8,11 @@ import pl.pjatk.MATLOG.UserManagement.user.student.dto.StudentUserReviewLookUpDT
 @Component
 public class StudentUserReviewDTOMapper {
 
-    public StudentUserReviewLookUpDTO create(StudentUser studentUser) {
+    public StudentUserReviewLookUpDTO createStudentReviewLookUpDTO(StudentUser studentUser) {
         return new StudentUserReviewLookUpDTO(studentUser.getFirstName(), studentUser.getLastName());
     }
 
-    public StudentUserReviewCreationDTO createReviewCreationDTO(StudentUser studentUser) {
+    public StudentUserReviewCreationDTO createStudentReviewCreationDTO(StudentUser studentUser) {
         return new StudentUserReviewCreationDTO(studentUser.getFirstName(),
                 studentUser.getLastName(),
                 studentUser.getEmailAddress());

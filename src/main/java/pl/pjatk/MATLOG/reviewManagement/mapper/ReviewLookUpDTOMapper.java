@@ -18,6 +18,6 @@ public class ReviewLookUpDTOMapper {
         return new ReviewLookUpDTO(review.getComment(),
                 review.getRate(),
                 review.getDateAndTimeOfComment(),
-                studentUserReviewDTOMapper.create(review.getStudentUser()));
+                studentUserReviewDTOMapper.createStudentReviewLookUpDTO(review.getStudentUser()));
     }
 }

@@ -4,8 +4,6 @@ import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.Review;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.TutorUser;
-import pl.pjatk.MATLOG.UserManagement.user.student.dto.StudentUserReviewCreationDTO;
-import pl.pjatk.MATLOG.UserManagement.user.tutor.dto.TutorUserReviewCreationDTO;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
 
 @Component
