@@ -13,6 +13,10 @@ import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewLookUpDTOMapper;
 
 import java.util.List;
 
+/**
+ * Service layer class for Review. It uses repository layer to get data from database, </br>
+ * map it to dto and give that data to Controller which is related to Review operations.
+ */
 @Service
 public class ReviewService {
 
@@ -35,6 +39,11 @@ public class ReviewService {
         this.tutorUserService = tutorUserService;
     }
 
+    /**
+     * Method which is used to obtain all of Tutor's Reviews.
+     * @param emailAddress Email address of the Tutor.
+     * @return List of ReviewLookUpDTO.
+     */
     public List<ReviewLookUpDTO> getTutorReviewsDTOByEmailAddress(String emailAddress) {
         return reviewRepository.findAllByTutor_EmailAddress(emailAddress).stream()
                 .map(reviewDAOMapper::create)
@@ -42,6 +51,11 @@ public class ReviewService {
                 .toList();
     }
 
+    /**
+     * Method which is used to obtain all of Student's Reviews.
+     * @param emailAddress Email address of the Student.
+     * @return List of ReviewLookUpDTO.
+     */
     public List<ReviewLookUpDTO> getStudentReviewsDTOByEmailAddress(String emailAddress) {
         return reviewRepository.findAllByStudent_EmailAddress(emailAddress).stream()
                 .map(reviewDAOMapper::create)
@@ -49,6 +63,11 @@ public class ReviewService {
                 .toList();
     }
 
+    /**
+     * Method which is used to save Review to the database.
+     * @param creationDTO DTO representation of the Review
+     * @throws AuthenticationException When user with provided email address does not exist.
+     */
     public void saveReview(ReviewCreationDTO creationDTO) throws AuthenticationException {
         Review review = reviewCreationDTOMapper.create(creationDTO,
                 studentUserService.findUserByEmailAddress(creationDTO.studentUserEmailAddress()),
