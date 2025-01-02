@@ -2,6 +2,7 @@ package pl.pjatk.MATLOG.reviewManagement;
 
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.stereotype.Service;
+import pl.pjatk.MATLOG.Domain.Review;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.UserManagement.user.student.StudentUserService;
@@ -56,6 +57,9 @@ public class ReviewService {
     }
 
     public void saveReview(ReviewCreationDTO creationDTO, StudentUserReviewCreationDTO studentUser, TutorUserReviewCreationDTO tutorUser) throws AuthenticationException {
-        reviewCreationDTOMapper.create(creationDTO, studentUserService.findUserByEmailAddress(studentUser.emailAddress()))
+        Review review = reviewCreationDTOMapper.create(creationDTO,
+                studentUserService.findUserByEmailAddress(studentUser.emailAddress()),
+                tutorUserService.findUserByEmailAddress(tutorUser.emailAddress()));
+        reviewRepository.save(reviewDAOMapper.create(review));
     }
 }
