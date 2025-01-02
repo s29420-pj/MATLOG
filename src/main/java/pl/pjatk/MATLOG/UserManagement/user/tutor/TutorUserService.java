@@ -1,11 +1,13 @@
 package pl.pjatk.MATLOG.UserManagement.user.tutor;
 
 import org.apache.tomcat.websocket.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserAlreadyExistException;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserInvalidEmailAddressException;
+import pl.pjatk.MATLOG.UserManagement.Exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.user.dto.UserRegistrationDTO;
 import pl.pjatk.MATLOG.UserManagement.user.tutor.persistance.TutorUserDAO;
@@ -39,16 +41,16 @@ public class TutorUserService {
      *
      * @param emailAddress Email address of the tutor user
      * @return TutorUser
-     * @throws AuthenticationException if tutor with provided email address has not been found
+     * @throws UsernameNotFoundException if tutor with provided email address has not been found
      * @throws UserInvalidEmailAddressException if provided email address is null or empty
      */
-    public TutorUser findUserByEmailAddress(String emailAddress) throws AuthenticationException, UserInvalidEmailAddressException {
+    public TutorUser findUserByEmailAddress(String emailAddress) throws UserInvalidEmailAddressException, UserNotFoundException {
         if (emailAddress == null || emailAddress.isEmpty()) {
             throw new UserInvalidEmailAddressException();
         }
         Optional<TutorUserDAO> userFromDatabase = tutorUserRepository.findByEmailAddress(emailAddress);
         if (userFromDatabase.isEmpty()) {
-            throw new AuthenticationException("User with that email address does not exist.");
+            throw new UserNotFoundException();
         }
         return tutorUserMapperFactory.getUserDAOMapper()
                 .createUser(userFromDatabase.get());

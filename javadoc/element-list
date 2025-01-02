@@ -6,4 +6,4 @@ pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions
 pl.pjatk.MATLOG.Domain.Exceptions.reviewExceptions
 pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions
 pl.pjatk.MATLOG.UserManagement
-pl.pjatk.MATLOG.UserManagement.exceptions
+pl.pjatk.MATLOG.UserManagement.Exceptions
