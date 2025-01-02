@@ -1,5 +1,6 @@
 package pl.pjatk.MATLOG.reviewManagement.integrationTests;
 
+import com.tngtech.archunit.lang.extension.EvaluatedRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -29,7 +31,9 @@ import pl.pjatk.MATLOG.UserManagement.user.tutor.mapper.TutorUserDTOMapper;
 import pl.pjatk.MATLOG.UserManagement.user.tutor.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.reviewManagement.ReviewRepository;
 import pl.pjatk.MATLOG.reviewManagement.ReviewService;
+import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewLookUpDTO;
+import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewCreationDTOMapper;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDAOMapper;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewLookUpDTOMapper;
 import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
@@ -39,23 +43,29 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
+@ContextConfiguration(classes = {ReviewDAOMapper.class, ReviewLookUpDTOMapper.class, TutorUserDAOMapper.class, StudentUserDAOMapper.class, StandardUserPasswordValidator.class,
+StudentUserReviewDTOMapper.class, ReviewService.class, ReviewCreationDTOMapper.class})
 @Testcontainers
 public class ReviewServiceTests {
 
     private UserPasswordValidator userPasswordValidator = new StandardUserPasswordValidator();
-    @Mock
+    @MockBean
     private ReviewRepository reviewRepository;
-    @Mock
+    @Autowired
+    private ReviewCreationDTOMapper reviewCreationDTOMapper;
+    @Autowired
     private ReviewDAOMapper reviewDAOMapper;
-    @Mock
+    @Autowired
     private ReviewLookUpDTOMapper reviewLookUpDTOMapper;
-    @Mock
+    @MockBean
     private StudentUserService studentUserService;
-    @Mock
+    @MockBean
     private TutorUserService tutorUserService;
     @InjectMocks
+    @Autowired
     private ReviewService reviewService;
 
     private final String testComment = "testComment";
@@ -96,25 +106,39 @@ public class ReviewServiceTests {
             testTutor.getSpecializations(),
             testTutor.getAuthorities(),
             testTutor.isAccountNonLocked());
-
-    @BeforeEach
-    void setUpData() {
-        reviewRepository.save(new ReviewDAO("testId",
-                testComment,
-                Stars.ONE,
-                testDateTime,
-                testStudentDAO,
-                testTutorDAO));
-    }
+    private final ReviewDAO testReviewDAO = new ReviewDAO("123", testComment,
+            Stars.FOUR, testDateTime, testStudentDAO, testTutorDAO);
+    private final ReviewDAO testReviewDAO2 = new ReviewDAO("1234", testComment,
+            Stars.ONE, testDateTime, testStudentDAO, testTutorDAO);
 
     @Test
     void getTutorReviewsDTOByEmailAddress() {
+
+        when(reviewRepository.findAllByTutor_EmailAddress("example@example.com"))
+                .thenReturn(List.of(testReviewDAO));
+
         List<ReviewLookUpDTO> tutorReviewsDTOByEmailAddress = reviewService
                 .getTutorReviewsDTOByEmailAddress("example@example.com");
 
         assertAll(() -> {
             assertEquals(1, tutorReviewsDTOByEmailAddress.size());
             assertEquals(testComment, tutorReviewsDTOByEmailAddress.getFirst().comment());
+        });
+    }
+
+    @Test
+    void getStudentReviewsDTOByEmailAddress() {
+
+        when(reviewRepository.findAllByStudent_EmailAddress("example@example.com"))
+                .thenReturn(List.of(testReviewDAO, testReviewDAO2));
+
+        List<ReviewLookUpDTO> studentReviewsDTOByEmailAddress = reviewService
+                .getStudentReviewsDTOByEmailAddress("example@example.com");
+
+        assertAll(() -> {
+            assertEquals(2, studentReviewsDTOByEmailAddress.size());
+            assertEquals(Stars.FOUR, studentReviewsDTOByEmailAddress.getFirst().rate());
+            assertEquals(Stars.ONE, studentReviewsDTOByEmailAddress.getLast().rate());
         });
     }
 
