@@ -51,8 +51,8 @@ public class ReviewService {
 
     public void saveReview(ReviewCreationDTO creationDTO) throws AuthenticationException {
         Review review = reviewCreationDTOMapper.create(creationDTO,
-                studentUserService.findUserByEmailAddress(creationDTO.studentUser().emailAddress()),
-                tutorUserService.findUserByEmailAddress(creationDTO.tutorUser().emailAddress()));
+                studentUserService.findUserByEmailAddress(creationDTO.studentUserEmailAddress()),
+                tutorUserService.findUserByEmailAddress(creationDTO.tutorUserEmailAddress()));
         reviewRepository.save(reviewDAOMapper.create(review));
     }
 }
