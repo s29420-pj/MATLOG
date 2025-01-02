@@ -22,6 +22,11 @@ public class ReviewDAOMapper {
         this.studentUserDAOMapper = studentUserDAOMapper;
     }
 
+    /**
+     * Method which returns ReviewDAO from provided Review.
+     * @param review Review representation from domain.
+     * @return ReviewDAO which can be saved in database.
+     */
     public ReviewDAO create(Review review) {
         return new ReviewDAO(
                 review.getId(),
@@ -32,6 +37,11 @@ public class ReviewDAOMapper {
                 tutorUserDAOMapper.createUserDAO(review.getTutorUser()));
     }
 
+    /**
+     * Method which returns Review from provided ReviewDAO.
+     * @param reviewDAO ReviewDAO representation from database.
+     * @return Review which can be further mapped to any kind of DTO.
+     */
     public Review create(ReviewDAO reviewDAO) {
         return Review.builder()
                 .withId(reviewDAO.id())
