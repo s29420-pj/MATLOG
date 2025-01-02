@@ -6,6 +6,11 @@ import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.UserManagement.user.tutor.mapper.TutorUserDAOMapper;
 import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
 
+/**
+ * Mapper class that is responsible for </br>
+ * converting Review into ReviewDAO and
+ * converting ReviewDAO into Review.
+ */
 @Component
 public class ReviewDAOMapper {
 

@@ -13,6 +13,13 @@ import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
 @Component
 public class ReviewCreationDTOMapper {
 
+    /**
+     * Method which return Review from provided DTO
+     * @param reviewCreationDTO creation DTO of Review
+     * @param studentUser student user representation from domain.
+     * @param tutorUser tutor user representation from domain.
+     * @return Review
+     */
     public Review create(ReviewCreationDTO reviewCreationDTO, StudentUser studentUser,
                          TutorUser tutorUser) {
         return Review.builder()
