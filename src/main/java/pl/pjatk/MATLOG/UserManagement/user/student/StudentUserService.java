@@ -3,6 +3,7 @@ package pl.pjatk.MATLOG.UserManagement.user.student;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserAlreadyExistException;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserInvalidEmailAddressException;
@@ -11,6 +12,8 @@ import pl.pjatk.MATLOG.UserManagement.user.UserRepositoryService;
 import pl.pjatk.MATLOG.UserManagement.user.dto.UserRegistrationDTO;
 import pl.pjatk.MATLOG.UserManagement.user.student.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.UserManagement.user.student.persistance.StudentUserRepository;
+
+import java.util.Optional;
 
 @Service
 public class StudentUserService {
@@ -33,15 +36,15 @@ public class StudentUserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User findUserByEmailAddress(String emailAddress) throws AuthenticationException, UserInvalidEmailAddressException {
+    public StudentUser findUserByEmailAddress(String emailAddress) throws AuthenticationException, UserInvalidEmailAddressException {
         if (emailAddress == null || emailAddress.isEmpty()) {
             throw new UserInvalidEmailAddressException();
         }
-        User user = userRepositoryService.findUserByEmailAddress(emailAddress);
-        if (user == null) {
+        Optional<StudentUserDAO> studentUserDAO = studentUserRepository.findByEmailAddress(emailAddress);
+        if (studentUserDAO.isEmpty()) {
             throw new AuthenticationException("User with that email address does not exist.");
         }
-        return user;
+        return studentUserMapperFactory.getUserDAOMapper().createUser(studentUserDAO.get());
     }
 
     public void registerUser(UserRegistrationDTO userDTO) throws IllegalArgumentException, UserAlreadyExistException {

@@ -2,9 +2,15 @@ package pl.pjatk.MATLOG.reviewManagement.integrationTests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -13,9 +19,11 @@ import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.UserManagement.user.student.StudentUserService;
 import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserReviewDTOMapper;
 import pl.pjatk.MATLOG.UserManagement.user.student.persistance.StudentUserDAO;
+import pl.pjatk.MATLOG.UserManagement.user.tutor.TutorUserService;
 import pl.pjatk.MATLOG.UserManagement.user.tutor.mapper.TutorUserDAOMapper;
 import pl.pjatk.MATLOG.UserManagement.user.tutor.mapper.TutorUserDTOMapper;
 import pl.pjatk.MATLOG.UserManagement.user.tutor.persistance.TutorUserDAO;
@@ -32,31 +40,22 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@ExtendWith({SpringExtension.class, MockitoExtension.class})
 @Testcontainers
 public class ReviewServiceTests {
 
     private UserPasswordValidator userPasswordValidator = new StandardUserPasswordValidator();
-
-    @Container
-    @ServiceConnection
-    static MongoDBContainer mongo = new MongoDBContainer("mongo:latest");
-
-    @Autowired
+    @Mock
     private ReviewRepository reviewRepository;
-    @Autowired
-    private TutorUserDAOMapper tutorUserDAOMapper;
-    @Autowired
-    private TutorUserDTOMapper tutorUserDTOMapper;
-    @Autowired
-    private StudentUserDAOMapper studentUserDAOMapper;
-    @Autowired
-    private StudentUserReviewDTOMapper studentUserReviewDTOMapper;
-    @Autowired
+    @Mock
     private ReviewDAOMapper reviewDAOMapper;
-    @Autowired
+    @Mock
     private ReviewLookUpDTOMapper reviewLookUpDTOMapper;
-    @Autowired
+    @Mock
+    private StudentUserService studentUserService;
+    @Mock
+    private TutorUserService tutorUserService;
+    @InjectMocks
     private ReviewService reviewService;
 
     private final String testComment = "testComment";
