@@ -25,22 +25,13 @@ Current scope:     <a href="../../index.html">all classes</a>
 <h1>Coverage Summary for Class: PrivateLessonRepository (pl.pjatk.MATLOG.PrivateLessonManagment)</h1>
 
 <table class="coverageStats">
-
 <tr>
   <th class="name">Class</th>
 </tr>
-  <tr>
-    <td class="name">PrivateLessonRepository$MockitoMock$OZIAogb5</td>
-  </tr>
-  <tr>
-    <td class="name">PrivateLessonRepository$MockitoMock$OZIAogb5$auxiliary$mAV7p54V</td>
-  </tr>
-  <tr>
-    <td class="name">PrivateLessonRepository$MockitoMock$OZIAogb5$auxiliary$W0dfbXHv</td>
-  </tr>
 <tr>
-  <td class="name"><strong>Total</strong></td>
+  <td class="name">PrivateLessonRepository</td>
 </tr>
+
 </table>
 
 <br/>
@@ -55,11 +46,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import pl.pjatk.MATLOG.Domain.PrivateLesson;
 &nbsp;
 &nbsp;import java.util.List;
+&nbsp;import java.util.Set;
 &nbsp;
 &nbsp;@Repository
 &nbsp;public interface PrivateLessonRepository extends MongoRepository&lt;PrivateLesson, String&gt; {
-&nbsp;    List&lt;PrivateLesson&gt; findByTutorId(String tutorId);
-&nbsp;    List&lt;PrivateLesson&gt; findByStudentId(String studentId);
+&nbsp;    Set&lt;PrivateLesson&gt; findByTutorId(String tutorId);
+&nbsp;    Set&lt;PrivateLesson&gt; findByStudentId(String studentId);
 &nbsp;}
 </code>
 </pre>
@@ -84,7 +76,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-12-09 18:22</div>
+    <div style="float:right;">generated on 2024-12-21 13:40</div>
 </div>
 </body>
 </html>

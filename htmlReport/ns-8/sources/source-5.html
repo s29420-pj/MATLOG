@@ -75,52 +75,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<<<<<<< HEAD
 <code class="sourceCode" id="sourceCode">&nbsp;package pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions;
-=======
-<code class="sourceCode" id="sourceCode">&nbsp;package pl.pjatk.MATLOG.userManagement;
-&nbsp;
-&nbsp;import org.springframework.security.crypto.password.PasswordEncoder;
-&nbsp;import org.springframework.stereotype.Service;
-&nbsp;import pl.pjatk.MATLOG.Domain.User;
-&nbsp;import pl.pjatk.MATLOG.userManagement.exceptions.UserInvalidEmailAddressException;
-&nbsp;import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
-&nbsp;
-&nbsp;import java.util.Optional;
-&nbsp;
-&nbsp;/**
-&nbsp; * Class that is used to retrieve, modify and delete users from database.
-&nbsp; */
-&nbsp;@Service
-&nbsp;public class UserService {
-&nbsp;
-&nbsp;    private final UserRepository userRepository;
-&nbsp;    private final PasswordEncoder passwordEncoder;
-&nbsp;
-<b class="nc">&nbsp;    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {</b>
-<b class="nc">&nbsp;        this.userRepository = userRepository;</b>
-<b class="nc">&nbsp;        this.passwordEncoder = passwordEncoder;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Method that searches for the user with specified email address (username)
-&nbsp;     * @param emailAddress email address of the user
-&nbsp;     * @return User
-&nbsp;     * @throws UserInvalidEmailAddressException when user with provided email address
-&nbsp;     * couldn&#39;t be found
-&nbsp;     */
-&nbsp;    public User findUserByEmailAddress(String emailAddress) {
-<b class="nc">&nbsp;        if (emailAddress == null || emailAddress.isEmpty()) {</b>
-<b class="nc">&nbsp;            throw new UserInvalidEmailAddressException();</b>
-&nbsp;        }
-<b class="nc">&nbsp;        Optional&lt;User&gt; user = userRepository.findByEmailAddress(emailAddress);</b>
-<b class="nc">&nbsp;        if (user.isEmpty()) throw new UserNotFoundException();</b>
-<b class="nc">&nbsp;        return user.get();</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    public void createUser(User user) {
-<b class="nc">&nbsp;        String encodedPassword = passwordEncoder.encode(user.getPassword());</b>
->>>>>>> 0c942eb69d91e7ba8408e2068483b3dc5d62ef64
 &nbsp;
 &nbsp;public class UserInvalidLastNameException extends RuntimeException {
 &nbsp;    public UserInvalidLastNameException() {
@@ -150,7 +105,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-12-09 18:22</div>
+    <div style="float:right;">generated on 2024-12-21 13:40</div>
 </div>
 </body>
 </html>

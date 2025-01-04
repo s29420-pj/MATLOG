@@ -48,15 +48,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (15/15)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    93.8%
-  </span>
-  <span class="absValue">
-    (15/16)
+    (14/14)
   </span>
 </td>
 <td class="coverageStat">
@@ -64,7 +56,15 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (34/34)
+    (20/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (33/33)
   </span>
 </td>
 </tr>
@@ -72,26 +72,26 @@ Current scope:     <a href="../../index.html">all classes</a>
     <td class="name">User$Builder</td>
 <td class="coverageStat">
   <span class="percent">
-    77.8%
+    100%
   </span>
   <span class="absValue">
-    (7/9)
+    (9/9)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    95.8%
+    100%
   </span>
   <span class="absValue">
-    (23/24)
+    (24/24)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    87.1%
+    100%
   </span>
   <span class="absValue">
-    (27/31)
+    (31/31)
   </span>
 </td>
   </tr>
@@ -99,26 +99,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name"><strong>Total</strong></td>
 <td class="coverageStat">
   <span class="percent">
-    91.7%
+    100%
   </span>
   <span class="absValue">
-    (22/24)
+    (23/23)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    95%
+    100%
   </span>
   <span class="absValue">
-    (38/40)
+    (44/44)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    93.8%
+    100%
   </span>
   <span class="absValue">
-    (61/65)
+    (64/64)
   </span>
 </td>
 </tr>
@@ -140,6 +140,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import java.time.LocalDate;
 &nbsp;import java.time.temporal.ChronoUnit;
 &nbsp;import java.util.HashSet;
+&nbsp;import java.util.Objects;
 &nbsp;import java.util.Set;
 &nbsp;import java.util.UUID;
 &nbsp;
@@ -165,7 +166,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private final LocalDate dateOfBirth;
 &nbsp;    private final Set&lt;GrantedAuthority&gt; authorities;
 &nbsp;    private boolean isAccountNonLocked;
-&nbsp;    private final Role role;
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Constructor of the User. Sets a random UUID as an id of user,
@@ -175,16 +175,16 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 <b class="fc">&nbsp;    protected User(Builder&lt;?&gt; builder) {</b>
 <b class="fc">&nbsp;        validateFields(builder);</b>
-<b class="fc">&nbsp;        this.id = UUID.randomUUID().toString();</b>
+<b class="fc">&nbsp;        if (builder.id == null || builder.id.isEmpty()) this.id = UUID.randomUUID().toString();</b>
+<b class="fc">&nbsp;        else this.id = builder.id;</b>
 <b class="fc">&nbsp;        this.firstName = builder.firstName;</b>
 <b class="fc">&nbsp;        this.lastName = builder.lastName;</b>
 <b class="fc">&nbsp;        this.emailAddress = builder.emailAddress;</b>
 <b class="fc">&nbsp;        this.password = builder.password;</b>
 <b class="fc">&nbsp;        this.dateOfBirth = builder.dateOfBirth;</b>
-<b class="fc">&nbsp;        this.authorities = new HashSet&lt;&gt;();</b>
-<b class="fc">&nbsp;        authorities.add(new SimpleGrantedAuthority(&quot;USER&quot;));</b>
-<b class="fc">&nbsp;        this.isAccountNonLocked = true;</b>
-<b class="fc">&nbsp;        this.role = builder.role;</b>
+<b class="fc">&nbsp;        this.authorities = Objects.requireNonNullElseGet(builder.authorities, HashSet::new);</b>
+<b class="fc">&nbsp;        this.authorities.add(new SimpleGrantedAuthority(&quot;USER&quot;));</b>
+<b class="fc">&nbsp;        this.isAccountNonLocked = builder.isAccountNonLocked;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -218,16 +218,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        return password;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    /**
-&nbsp;     * Method that changes password of the User.
-&nbsp;     * CAUTION! THIS METHOD SHOULD BE ONLY USED VIA USERSERVICE IN USERMANAGEMENT PACKAGE!
-&nbsp;     * @param password new password
-&nbsp;     */
 &nbsp;    public void changePassword(String password, UserPasswordValidator passwordValidator) {
 <b class="fc">&nbsp;        if (password == null || password.isEmpty()) {</b>
 <b class="fc">&nbsp;            throw new UserEmptyPasswordException();</b>
 &nbsp;        }
-<b class="pc">&nbsp;        if (!passwordValidator.isSecure(password)) throw new UserUnsecurePasswordException();</b>
+<b class="fc">&nbsp;        if (!passwordValidator.isSecure(password)) throw new UserUnsecurePasswordException();</b>
 <b class="fc">&nbsp;        this.password = password;</b>
 &nbsp;    }
 &nbsp;
@@ -243,12 +238,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        return isAccountNonLocked;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    protected boolean addAuthority(GrantedAuthority authority) {
+&nbsp;    public boolean addAuthority(GrantedAuthority authority) {
 <b class="fc">&nbsp;        return authorities.add(authority);</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    public Role getRole() {
-<b class="fc">&nbsp;        return role;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -274,6 +265,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @param &lt;T&gt; - concrete user builder
 &nbsp;     */
 <b class="fc">&nbsp;    public abstract static class Builder&lt;T extends Builder&lt;T&gt;&gt; {</b>
+&nbsp;        private String id;
 &nbsp;        private String firstName;
 &nbsp;        private String lastName;
 &nbsp;        private String emailAddress;
@@ -281,10 +273,14 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        private LocalDate dateOfBirth;
 &nbsp;        private Set&lt;GrantedAuthority&gt; authorities;
 &nbsp;        private boolean isAccountNonLocked;
-&nbsp;        private Role role;
 &nbsp;
 &nbsp;        private static final int MIN_AGE = 1;
 &nbsp;        private static final int MAX_AGE = 100;
+&nbsp;
+&nbsp;        public T withId(String id) {
+<b class="fc">&nbsp;            this.id = id;</b>
+<b class="fc">&nbsp;            return self();</b>
+&nbsp;        }
 &nbsp;
 &nbsp;        /**
 &nbsp;         * Method that sets User&#39;s first name
@@ -334,9 +330,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;         * @return Builder
 &nbsp;         * @throws UserEmptyPasswordException when password is null or blank
 &nbsp;         */
-&nbsp;        public T withPassword(String password) {
+&nbsp;        public T withPassword(String password, UserPasswordValidator passwordValidator) {
 <b class="fc">&nbsp;            if (password == null || password.isBlank()) {</b>
 <b class="fc">&nbsp;                throw new UserEmptyPasswordException();</b>
+&nbsp;            }
+<b class="fc">&nbsp;            if (!passwordValidator.isSecure(password)) {</b>
+<b class="fc">&nbsp;                throw new UserUnsecurePasswordException();</b>
 &nbsp;            }
 <b class="fc">&nbsp;            this.password = password;</b>
 <b class="fc">&nbsp;            return self();</b>
@@ -349,7 +348,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;         * @throws UserInvalidDateOfBirthException if date of birth is unreal ( x &lt;= 0 or 100 &lt; x)
 &nbsp;         * */
 &nbsp;        public T withDateOfBirth(LocalDate dateOfBirth) {
-<b class="pc">&nbsp;            if (dateOfBirth != null) {</b>
+<b class="fc">&nbsp;            if (dateOfBirth != null) {</b>
 <b class="fc">&nbsp;                int age = (int) ChronoUnit.YEARS.between(dateOfBirth, LocalDate.now());</b>
 <b class="fc">&nbsp;                if (age &lt; MIN_AGE || age &gt; MAX_AGE) {</b>
 <b class="fc">&nbsp;                    throw new UserInvalidDateOfBirthException();</b>
@@ -365,8 +364,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;         * @return Builder
 &nbsp;         */
 &nbsp;        public T withAuthorities(Set&lt;GrantedAuthority&gt; authorities) {
-<b class="nc">&nbsp;            this.authorities = authorities;</b>
-<b class="nc">&nbsp;            return self();</b>
+<b class="fc">&nbsp;            this.authorities = authorities;</b>
+<b class="fc">&nbsp;            return self();</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        /**
@@ -375,21 +374,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;         * @return Builder
 &nbsp;         */
 &nbsp;        public T withIsAccountNonLocked(boolean isAccountNonLocked) {
-<b class="nc">&nbsp;            this.isAccountNonLocked = isAccountNonLocked;</b>
-<b class="nc">&nbsp;            return self();</b>
-&nbsp;        }
-&nbsp;
-&nbsp;        /**
-&nbsp;         * Method that sets User&#39;s role
-&nbsp;         * @param role role of the user
-&nbsp;         * @return Builder
-&nbsp;         * @throws UserInvalidRoleException when role is not provided or there is not such a role
-&nbsp;         */
-&nbsp;        protected T withRole(Role role) {
-<b class="fc">&nbsp;            if (role == null) {</b>
-<b class="fc">&nbsp;                throw new UserInvalidRoleException();</b>
-&nbsp;            }
-<b class="fc">&nbsp;            this.role = role;</b>
+<b class="fc">&nbsp;            this.isAccountNonLocked = isAccountNonLocked;</b>
 <b class="fc">&nbsp;            return self();</b>
 &nbsp;        }
 &nbsp;
@@ -431,7 +416,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-12-09 18:22</div>
+    <div style="float:right;">generated on 2024-12-21 13:40</div>
 </div>
 </body>
 </html>
