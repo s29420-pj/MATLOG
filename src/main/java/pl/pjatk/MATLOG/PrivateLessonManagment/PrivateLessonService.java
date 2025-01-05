@@ -5,7 +5,6 @@ import pl.pjatk.MATLOG.Domain.PrivateLesson;
 import pl.pjatk.MATLOG.Domain.Enums.PrivateLessonStatus;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class PrivateLessonService {
@@ -67,11 +66,11 @@ public class PrivateLessonService {
 
     // Additional repository methods
 
-    public Set<PrivateLesson> findByTutorId(String tutorId) {
+    public List<PrivateLesson> findByTutorId(String tutorId) {
         return privateLessonRepository.findByTutorId(tutorId);
     }
 
-    public Set<PrivateLesson> findByStudentId(String studentId) {
+    public List<PrivateLesson> findByStudentId(String studentId) {
         return privateLessonRepository.findByStudentId(studentId);
     }
 }

@@ -5,10 +5,9 @@ import org.springframework.stereotype.Repository;
 import pl.pjatk.MATLOG.Domain.PrivateLesson;
 
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public interface PrivateLessonRepository extends MongoRepository<PrivateLesson, String> {
-    Set<PrivateLesson> findByTutorId(String tutorId);
-    Set<PrivateLesson> findByStudentId(String studentId);
+    List<PrivateLesson> findByTutorId(String tutorId);
+    List<PrivateLesson> findByStudentId(String studentId);
 }
