@@ -43,6 +43,7 @@
 		<project.oauth.version>1.37.0</project.oauth.version>
 		<project.google-calendar.version>v3-rev411-1.25.0</project.google-calendar.version>
 		<project.http-client.version>1.45.3</project.http-client.version>
+		<project.spring.boot.webflux.version>3.4.1</project.spring.boot.webflux.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
@@ -139,6 +140,11 @@
 			<groupId>com.google.oauth-client</groupId>
 			<artifactId>google-oauth-client-jetty</artifactId>
 			<version>${project.oauth.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+			<version>${project.spring.boot.webflux.version}</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
