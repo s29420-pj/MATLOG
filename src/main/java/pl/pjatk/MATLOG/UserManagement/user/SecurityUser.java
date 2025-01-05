@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import pl.pjatk.MATLOG.Domain.User;
 
 import java.util.Collection;
-import java.util.Objects;
 
 /**
  * Class that represents User in Spring Security.

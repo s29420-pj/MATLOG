@@ -48,10 +48,9 @@ public class ReviewController {
      * Endpoint which is used to save provided Review to the database.
      * @param reviewCreationDTO DTO representation of the Review.
      * @return ResponseEntity with CREATED Http Status.
-     * @throws AuthenticationException When either student user or tutor user do not exist.
      */
     @PostMapping("/create")
-    public ResponseEntity<Void> createReview(@RequestBody ReviewCreationDTO reviewCreationDTO) throws AuthenticationException {
+    public ResponseEntity<Void> createReview(@RequestBody ReviewCreationDTO reviewCreationDTO) {
         reviewService.saveReview(reviewCreationDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.Application;
+package pl.pjatk.MATLOG.application;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

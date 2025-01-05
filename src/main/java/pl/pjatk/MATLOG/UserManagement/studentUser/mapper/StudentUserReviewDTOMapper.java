@@ -10,6 +10,4 @@ public class StudentUserReviewDTOMapper {
     public StudentUserReviewLookUpDTO createStudentReviewLookUpDTO(StudentUser studentUser) {
         return new StudentUserReviewLookUpDTO(studentUser.getFirstName(), studentUser.getLastName());
     }
-
-
 }

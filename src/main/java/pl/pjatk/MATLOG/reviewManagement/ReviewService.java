@@ -1,6 +1,5 @@
 package pl.pjatk.MATLOG.reviewManagement;
 
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.Review;
 import pl.pjatk.MATLOG.UserManagement.studentUser.StudentUserService;
@@ -30,7 +29,9 @@ public class ReviewService {
 
     public ReviewService(ReviewRepository reviewRepository, ReviewDAOMapper reviewDAOMapper,
                          ReviewLookUpDTOMapper reviewLookUpDTOMapper,
-                         ReviewCreationDTOMapper reviewCreationDTOMapper, StudentUserService studentUserService, TutorUserService tutorUserService) {
+                         ReviewCreationDTOMapper reviewCreationDTOMapper,
+                         StudentUserService studentUserService,
+                         TutorUserService tutorUserService) {
         this.reviewRepository = reviewRepository;
         this.reviewDAOMapper = reviewDAOMapper;
         this.reviewLookUpDTOMapper = reviewLookUpDTOMapper;
@@ -66,9 +67,8 @@ public class ReviewService {
     /**
      * Method which is used to save Review to the database.
      * @param creationDTO DTO representation of the Review
-     * @throws AuthenticationException When user with provided email address does not exist.
      */
-    public void saveReview(ReviewCreationDTO creationDTO) throws AuthenticationException {
+    public void saveReview(ReviewCreationDTO creationDTO) {
         Review review = reviewCreationDTOMapper.create(creationDTO,
                 studentUserService.findUserByEmailAddress(creationDTO.studentUserEmailAddress()),
                 tutorUserService.findUserByEmailAddress(creationDTO.tutorUserEmailAddress()));
