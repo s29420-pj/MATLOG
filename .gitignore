@@ -36,9 +36,9 @@ replay_pid*
 /dataSources.local.xml
 
 application.properties
-compose.yaml
+docker-compose.yaml
 
-/htmlReport/
-/javadoc/
+htmlReport/
+javadoc/
 
 # End of file
