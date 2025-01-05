@@ -7,6 +7,7 @@ import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidato
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,7 +35,7 @@ public class ReviewTests {
             .build();
 
     @Test
-    void createReview() {
+    void createReviewNullId() {
         Review review = Review.builder()
                 .withComment(testComment)
                 .withRate(Rate.FIVE)
@@ -47,6 +48,49 @@ public class ReviewTests {
             assertNotNull(review.getId());
             assertEquals(testComment, review.getComment());
             assertEquals(Rate.FIVE, review.getRate());
+            assertEquals(testDateTime, review.getDateAndTimeOfComment());
+            assertEquals(testStudent, review.getStudentUser());
+            assertEquals(testTutor, review.getTutorUser());
+        });
+    }
+
+    @Test
+    void createReviewEmptyId() {
+        Review review = Review.builder()
+                .withId("")
+                .withComment(testComment)
+                .withRate(Stars.FIVE)
+                .withDateAndTimeOfReview(testDateTime)
+                .withStudent(testStudent)
+                .withTutor(testTutor)
+                .build();
+
+        assertAll(() -> {
+            assertNotNull(review.getId());
+            assertFalse(review.getId().isEmpty());
+            assertEquals(testComment, review.getComment());
+            assertEquals(Stars.FIVE, review.getRate());
+            assertEquals(testDateTime, review.getDateAndTimeOfComment());
+            assertEquals(testStudent, review.getStudentUser());
+            assertEquals(testTutor, review.getTutorUser());
+        });
+    }
+
+    @Test
+    void createReviewWithId() {
+        Review review = Review.builder()
+                .withId(UUID.randomUUID().toString())
+                .withComment(testComment)
+                .withRate(Stars.FIVE)
+                .withDateAndTimeOfReview(testDateTime)
+                .withStudent(testStudent)
+                .withTutor(testTutor)
+                .build();
+
+        assertAll(() -> {
+            assertNotNull(review.getId());
+            assertEquals(testComment, review.getComment());
+            assertEquals(Stars.FIVE, review.getRate());
             assertEquals(testDateTime, review.getDateAndTimeOfComment());
             assertEquals(testStudent, review.getStudentUser());
             assertEquals(testTutor, review.getTutorUser());
