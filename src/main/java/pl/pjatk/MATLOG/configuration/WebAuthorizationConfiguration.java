@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.UserManagement.securityConfiguration;
+package pl.pjatk.MATLOG.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +31,9 @@ public class WebAuthorizationConfiguration {
                     auth -> auth
                             .requestMatchers("/student/user/controller/register").permitAll()
                             .requestMatchers("/tutor/user/controller/register").permitAll()
+                            .requestMatchers("/tutor/user/controller/get/profile/").permitAll()
+                            .requestMatchers("/private_lesson/available/controller/find/byEmailAddress/").permitAll()
+                            .requestMatchers("/review/controller/find/").permitAll()
                             .requestMatchers("/hello").permitAll()
                             .anyRequest().authenticated()
                 );
