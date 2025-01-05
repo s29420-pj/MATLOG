@@ -2,10 +2,8 @@ package pl.pjatk.MATLOG.UserManagement.user.tutor.mapper;
 
 import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.TutorUser;
-import pl.pjatk.MATLOG.PrivateLessonManagment.PrivateLessonService;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.user.tutor.persistance.TutorUserDAO;
-import pl.pjatk.MATLOG.reviewManagement.ReviewService;
 
 /**
  * Mapper that is used to map TutorUser to TutorUserDAO and vice versa.
