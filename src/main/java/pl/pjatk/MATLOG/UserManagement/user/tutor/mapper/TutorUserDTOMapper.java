@@ -5,7 +5,6 @@ import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.user.dto.UserDTO;
 import pl.pjatk.MATLOG.UserManagement.user.dto.UserDTOMapper;
-import pl.pjatk.MATLOG.UserManagement.user.tutor.dto.PrivateLessonTutorUserDTO;
 
 @Component
 public class TutorUserDTOMapper implements UserDTOMapper {
@@ -25,14 +24,5 @@ public class TutorUserDTOMapper implements UserDTOMapper {
                 .withPassword(userDTO.password(), userPasswordValidator)
                 .withDateOfBirth(userDTO.dateOfBirth())
                 .build();
-    }
-
-    public PrivateLessonTutorUserDTO mapToDTO(TutorUser tutorUser) {
-        return new PrivateLessonTutorUserDTO(
-                tutorUser.getId(),
-                tutorUser.getFirstName(),
-                tutorUser.getLastName(),
-                tutorUser.getEmailAddress()
-        );
     }
 }
