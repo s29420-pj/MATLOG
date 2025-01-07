@@ -28,5 +28,5 @@ public class ReviewDAO {
     @ManyToOne
     @JoinColumn(name = "student_id", table = "student_user", referencedColumnName = "id")
     private StudentUserDAO student;
-    
+
 }
