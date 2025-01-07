@@ -1,6 +1,6 @@
 package pl.pjatk.MATLOG.Domain;
 
-import pl.pjatk.MATLOG.Domain.Enums.Stars;
+import pl.pjatk.MATLOG.Domain.Enums.Rate;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -13,7 +13,7 @@ import java.util.UUID;
 public final class Review {
     private final String id;
     private final String comment;
-    private final Stars rate;
+    private final Rate rate;
     private final LocalDateTime dateAndTimeOfComment;
     private final StudentUser studentUser;
     private final TutorUser tutorUser;
@@ -26,7 +26,7 @@ public final class Review {
         return comment;
     }
 
-    public Stars getRate() {
+    public Rate getRate() {
         return rate;
     }
 
@@ -72,7 +72,7 @@ public final class Review {
     public static class Builder {
         private String id;
         private String comment;
-        private Stars rate;
+        private Rate rate;
         private LocalDateTime dateAndTimeOfComment;
         private StudentUser studentUser;
         private TutorUser tutorUser;
@@ -99,10 +99,10 @@ public final class Review {
 
         /**
          * Sets Review's rate.
-         * @param rate Stars Enum
+         * @param rate Rate Enum
          * @return Builder
          */
-        public Builder withRate(Stars rate) {
+        public Builder withRate(Rate rate) {
             this.rate = rate;
             return this;
         }

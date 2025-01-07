@@ -1,7 +1,7 @@
 package pl.pjatk.MATLOG.Domain;
 
 import org.junit.jupiter.api.Test;
-import pl.pjatk.MATLOG.Domain.Enums.Stars;
+import pl.pjatk.MATLOG.Domain.Enums.Rate;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 
@@ -37,7 +37,7 @@ public class ReviewTests {
     void createReview() {
         Review review = Review.builder()
                 .withComment(testComment)
-                .withRate(Stars.FIVE)
+                .withRate(Rate.FIVE)
                 .withDateAndTimeOfReview(testDateTime)
                 .withStudent(testStudent)
                 .withTutor(testTutor)
@@ -46,7 +46,7 @@ public class ReviewTests {
         assertAll(() -> {
             assertNotNull(review.getId());
             assertEquals(testComment, review.getComment());
-            assertEquals(Stars.FIVE, review.getRate());
+            assertEquals(Rate.FIVE, review.getRate());
             assertEquals(testDateTime, review.getDateAndTimeOfComment());
             assertEquals(testStudent, review.getStudentUser());
             assertEquals(testTutor, review.getTutorUser());

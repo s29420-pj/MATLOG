@@ -3,15 +3,11 @@ package pl.pjatk.MATLOG.Domain;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pl.pjatk.MATLOG.Domain.Enums.PrivateLessonStatus;
-import pl.pjatk.MATLOG.Domain.Enums.Role;
 import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
-import pl.pjatk.MATLOG.Domain.Enums.Stars;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;

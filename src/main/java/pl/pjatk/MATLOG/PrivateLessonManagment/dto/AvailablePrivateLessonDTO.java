@@ -1,7 +1,6 @@
 package pl.pjatk.MATLOG.PrivateLessonManagment.dto;
 
-import org.springframework.cglib.core.Local;
-import pl.pjatk.MATLOG.UserManagement.user.tutor.dto.PrivateLessonTutorUserDTO;
+import pl.pjatk.MATLOG.UserManagement.tutorUser.dto.PrivateLessonTutorUserDTO;
 
 import java.time.LocalDateTime;
 

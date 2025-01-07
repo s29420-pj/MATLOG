@@ -1,37 +1,30 @@
 package pl.pjatk.MATLOG.reviewManagement.integrationTests;
 
 import com.tngtech.archunit.lang.extension.EvaluatedRule;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.pjatk.MATLOG.Domain.Enums.Stars;
+import pl.pjatk.MATLOG.Domain.Enums.Rate;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.user.student.StudentUserService;
-import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserDAOMapper;
-import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserReviewDTOMapper;
-import pl.pjatk.MATLOG.UserManagement.user.student.persistance.StudentUserDAO;
-import pl.pjatk.MATLOG.UserManagement.user.tutor.TutorUserService;
-import pl.pjatk.MATLOG.UserManagement.user.tutor.mapper.TutorUserDAOMapper;
-import pl.pjatk.MATLOG.UserManagement.user.tutor.mapper.TutorUserDTOMapper;
-import pl.pjatk.MATLOG.UserManagement.user.tutor.persistance.TutorUserDAO;
+import pl.pjatk.MATLOG.UserManagement.studentUser.StudentUserService;
+import pl.pjatk.MATLOG.UserManagement.studentUser.mapper.StudentUserDAOMapper;
+import pl.pjatk.MATLOG.UserManagement.studentUser.mapper.StudentUserReviewDTOMapper;
+import pl.pjatk.MATLOG.UserManagement.studentUser.persistance.StudentUserDAO;
+import pl.pjatk.MATLOG.UserManagement.tutorUser.TutorUserService;
+import pl.pjatk.MATLOG.UserManagement.tutorUser.mapper.TutorUserDAOMapper;
+import pl.pjatk.MATLOG.UserManagement.tutorUser.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.reviewManagement.ReviewRepository;
 import pl.pjatk.MATLOG.reviewManagement.ReviewService;
-import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewLookUpDTO;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewCreationDTOMapper;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDAOMapper;
@@ -107,9 +100,9 @@ public class ReviewServiceTests {
             testTutor.getAuthorities(),
             testTutor.isAccountNonLocked());
     private final ReviewDAO testReviewDAO = new ReviewDAO("123", testComment,
-            Stars.FOUR, testDateTime, testStudentDAO, testTutorDAO);
+            Rate.FOUR, testDateTime, testStudentDAO, testTutorDAO);
     private final ReviewDAO testReviewDAO2 = new ReviewDAO("1234", testComment,
-            Stars.ONE, testDateTime, testStudentDAO, testTutorDAO);
+            Rate.ONE, testDateTime, testStudentDAO, testTutorDAO);
 
     @Test
     void getTutorReviewsDTOByEmailAddress() {
@@ -137,8 +130,8 @@ public class ReviewServiceTests {
 
         assertAll(() -> {
             assertEquals(2, studentReviewsDTOByEmailAddress.size());
-            assertEquals(Stars.FOUR, studentReviewsDTOByEmailAddress.getFirst().rate());
-            assertEquals(Stars.ONE, studentReviewsDTOByEmailAddress.getLast().rate());
+            assertEquals(Rate.FOUR, studentReviewsDTOByEmailAddress.getFirst().rate());
+            assertEquals(Rate.ONE, studentReviewsDTOByEmailAddress.getLast().rate());
         });
     }
 

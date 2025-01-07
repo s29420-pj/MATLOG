@@ -1,9 +1,9 @@
 package pl.pjatk.MATLOG.reviewManagement.mapper;
 
-import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.Review;
-import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserDAOMapper;
-import pl.pjatk.MATLOG.UserManagement.user.tutor.mapper.TutorUserDAOMapper;
+import pl.pjatk.MATLOG.UserManagement.studentUser.mapper.StudentUserDAOMapper;
+import pl.pjatk.MATLOG.UserManagement.tutorUser.mapper.TutorUserDAOMapper;
+import pl.pjatk.MATLOG.configuration.annotations.Mapper;
 import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
 
 /**
@@ -11,7 +11,7 @@ import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
  * converting Review into ReviewDAO and
  * converting ReviewDAO into Review.
  */
-@Component
+@Mapper
 public class ReviewDAOMapper {
 
     private final TutorUserDAOMapper tutorUserDAOMapper;

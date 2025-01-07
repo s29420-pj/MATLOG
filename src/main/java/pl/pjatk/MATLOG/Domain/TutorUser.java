@@ -14,6 +14,7 @@ public final class TutorUser extends User {
 
     private String biography;
     private final Set<SchoolSubject> specializations;
+    private final Set<Review> reviews;
 
     /**
      * Method that returns specializationList.
@@ -76,6 +77,18 @@ public final class TutorUser extends User {
         this.biography = biography;
     }
 
+    public boolean addReview(Review review) {
+        return reviews.add(review);
+    }
+
+    public boolean removeReview(Review review) {
+        return reviews.remove(review);
+    }
+
+    public Set<Review> getReviews() {
+        return Set.copyOf(reviews);
+    }
+
     /**
      * Private constructor that creates object of TutorUser.
      * It adds authority as TUTOR_USER and sets role to Tutor.
@@ -89,6 +102,7 @@ public final class TutorUser extends User {
             addAuthority(new SimpleGrantedAuthority("TUTOR_USER"));
         this.biography = Objects.requireNonNullElseGet(builder.biography, String::new);
         this.specializations = Objects.requireNonNullElseGet(builder.specializations, HashSet::new);
+        this.reviews = Objects.requireNonNullElseGet(builder.reviews, HashSet::new);
     }
 
     /**
@@ -107,6 +121,7 @@ public final class TutorUser extends User {
 
         private String biography;
         private Set<SchoolSubject> specializations;
+        private Set<Review> reviews;
 
         /**
          * Method that initializes biography.
@@ -125,6 +140,11 @@ public final class TutorUser extends User {
          */
         public TutorBuilder withSpecializations(Set<SchoolSubject> specializations) {
             this.specializations = specializations;
+            return self();
+        }
+
+        public TutorBuilder withReviews(Set<Review> reviews) {
+            this.reviews = reviews;
             return self();
         }
 

@@ -5,16 +5,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import pl.pjatk.MATLOG.Domain.Enums.Stars;
+import pl.pjatk.MATLOG.Domain.Enums.Rate;
 import pl.pjatk.MATLOG.Domain.Review;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserDAOMapper;
-import pl.pjatk.MATLOG.UserManagement.user.student.persistance.StudentUserDAO;
-import pl.pjatk.MATLOG.UserManagement.user.tutor.mapper.TutorUserDAOMapper;
-import pl.pjatk.MATLOG.UserManagement.user.tutor.persistance.TutorUserDAO;
+import pl.pjatk.MATLOG.UserManagement.studentUser.mapper.StudentUserDAOMapper;
+import pl.pjatk.MATLOG.UserManagement.studentUser.persistance.StudentUserDAO;
+import pl.pjatk.MATLOG.UserManagement.tutorUser.mapper.TutorUserDAOMapper;
+import pl.pjatk.MATLOG.UserManagement.tutorUser.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDAOMapper;
 import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
 
@@ -83,7 +83,7 @@ public class ReviewDAOMapperTests {
     @Test
     void createReviewFromReviewDAO() {
         ReviewDAO reviewDAO = new ReviewDAO(UUID.randomUUID().toString(),
-                testComment, Stars.FIVE, testDateTime, testStudentDAO, testTutorDAO);
+                testComment, Rate.FIVE, testDateTime, testStudentDAO, testTutorDAO);
 
         Review reviewFromMapper = reviewDAOMapper.create(reviewDAO);
 
@@ -102,7 +102,7 @@ public class ReviewDAOMapperTests {
     void createReviewDAOFromReview() {
         Review review = Review.builder()
                 .withComment(testComment)
-                .withRate(Stars.FOUR)
+                .withRate(Rate.FOUR)
                 .withDateAndTimeOfReview(testDateTime)
                 .withStudent(testStudent)
                 .withTutor(testTutor)

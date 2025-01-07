@@ -2,7 +2,7 @@ package pl.pjatk.MATLOG.reviewManagement.mapper;
 
 import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.Review;
-import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserReviewDTOMapper;
+import pl.pjatk.MATLOG.UserManagement.studentUser.mapper.StudentUserReviewDTOMapper;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewLookUpDTO;
 
 /**

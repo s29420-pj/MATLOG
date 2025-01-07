@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.reviewManagement.dto;
 
-import pl.pjatk.MATLOG.Domain.Enums.Stars;
+import pl.pjatk.MATLOG.Domain.Enums.Rate;
+
 import java.time.LocalDateTime;
 
 /**
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
  * @param tutorUserEmailAddress Tutor's email address.
  */
 public record ReviewCreationDTO(String comment,
-                                Stars rate,
+                                Rate rate,
                                 LocalDateTime dateAndTimeOfReview,
                                 String studentUserEmailAddress,
                                 String tutorUserEmailAddress) {

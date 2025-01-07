@@ -5,13 +5,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import pl.pjatk.MATLOG.Domain.Enums.Stars;
+import pl.pjatk.MATLOG.Domain.Enums.Rate;
 import pl.pjatk.MATLOG.Domain.Review;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.user.student.mapper.StudentUserReviewDTOMapper;
+import pl.pjatk.MATLOG.UserManagement.studentUser.mapper.StudentUserReviewDTOMapper;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewLookUpDTO;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewLookUpDTOMapper;
 
@@ -58,7 +58,7 @@ public class ReviewLookUpDTOMapperTests {
     void createReviewDTOFromReview() {
         Review review = Review.builder()
                 .withComment("testComment")
-                .withRate(Stars.FIVE)
+                .withRate(Rate.FIVE)
                 .withDateAndTimeOfReview(LocalDateTime.now().minusDays(1))
                 .withStudent(testStudent)
                 .withTutor(testTutor)

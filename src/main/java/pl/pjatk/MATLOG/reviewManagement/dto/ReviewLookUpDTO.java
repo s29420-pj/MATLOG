@@ -1,7 +1,7 @@
 package pl.pjatk.MATLOG.reviewManagement.dto;
 
-import pl.pjatk.MATLOG.Domain.Enums.Stars;
-import pl.pjatk.MATLOG.UserManagement.user.student.dto.StudentUserReviewLookUpDTO;
+import pl.pjatk.MATLOG.Domain.Enums.Rate;
+import pl.pjatk.MATLOG.UserManagement.studentUser.dto.StudentUserReviewLookUpDTO;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * @param studentUser Students representation in Tutors profile.
  */
 public record ReviewLookUpDTO(String comment,
-                              Stars rate,
+                              Rate rate,
                               LocalDateTime dateAndTimeOfReview,
                               StudentUserReviewLookUpDTO studentUser) {
 }

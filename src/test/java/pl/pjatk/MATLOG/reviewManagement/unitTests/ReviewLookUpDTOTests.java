@@ -1,10 +1,10 @@
 package pl.pjatk.MATLOG.reviewManagement.unitTests;
 
 import org.junit.jupiter.api.Test;
-import pl.pjatk.MATLOG.Domain.Enums.Stars;
+import pl.pjatk.MATLOG.Domain.Enums.Rate;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.user.student.dto.StudentUserReviewLookUpDTO;
+import pl.pjatk.MATLOG.UserManagement.studentUser.dto.StudentUserReviewLookUpDTO;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewLookUpDTO;
 
 import java.time.LocalDateTime;
@@ -21,11 +21,11 @@ public class ReviewLookUpDTOTests {
 
     @Test
     void createReviewDTO() {
-        ReviewLookUpDTO reviewLookUpDTO = new ReviewLookUpDTO(testComment, Stars.FIVE, testDateTime, testStudent);
+        ReviewLookUpDTO reviewLookUpDTO = new ReviewLookUpDTO(testComment, Rate.FIVE, testDateTime, testStudent);
 
         assertAll(() -> {
             assertEquals(testComment, reviewLookUpDTO.comment());
-            assertEquals(Stars.FIVE, reviewLookUpDTO.rate());
+            assertEquals(Rate.FIVE, reviewLookUpDTO.rate());
             assertEquals(testDateTime, reviewLookUpDTO.dateAndTimeOfReview());
             assertEquals(testStudent, reviewLookUpDTO.studentUser());
         });
