@@ -1,17 +1,15 @@
 package pl.pjatk.MATLOG.PrivateLessonManagment.persistance;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import org.checkerframework.checker.units.qual.C;
+import lombok.Getter;
 import pl.pjatk.MATLOG.Domain.Enums.PrivateLessonStatus;
-import pl.pjatk.MATLOG.Domain.StudentUser;
-import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.UserManagement.studentUser.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.UserManagement.tutorUser.persistance.TutorUserDAO;
 
 import java.time.LocalDateTime;
 
 @Entity(name = "private_lesson")
+@Getter
 public class PrivateLessonDAO {
 
     @Id

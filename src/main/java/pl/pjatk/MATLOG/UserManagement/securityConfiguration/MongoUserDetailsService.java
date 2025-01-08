@@ -4,8 +4,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.User;
-import pl.pjatk.MATLOG.UserManagement.user.*;
 import pl.pjatk.MATLOG.UserManagement.studentUser.StudentUserMapperFactory;
+import pl.pjatk.MATLOG.UserManagement.user.SecurityUser;
+import pl.pjatk.MATLOG.UserManagement.user.UserRepositoryService;
 
 /**
  * Component that loads user from the database

@@ -1,16 +1,16 @@
 package pl.pjatk.MATLOG.UserManagement.studentUser;
 
-import pl.pjatk.MATLOG.Domain.StudentUser;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserAlreadyExistException;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserInvalidEmailAddressException;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.user.UserRepositoryService;
 import pl.pjatk.MATLOG.UserManagement.studentUser.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.UserManagement.studentUser.persistance.StudentUserRepository;
+import pl.pjatk.MATLOG.UserManagement.user.UserRepositoryService;
 import pl.pjatk.MATLOG.UserManagement.user.dto.UserRegistrationDTO;
 
 import java.util.Optional;

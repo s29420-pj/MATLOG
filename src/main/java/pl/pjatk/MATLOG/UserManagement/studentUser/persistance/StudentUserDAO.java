@@ -3,10 +3,7 @@ package pl.pjatk.MATLOG.UserManagement.studentUser.persistance;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.security.core.GrantedAuthority;
-import pl.pjatk.MATLOG.UserManagement.user.persistance.UserDAO;
 
 import java.time.LocalDate;
 import java.util.Set;

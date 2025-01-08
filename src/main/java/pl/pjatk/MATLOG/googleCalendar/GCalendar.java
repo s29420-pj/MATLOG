@@ -1,6 +1,5 @@
 package pl.pjatk.MATLOG.googleCalendar;
 
-import com.google.api.services.calendar.Calendar;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

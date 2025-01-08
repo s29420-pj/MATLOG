@@ -3,7 +3,10 @@ package pl.pjatk.MATLOG.Domain;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Class that represents Tutor in application. It extends User abstract class.

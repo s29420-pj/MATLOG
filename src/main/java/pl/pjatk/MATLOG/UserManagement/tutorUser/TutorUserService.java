@@ -8,9 +8,9 @@ import pl.pjatk.MATLOG.UserManagement.Exceptions.UserAlreadyExistException;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserInvalidEmailAddressException;
 import pl.pjatk.MATLOG.UserManagement.Exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.user.dto.UserRegistrationDTO;
 import pl.pjatk.MATLOG.UserManagement.tutorUser.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.UserManagement.tutorUser.persistance.TutorUserRepository;
+import pl.pjatk.MATLOG.UserManagement.user.dto.UserRegistrationDTO;
 
 import java.util.Optional;
 

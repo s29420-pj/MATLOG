@@ -2,7 +2,8 @@ package pl.pjatk.MATLOG.Domain;
 
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
-import pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions.*;
+import pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions.LessonInvalidOwnerId;
+import pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions.LessonInvalidPriceException;
 
 import java.util.UUID;
 
