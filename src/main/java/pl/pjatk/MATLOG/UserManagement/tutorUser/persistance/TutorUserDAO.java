@@ -1,48 +1,74 @@
-package pl.pjatk.MATLOG.UserManagement.tutorUser.persistance;
+package pl.pjatk.MATLOG.userManagement.tutorUser.persistance;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
-import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
 
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity(name = "tutor_user")
 public class TutorUserDAO {
+
     @Id
-    @Column(name = "id", nullable = false)
-    private String id;
+    String id;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
+    @Column(nullable = false)
+    String firstName;
 
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
+    @Column(nullable = false)
+    String lastName;
 
-    @Column(name = "email_address", unique = true ,nullable = false)
-    private String emailAddress;
+    @Column(unique = true ,nullable = false)
+    String emailAddress;
 
-    @Column(name = "password", nullable = false)
-    private String password;
+    @Column(nullable = false)
+    String password;
 
-    @Column(name = "date_of_birth")
-    private LocalDate dateOfBirth;
+    @Column()
+    LocalDate dateOfBirth;
 
-    @Column(columnDefinition = "String[]")
-    private Set<GrantedAuthority> authorities;
+    @Column
+    @ElementCollection(targetClass = GrantedAuthority.class)
+    Set<GrantedAuthority> authorities;
 
-    private Boolean isAccountNonLocked;
+    @Column
+    Boolean isAccountNonLocked;
 
-    private String biography;
+    @Column
+    String biography;
 
-    @Column(columnDefinition = "String[]")
-    private Set<SchoolSubject> schoolSubjects;
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = SchoolSubject.class)
+    Set<SchoolSubject> specializations;
 
     @OneToMany
-    private Set<ReviewDAO> reviews;
+    Set<ReviewDAO> reviews;
 
+    protected TutorUserDAO() {
+    }
+
+    TutorUserDAO(String id,
+                 String firstName,
+                 String lastName,
+                 String emailAddress,
+                 String password,
+                 LocalDate dateOfBirth,
+                 Set<GrantedAuthority> authorities,
+                 Boolean isAccountNonLocked,
+                 String biography,
+                 Set<SchoolSubject> specializations,
+                 Set<ReviewDAO> reviews) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
+        this.password = password;
+        this.dateOfBirth = dateOfBirth;
+        this.authorities = authorities;
+        this.isAccountNonLocked = isAccountNonLocked;
+        this.biography = biography;
+        this.specializations = specializations;
+        this.reviews = reviews;
+    }
 }

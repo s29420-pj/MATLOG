@@ -1,52 +1,49 @@
 package pl.pjatk.MATLOG.PrivateLessonManagment.persistance;
 
 import jakarta.persistence.*;
-import lombok.Getter;
 import pl.pjatk.MATLOG.Domain.Enums.PrivateLessonStatus;
-import pl.pjatk.MATLOG.UserManagement.studentUser.persistance.StudentUserDAO;
-import pl.pjatk.MATLOG.UserManagement.tutorUser.persistance.TutorUserDAO;
+import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
 
 import java.time.LocalDateTime;
 
 @Entity(name = "private_lesson")
-@Getter
 public class PrivateLessonDAO {
 
     @Id
-    @Column(name = "id", nullable = false)
-    private String id;
+    String id;
 
     @ManyToOne
     @JoinColumn(name = "tutor_id", nullable = false)
-    private TutorUserDAO tutor;
+    TutorUserDAO tutor;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
-    private StudentUserDAO student;
+    StudentUserDAO student;
 
-    @Column(name = "connection_code", nullable = true, unique = true)
-    private String connectionCode;
+    @Column(nullable = true, unique = true)
+    String connectionCode;
 
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private PrivateLessonStatus status;
+    PrivateLessonStatus status;
 
-    @Column(name = "is_available_offline", nullable = false)
-    private boolean isAvailableOffline;
+    @Column(nullable = false)
+    boolean isAvailableOffline;
 
-    @Column(name = "start_time", nullable = false)
-    private LocalDateTime startTime;
+    @Column(nullable = false)
+    LocalDateTime startTime;
 
-    @Column(name = "end_time", nullable = false)
-    private LocalDateTime endTime;
+    @Column(nullable = false)
+    LocalDateTime endTime;
 
-    @Column(name = "price", nullable = false)
-    private Double price;
+    @Column(nullable = false)
+    Double price;
 
-    public PrivateLessonDAO() {
+    protected PrivateLessonDAO() {
     }
 
-    public PrivateLessonDAO(String id,
+    PrivateLessonDAO(String id,
                             TutorUserDAO tutor,
                             StudentUserDAO student,
                             String connectionCode,

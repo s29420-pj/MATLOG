@@ -1,15 +1,13 @@
-package pl.pjatk.MATLOG.UserManagement.studentUser.mapper;
+package pl.pjatk.MATLOG.userManagement.studentUser.mapper;
 
-import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.Domain.StudentUser;
-import pl.pjatk.MATLOG.UserManagement.studentUser.dto.StudentUserReviewLookUpDTO;
+import pl.pjatk.MATLOG.configuration.annotations.Mapper;
+import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserReviewLookUpDTO;
 
-@Component
+@Mapper
 public class StudentUserReviewDTOMapper {
 
     public StudentUserReviewLookUpDTO createStudentReviewLookUpDTO(StudentUser studentUser) {
-        return new StudentUserReviewLookUpDTO(studentUser.getFirstName(), studentUser.getLastName());
+        return new StudentUserReviewLookUpDTO(studentUser.getId(), studentUser.getFirstName());
     }
-
-
 }

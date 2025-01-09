@@ -4,10 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pl.pjatk.MATLOG.Domain.Enums.Role;
 import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
-import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.StandardUserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 
 import java.time.LocalDate;
 import java.util.HashSet;
