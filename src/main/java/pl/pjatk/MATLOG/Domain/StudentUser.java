@@ -1,11 +1,6 @@
 package pl.pjatk.MATLOG.Domain;
 
-import lombok.Getter;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import pl.pjatk.MATLOG.Domain.Enums.Role;
-
-import java.util.Set;
 
 /**
  * Concrete class representing Student in application

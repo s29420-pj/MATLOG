@@ -2,8 +2,10 @@ package pl.pjatk.MATLOG.Domain;
 
 import lombok.Getter;
 import pl.pjatk.MATLOG.Domain.Enums.PrivateLessonStatus;
+import pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions.PrivateLessonInvalidPriceException;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -24,23 +26,38 @@ public final class PrivateLesson {
     private final LocalDateTime endTime;
     private final Double price;
 
+    /**
+     * PrivateLesson constructor that creates object with provided data from builder. Data is validated.
+     * @param builder Builder of the PrivateLesson with set attributes
+     * */
     private PrivateLesson(Builder builder) {
         if (builder.id == null || builder.id.isEmpty()) this.id = UUID.randomUUID().toString();
         else this.id = builder.id;
-        this.tutor = builder.tutor;
+        this.tutor = Objects.requireNonNull(builder.tutor, "Tutor of private lesson is mandatory and must be set");
         this.student = builder.student;
-        this.connectionCode = builder.connectionCode;
-        this.status = builder.status;
+
+        if (builder.connectionCode == null || builder.connectionCode.isEmpty()) {
+            this.connectionCode = "Not assigned yet";
+        } else {
+            this.connectionCode = builder.connectionCode;
+        }
+
+        this.status = Objects.requireNonNull(builder.status, "Status of private lesson is mandatory and must be set");
         this.isAvailableOffline = builder.isAvailableOffline;
-        this.startTime = builder.startTime;
-        this.endTime = builder.endTime;
-        this.price = builder.price;
+        this.startTime = Objects.requireNonNull(builder.startTime, "Start time of private lesson is mandatory and must be set");
+        this.endTime = Objects.requireNonNull(builder.endTime, "End time of private lesson is mandatory and must be set");
+
+        if (builder.price < 0) {
+            throw new PrivateLessonInvalidPriceException();
+        } else {
+            this.price = Objects.requireNonNull(builder.price, "Price of private lesson is mandatory and must be set, lesson can be free but price cannot be below 0");
+        }
     }
 
     /**
      * Abstract builder that have to be extended in concrete User class
      */
-    public abstract static class Builder {
+    public static class Builder {
         private String id;
         private TutorUser tutor;
         private StudentUser student;
@@ -136,27 +153,4 @@ public final class PrivateLesson {
         }
 
     }
-
-
-    /**
-     * Method that validates all fields of the PrivateLesson.
-     */
-//    private void validateFields() {
-//        if (schoolSubjects == null) throw new PrivateLessonInvalidSchoolSubjectException();
-//        if (tutorId == null || tutorId.isEmpty()) throw new PrivateLessonInvalidIdException();
-//        if (status == null) throw new PrivateLessonInvalidStatusException();
-//        if (startTime == null) throw new IllegalStateException("Start time of private lesson is mandatory and must be set");
-//        if (endTime == null) throw new IllegalStateException("End time of private lesson is mandatory and must be set");
-//        if (price == null) {
-//            throw new PrivateLessonInvalidPriceException("Price of private lesson is mandatory and must be set");
-//        } else if (price < 0) {
-//            throw new PrivateLessonInvalidPriceException();
-//        }
-//
-//        if (startTime.isBefore(LocalDateTime.now()))
-//            throw new PrivateLessonInvalidStartTimeException();
-//
-//        if (endTime.isBefore(LocalDateTime.now()) || endTime.isBefore(startTime) || endTime.isEqual(startTime))
-//            throw new PrivateLessonInvalidTimeException();
-//    }
 }

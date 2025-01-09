@@ -2,8 +2,8 @@ package pl.pjatk.MATLOG.UserManagement.tutorUser;
 
 
 import org.springframework.stereotype.Component;
-import pl.pjatk.MATLOG.UserManagement.tutorUser.mapper.TutorUserDTOMapper;
 import pl.pjatk.MATLOG.UserManagement.tutorUser.mapper.TutorUserDAOMapper;
+import pl.pjatk.MATLOG.UserManagement.tutorUser.mapper.TutorUserDTOMapper;
 import pl.pjatk.MATLOG.UserManagement.tutorUser.mapper.TutorUserReviewDTOMapper;
 
 @Component

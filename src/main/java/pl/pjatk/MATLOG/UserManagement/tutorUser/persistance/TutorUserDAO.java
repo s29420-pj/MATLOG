@@ -1,14 +1,15 @@
 package pl.pjatk.MATLOG.UserManagement.tutorUser.persistance;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import org.springframework.security.core.GrantedAuthority;
 import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
-import pl.pjatk.MATLOG.Domain.Review;
 import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
 
-import java.util.Set;
-
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity(name = "tutor_user")
 public class TutorUserDAO {
