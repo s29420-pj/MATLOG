@@ -21,8 +21,8 @@ import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapp
 import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.TutorUserService;
-import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.TutorUserDAOMapper;
-import pl.pjatk.MATLOG.userManagement.tutorUser.TutorUserDAO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.reviewManagement.ReviewRepository;
 import pl.pjatk.MATLOG.reviewManagement.ReviewService;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewLookUpDTO;

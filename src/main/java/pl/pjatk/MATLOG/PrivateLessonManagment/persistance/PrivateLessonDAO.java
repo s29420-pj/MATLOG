@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import pl.pjatk.MATLOG.Domain.Enums.PrivateLessonStatus;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
-import pl.pjatk.MATLOG.userManagement.tutorUser.TutorUserDAO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
 
 import java.time.LocalDateTime;
 

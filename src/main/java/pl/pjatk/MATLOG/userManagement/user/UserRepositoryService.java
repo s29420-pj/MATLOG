@@ -5,9 +5,9 @@ import pl.pjatk.MATLOG.Domain.User;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserRepository;
-import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.TutorUserDAOMapper;
-import pl.pjatk.MATLOG.userManagement.tutorUser.TutorUserDAO;
-import pl.pjatk.MATLOG.userManagement.tutorUser.TutorUserRepository;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserRepository;
 
 import java.util.Optional;
 
@@ -44,7 +44,7 @@ public class UserRepositoryService {
         }
         Optional<TutorUserDAO> tutorFromDatabase = tutorUserRepository.findByEmailAddress(emailAddress);
         if (tutorFromDatabase.isPresent()) {
-            return tutorUserDAOMapper.createUser(tutorFromDatabase.get());
+            return tutorUserDAOMapper.mapToDomain(tutorFromDatabase.get());
         }
         return null;
     }

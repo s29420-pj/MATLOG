@@ -16,7 +16,6 @@ public final class Review {
     private final Rate rate;
     private final LocalDateTime dateAndTimeOfComment;
     private final StudentUser studentUser;
-    private final TutorUser tutorUser;
 
     public String getId() {
         return id;
@@ -38,10 +37,6 @@ public final class Review {
         return studentUser;
     }
 
-    public TutorUser getTutorUser() {
-        return tutorUser;
-    }
-
     /**
      * Constructor which is used by the builder.
      * If id is not provided in builder then random UUID is generated.
@@ -58,7 +53,6 @@ public final class Review {
         this.rate = Objects.requireNonNull(builder.rate);
         this.dateAndTimeOfComment = Objects.requireNonNullElseGet(builder.dateAndTimeOfComment, LocalDateTime::now);
         this.studentUser = Objects.requireNonNull(builder.studentUser);
-        this.tutorUser = Objects.requireNonNull(builder.tutorUser);
     }
 
     /**
@@ -75,7 +69,6 @@ public final class Review {
         private Rate rate;
         private LocalDateTime dateAndTimeOfComment;
         private StudentUser studentUser;
-        private TutorUser tutorUser;
 
         /**
          * Sets Review's id.
@@ -124,16 +117,6 @@ public final class Review {
          */
         public Builder withStudent(StudentUser studentUser) {
             this.studentUser = studentUser;
-            return this;
-        }
-
-        /**
-         * Sets review tutor.
-         * @param tutorUser Identifier of a tutor
-         * @return Builder
-         */
-        public Builder withTutor(TutorUser tutorUser) {
-            this.tutorUser = tutorUser;
             return this;
         }
 

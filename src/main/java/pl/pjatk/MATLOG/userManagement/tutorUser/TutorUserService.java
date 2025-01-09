@@ -5,7 +5,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
+import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
+import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.TutorUserDTOMapper;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserRepository;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 import java.util.Optional;
@@ -18,17 +24,18 @@ import java.util.Optional;
 public class TutorUserService {
 
     private final TutorUserRepository tutorUserRepository;
-    private final TutorUserMapperFactory tutorUserMapperFactory;
     private final PasswordEncoder passwordEncoder;
+    private final TutorUserDAOMapper tutorUserDAOMapper;
+    private final TutorUserDTOMapper tutorUserDTOMapper;
     private final UserPasswordValidator passwordValidator;
 
     public TutorUserService(TutorUserRepository tutorUserRepository,
-                            TutorUserMapperFactory tutorUserMapperFactory,
-                            PasswordEncoder passwordEncoder,
+                            PasswordEncoder passwordEncoder, TutorUserDAOMapper tutorUserDAOMapper, TutorUserDTOMapper tutorUserDTOMapper,
                             UserPasswordValidator passwordValidator) {
         this.tutorUserRepository = tutorUserRepository;
-        this.tutorUserMapperFactory = tutorUserMapperFactory;
         this.passwordEncoder = passwordEncoder;
+        this.tutorUserDAOMapper = tutorUserDAOMapper;
+        this.tutorUserDTOMapper = tutorUserDTOMapper;
         this.passwordValidator = passwordValidator;
     }
 
@@ -45,36 +52,31 @@ public class TutorUserService {
         }
         Optional<TutorUserDAO> userFromDatabase = tutorUserRepository.findByEmailAddress(emailAddress);
         if (userFromDatabase.isEmpty()) {
-            throw new UsernameNotFoundException();
+            throw new UserNotFoundException();
         }
-        return tutorUserMapperFactory.getUserDAOMapper()
-                .createUser(userFromDatabase.get());
+        return tutorUserDAOMapper.mapToDomain(userFromDatabase.get());
     }
 
     /**
      * Method that is used to register valid tutor user.
      * @param userDTO DTO representation of the user
      * @throws IllegalArgumentException If DTO is null
-     * @throws UserAlreadyExistException if user with provided email address exists.
+     * @throws UserAlreadyExistsException if user with provided email address exists.
      */
-    public void registerUser(UserRegistrationDTO userDTO) throws IllegalArgumentException, UserAlreadyExistException {
+    public void registerUser(UserRegistrationDTO userDTO) throws IllegalArgumentException, UserAlreadyExistsException {
         if (userDTO == null) {
             throw new IllegalArgumentException("Please provide valid UserDTO");
         }
 
         if (checkIfTutorExists(userDTO.emailAddress())) {
-            throw new UserAlreadyExistException();
+            throw new UserAlreadyExistsException();
         }
 
-        TutorUser domainUser = tutorUserMapperFactory
-                .getUserDTOMapper()
-                .createUser(userDTO);
+        TutorUser domainUser = tutorUserDTOMapper.mapToDomain(userDTO);
 
         domainUser.changePassword(passwordEncoder.encode(userDTO.password()), passwordValidator);
 
-        TutorUserDAO tutor = tutorUserMapperFactory
-                .getUserDAOMapper()
-                .createUserDAO(domainUser);
+        TutorUserDAO tutor = tutorUserDAOMapper.mapToDAO(domainUser);
 
         tutorUserRepository.save(tutor);
     }
@@ -86,7 +88,7 @@ public class TutorUserService {
      */
     public void changePassword(TutorUser tutorUser, String rawPassword) {
         tutorUser.changePassword(passwordEncoder.encode(rawPassword), passwordValidator);
-        tutorUserRepository.save(tutorUserMapperFactory.getUserDAOMapper().createUserDAO(tutorUser));
+        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
     }
 
     /**

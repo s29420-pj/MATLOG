@@ -13,8 +13,8 @@ import pl.pjatk.MATLOG.userManagement.securityConfiguration.StandardUserPassword
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
-import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.TutorUserDAOMapper;
-import pl.pjatk.MATLOG.userManagement.tutorUser.TutorUserDAO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDAOMapper;
 import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
 
