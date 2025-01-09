@@ -8,6 +8,7 @@ import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.TutorUserDTOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
@@ -99,5 +100,16 @@ public class TutorUserService {
     private boolean checkIfTutorExists(String emailAddress) {
         Optional<TutorUserDAO> tutor = tutorUserRepository.findByEmailAddress(emailAddress);
         return tutor.isPresent();
+    }
+
+    private TutorUser getTutorUserById(String id) {
+        Optional<TutorUserDAO> tutorFromDb = tutorUserRepository.findById(id);
+        if (tutorFromDb.isEmpty()) throw new UserNotFoundException();
+        return tutorUserDAOMapper.mapToDomain(tutorFromDb.get());
+    }
+
+    public TutorUserProfileDTO getTutorUserProfile(String id) {
+        TutorUser tutor = getTutorUserById(id);
+        return tutorUserDTOMapper.
     }
 }

@@ -4,15 +4,20 @@ import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.PrivateLessonTutorUserDTO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
+
+import java.util.stream.Collectors;
 
 @Mapper
 public class TutorUserDTOMapper {
 
     private final UserPasswordValidator userPasswordValidator;
+    private final ReviewDTOMapper reviewDTOMapper;
 
-    public TutorUserDTOMapper(UserPasswordValidator userPasswordValidator) {
+    public TutorUserDTOMapper(UserPasswordValidator userPasswordValidator, ReviewDTOMapper reviewDTOMapper) {
         this.userPasswordValidator = userPasswordValidator;
+        this.reviewDTOMapper = reviewDTOMapper;
     }
 
     public TutorUser mapToDomain(UserRegistrationDTO userDTO) {
@@ -29,5 +34,18 @@ public class TutorUserDTOMapper {
         return TutorUser.builder()
                 .withId(privateLessonTutorUserDTO.id())
                 .build();
+    }
+
+    public TutorUserProfileDTO mapToProfile(TutorUser tutorUser) {
+        return new TutorUserProfileDTO(
+                tutorUser.getId(),
+                tutorUser.getFirstName(),
+                tutorUser.getLastName(),
+                tutorUser.getBiography(),
+                tutorUser.getSpecializations(),
+                tutorUser.getReviews().stream()
+                        .map(reviewDTOMapper::mapToDTO)
+                        .collect(Collectors.toSet())
+        );
     }
 }

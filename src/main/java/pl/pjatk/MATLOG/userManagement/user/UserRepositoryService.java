@@ -40,7 +40,7 @@ public class UserRepositoryService {
     public User findUserByEmailAddress(String emailAddress) {
         Optional<StudentUserDAO> studentFromDatabase = studentUserRepository.findByEmailAddress(emailAddress);
         if (studentFromDatabase.isPresent()) {
-            return studentUserDAOMapper.createUser(studentFromDatabase.get());
+            return studentUserDAOMapper.mapToDomain(studentFromDatabase.get());
         }
         Optional<TutorUserDAO> tutorFromDatabase = tutorUserRepository.findByEmailAddress(emailAddress);
         if (tutorFromDatabase.isPresent()) {

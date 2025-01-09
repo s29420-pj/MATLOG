@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pjatk.MATLOG.Domain.Enums.Role;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
-import pl.pjatk.MATLOG.userManagement.user.tutor.dto.TutorUserProfileDTO;
 
 @RestController
 @RequestMapping("/tutor/user/controller")

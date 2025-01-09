@@ -54,6 +54,10 @@ public final class PrivateLesson {
         }
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     /**
      * Abstract builder that have to be extended in concrete User class
      */
