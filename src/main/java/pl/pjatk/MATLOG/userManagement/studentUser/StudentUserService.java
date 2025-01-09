@@ -1,5 +1,6 @@
 package pl.pjatk.MATLOG.userManagement.studentUser;
 
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class StudentUserService {
 
     private final StudentUserRepository studentUserRepository;
@@ -63,6 +65,8 @@ public class StudentUserService {
         }
 
         StudentUser domainUser = studentUserDTOMapper.mapToDomain(userDTO);
+
+        domainUser.unblock();
 
         domainUser.changePassword(passwordEncoder.encode(userDTO.password()), userPasswordValidator);
 

@@ -1,5 +1,6 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser;
 
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.Optional;
  * It's used by Controller related to tutor operations.
  */
 @Service
+@Transactional
 public class TutorUserService {
 
     private final TutorUserRepository tutorUserRepository;
@@ -74,6 +76,8 @@ public class TutorUserService {
         }
 
         TutorUser domainUser = tutorUserDTOMapper.mapToDomain(userDTO);
+
+        domainUser.unblock();
 
         domainUser.changePassword(passwordEncoder.encode(userDTO.password()), passwordValidator);
 

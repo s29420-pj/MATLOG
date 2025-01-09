@@ -94,6 +94,10 @@ public abstract class User {
         this.password = password;
     }
 
+    public void unblock() {
+        this.isAccountNonLocked = true;
+    }
+
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
