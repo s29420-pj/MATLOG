@@ -110,6 +110,6 @@ public class TutorUserService {
 
     public TutorUserProfileDTO getTutorUserProfile(String id) {
         TutorUser tutor = getTutorUserById(id);
-        return tutorUserDTOMapper.
+        return tutorUserDTOMapper.mapToProfile(getTutorUserById(id));
     }
 }

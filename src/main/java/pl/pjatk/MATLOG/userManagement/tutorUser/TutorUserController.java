@@ -31,6 +31,6 @@ public class TutorUserController {
 
     @GetMapping("/get/profile/{emailAddress}")
     public ResponseEntity<TutorUserProfileDTO> getTutorProfile(@PathVariable String emailAddress) {
-        return ResponseEntity.ok(tutorUserService.getTutorProfile(emailAddress));
+        return ResponseEntity.ok(tutorUserService.getTutorUserProfile(emailAddress));
     }
 }

@@ -22,7 +22,7 @@ public class ReviewDAO {
     LocalDateTime dateAndTimeOfReview;
 
     @ManyToOne
-    @JoinColumn(name = "student_id", table = "student_user", referencedColumnName = "id")
+    @JoinColumn
     StudentUserDAO student;
 
     protected ReviewDAO() {

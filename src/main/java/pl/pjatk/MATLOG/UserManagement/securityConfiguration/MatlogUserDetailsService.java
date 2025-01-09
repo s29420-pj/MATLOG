@@ -14,11 +14,9 @@ import pl.pjatk.MATLOG.userManagement.user.UserRepositoryService;
 public class MatlogUserDetailsService implements UserDetailsService {
 
     private final UserRepositoryService userRepository;
-    private final StudentUserMapperFactory studentUserMapperFactory;
 
-    public MatlogUserDetailsService(UserRepositoryService userRepository, StudentUserMapperFactory studentUserMapperFactory) {
+    public MatlogUserDetailsService(UserRepositoryService userRepository) {
         this.userRepository = userRepository;
-        this.studentUserMapperFactory = studentUserMapperFactory;
     }
 
     /**
