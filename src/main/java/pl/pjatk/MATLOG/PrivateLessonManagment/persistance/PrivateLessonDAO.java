@@ -3,8 +3,8 @@ package pl.pjatk.MATLOG.PrivateLessonManagment.persistance;
 import jakarta.persistence.*;
 import lombok.Getter;
 import pl.pjatk.MATLOG.Domain.Enums.PrivateLessonStatus;
-import pl.pjatk.MATLOG.UserManagement.studentUser.persistance.StudentUserDAO;
-import pl.pjatk.MATLOG.UserManagement.tutorUser.persistance.TutorUserDAO;
+import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.TutorUserDAO;
 
 import java.time.LocalDateTime;
 

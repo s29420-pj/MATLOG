@@ -2,8 +2,8 @@ package pl.pjatk.MATLOG.Domain;
 
 import org.junit.jupiter.api.Test;
 import pl.pjatk.MATLOG.Domain.Enums.Rate;
-import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.StandardUserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

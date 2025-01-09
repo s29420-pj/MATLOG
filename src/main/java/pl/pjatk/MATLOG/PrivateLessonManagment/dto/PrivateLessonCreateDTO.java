@@ -1,6 +1,6 @@
 package pl.pjatk.MATLOG.PrivateLessonManagment.dto;
 
-import pl.pjatk.MATLOG.UserManagement.tutorUser.dto.PrivateLessonTutorUserDTO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.PrivateLessonTutorUserDTO;
 
 import java.time.LocalDateTime;
 

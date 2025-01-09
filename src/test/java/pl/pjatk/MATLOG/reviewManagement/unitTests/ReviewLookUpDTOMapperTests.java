@@ -9,9 +9,9 @@ import pl.pjatk.MATLOG.Domain.Enums.Rate;
 import pl.pjatk.MATLOG.Domain.Review;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.Domain.TutorUser;
-import pl.pjatk.MATLOG.UserManagement.securityConfiguration.StandardUserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.UserManagement.studentUser.mapper.StudentUserReviewDTOMapper;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.StandardUserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserReviewDTOMapper;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewLookUpDTO;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewLookUpDTOMapper;
 
