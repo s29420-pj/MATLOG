@@ -1,6 +1,8 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser.persistance;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
 
@@ -29,6 +31,7 @@ public class TutorUserDAO {
     LocalDate dateOfBirth;
 
     @Column
+    @Fetch(value = FetchMode.JOIN)
     @ElementCollection(targetClass = GrantedAuthority.class)
     Set<GrantedAuthority> authorities;
 
@@ -39,6 +42,7 @@ public class TutorUserDAO {
     String biography;
 
     @Enumerated(EnumType.STRING)
+    @Fetch(value = FetchMode.JOIN)
     @ElementCollection(targetClass = SchoolSubject.class)
     Set<SchoolSubject> specializations;
 

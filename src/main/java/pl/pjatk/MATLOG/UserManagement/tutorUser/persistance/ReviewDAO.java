@@ -6,7 +6,7 @@ import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "review")
 public class ReviewDAO {
 
     @Id

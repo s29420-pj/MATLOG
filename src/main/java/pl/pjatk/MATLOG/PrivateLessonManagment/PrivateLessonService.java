@@ -1,17 +1,18 @@
 package pl.pjatk.MATLOG.PrivateLessonManagment;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.Exceptions.LessonExceptions.PrivateLessonInvalidTimeException;
 import pl.pjatk.MATLOG.Domain.PrivateLesson;
 import pl.pjatk.MATLOG.PrivateLessonManagment.dto.PrivateLessonCreateDTO;
 import pl.pjatk.MATLOG.PrivateLessonManagment.dto.PrivateLessonDTO;
 import pl.pjatk.MATLOG.PrivateLessonManagment.dto.PrivateLessonDTOMapper;
-import pl.pjatk.MATLOG.PrivateLessonManagment.persistance.PrivateLessonDAO;
 import pl.pjatk.MATLOG.PrivateLessonManagment.persistance.PrivateLessonDAOMapper;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class PrivateLessonService {
 
     private final PrivateLessonRepository privateLessonRepository;

@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.Domain;
 
 import pl.pjatk.MATLOG.Domain.Enums.Rate;
+import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserReviewLookUpDTO;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -15,7 +16,7 @@ public final class Review {
     private final String comment;
     private final Rate rate;
     private final LocalDateTime dateAndTimeOfComment;
-    private final StudentUser studentUser;
+    private final StudentUserReviewLookUpDTO studentUser;
 
     public String getId() {
         return id;
@@ -33,7 +34,7 @@ public final class Review {
         return dateAndTimeOfComment;
     }
 
-    public StudentUser getStudentUser() {
+    public StudentUserReviewLookUpDTO getStudentUser() {
         return studentUser;
     }
 
@@ -68,7 +69,7 @@ public final class Review {
         private String comment;
         private Rate rate;
         private LocalDateTime dateAndTimeOfComment;
-        private StudentUser studentUser;
+        private StudentUserReviewLookUpDTO studentUser;
 
         /**
          * Sets Review's id.
@@ -115,7 +116,7 @@ public final class Review {
          * @param studentUser Identifier of a student, who created this review.
          * @return Builder
          */
-        public Builder withStudent(StudentUser studentUser) {
+        public Builder withStudent(StudentUserReviewLookUpDTO studentUser) {
             this.studentUser = studentUser;
             return this;
         }

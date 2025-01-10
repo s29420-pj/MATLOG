@@ -1,9 +1,8 @@
 package pl.pjatk.MATLOG.userManagement.studentUser.persistance;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDate;
@@ -34,6 +33,7 @@ public class StudentUserDAO {
     LocalDate dateOfBirth;
 
     @Column
+    @Fetch(value = FetchMode.JOIN)
     @ElementCollection(targetClass = GrantedAuthority.class)
     Set<GrantedAuthority> authorities;
 

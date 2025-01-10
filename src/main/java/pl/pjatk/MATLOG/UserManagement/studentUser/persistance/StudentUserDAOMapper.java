@@ -3,6 +3,7 @@ package pl.pjatk.MATLOG.userManagement.studentUser.persistance;
 import pl.pjatk.MATLOG.Domain.StudentUser;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserReviewLookUpDTO;
 
 /**
  * Mapper that is used to map StudentUser to StudentUserDAO and vice versa.
@@ -50,5 +51,12 @@ public class StudentUserDAOMapper {
                 .withAuthorities(user.authorities)
                 .withIsAccountNonLocked(user.isAccountNonLocked)
                 .build();
+    }
+
+    public StudentUserDAO mapToDAO(StudentUserReviewLookUpDTO studentUserReviewLookUpDTO) {
+        StudentUserDAO studentUserDAO = new StudentUserDAO();
+        studentUserDAO.id = studentUserReviewLookUpDTO.id();
+        studentUserDAO.firstName = studentUserReviewLookUpDTO.firstName();
+        return studentUserDAO;
     }
 }
