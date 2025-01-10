@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
 import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
@@ -16,6 +17,7 @@ import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserRepository;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -115,5 +117,13 @@ public class TutorUserService {
     public TutorUserProfileDTO getTutorUserProfile(String id) {
         TutorUser tutor = getTutorUserById(id);
         return tutorUserDTOMapper.mapToProfile(getTutorUserById(id));
+    }
+
+    public boolean addSpecialization(String id, SchoolSubject specialization) {
+        return getTutorUserById(id).addSpecializationItem(specialization);
+    }
+
+    public boolean addSpecializations(String id, Collection<SchoolSubject> specializations) {
+        return getTutorUserById(id).addSpecializationItem(specializations);
     }
 }
