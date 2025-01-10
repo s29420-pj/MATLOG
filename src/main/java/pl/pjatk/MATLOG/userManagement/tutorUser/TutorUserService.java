@@ -125,6 +125,12 @@ public class TutorUserService {
         return tutorUserDTOMapper.mapToProfile(getTutorUserById(id));
     }
 
+    public void changeBiography(String id, String biography) {
+        TutorUser tutorUser = getTutorUserById(id);
+        tutorUser.changeBiography(biography);
+        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
+    }
+
     public void addSpecialization(String id, SchoolSubject specialization) {
         TutorUser tutorUser = getTutorUserById(id);
         tutorUser.addSpecializationItem(specialization);

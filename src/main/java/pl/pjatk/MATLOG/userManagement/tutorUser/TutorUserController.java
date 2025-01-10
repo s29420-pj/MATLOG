@@ -39,6 +39,13 @@ public class TutorUserController {
         return ResponseEntity.ok(tutorUserService.getTutorUserProfile(id));
     }
 
+    @PutMapping("/add/biography/{id}")
+    public ResponseEntity<Void> changeBiography(@PathVariable String id,
+                                                @RequestParam String biography) {
+        tutorUserService.changeBiography(id, biography);
+        return ResponseEntity.accepted().build();
+    }
+
     @PutMapping("/add/collection/specialization/{id}")
     public ResponseEntity<Void> addSpecialization(@PathVariable String id,
                                                   @RequestBody Collection<SchoolSubject> specializations) {
