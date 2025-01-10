@@ -2,15 +2,20 @@ package pl.pjatk.MATLOG.userManagement.tutorUser.persistance;
 
 import pl.pjatk.MATLOG.Domain.Review;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
+import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserDTOMapper;
+import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
 
 @Mapper
 public class ReviewDAOMapper {
 
     private final StudentUserDAOMapper studentUserDAOMapper;
+    private final StudentUserReviewDTOMapper studentUserReviewDTOMapper;
 
-    public ReviewDAOMapper(StudentUserDAOMapper studentUserDAOMapper) {
+    public ReviewDAOMapper(StudentUserDAOMapper studentUserDAOMapper,
+                           StudentUserReviewDTOMapper studentUserReviewDTOMapper) {
         this.studentUserDAOMapper = studentUserDAOMapper;
+        this.studentUserReviewDTOMapper = studentUserReviewDTOMapper;
     }
 
     public ReviewDAO mapToDAO(Review review) {
@@ -29,7 +34,9 @@ public class ReviewDAOMapper {
                 .withRate(reviewDAO.rate)
                 .withComment(reviewDAO.comment)
                 .withDateAndTimeOfReview(reviewDAO.dateAndTimeOfReview)
-                .withStudent(studentUserDAOMapper.mapToDomain(reviewDAO.student))
+                .withStudent(studentUserReviewDTOMapper.mapToStudentReviewLookUpDTO(
+                        studentUserDAOMapper.mapToDomain(reviewDAO.student)
+                ))
                 .build();
     }
 }

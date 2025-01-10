@@ -29,13 +29,7 @@ public class WebAuthorizationConfiguration {
                 .oauth2Login(Customizer.withDefaults())
                 .authorizeHttpRequests(
                     auth -> auth
-                            .requestMatchers("/student/user/controller/register").permitAll()
-                            .requestMatchers("/tutor/user/controller/register").permitAll()
-                            .requestMatchers("/tutor/user/controller/get/profile/").permitAll()
-                            .requestMatchers("/private_lesson/available/controller/find/byEmailAddress/").permitAll()
-                            .requestMatchers("/review/controller/find/").permitAll()
-                            .requestMatchers("/hello").permitAll()
-                            .anyRequest().authenticated()
+                            .anyRequest().permitAll()
                 );
         return http.build();
     }

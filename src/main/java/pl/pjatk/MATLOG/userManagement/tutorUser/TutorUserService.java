@@ -5,12 +5,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
+import pl.pjatk.MATLOG.Domain.Review;
 import pl.pjatk.MATLOG.Domain.TutorUser;
 import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.ReviewCreationDTO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.ReviewDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.ReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.TutorUserDTOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
@@ -33,15 +37,17 @@ public class TutorUserService {
     private final TutorUserDAOMapper tutorUserDAOMapper;
     private final TutorUserDTOMapper tutorUserDTOMapper;
     private final UserPasswordValidator passwordValidator;
+    private final ReviewDTOMapper reviewDTOMapper;
 
     public TutorUserService(TutorUserRepository tutorUserRepository,
                             PasswordEncoder passwordEncoder, TutorUserDAOMapper tutorUserDAOMapper, TutorUserDTOMapper tutorUserDTOMapper,
-                            UserPasswordValidator passwordValidator) {
+                            UserPasswordValidator passwordValidator, ReviewDTOMapper reviewDTOMapper) {
         this.tutorUserRepository = tutorUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.tutorUserDAOMapper = tutorUserDAOMapper;
         this.tutorUserDTOMapper = tutorUserDTOMapper;
         this.passwordValidator = passwordValidator;
+        this.reviewDTOMapper = reviewDTOMapper;
     }
 
     /**
@@ -125,9 +131,33 @@ public class TutorUserService {
         tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
     }
 
-    public void addSpecializations(String id, Collection<SchoolSubject> specializations) {
+    public void addSpecialization(String id, Collection<SchoolSubject> specializations) {
         TutorUser tutorUser = getTutorUserById(id);
         tutorUser.addSpecializationItem(specializations);
+        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
+    }
+
+    public void removeSpecialization(String id, SchoolSubject specialization) {
+        TutorUser tutorUser = getTutorUserById(id);
+        tutorUser.removeSpecializationItem(specialization);
+        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
+    }
+
+    public void removeSpecialization(String id, Collection<SchoolSubject> specializations) {
+        TutorUser tutorUser = getTutorUserById(id);
+        tutorUser.removeSpecializationItem(specializations);
+        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
+    }
+
+    public void addReview(String id, ReviewCreationDTO reviewCreationDTO) {
+        TutorUser tutorUser = getTutorUserById(id);
+        tutorUser.addReview(reviewDTOMapper.mapToDomain(reviewCreationDTO));
+        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
+    }
+
+    public void removeReview(String id, ReviewDTO reviewDTO) {
+        TutorUser tutorUser = getTutorUserById(id);
+        tutorUser.removeReview(reviewDTOMapper.mapToDomain(reviewDTO));
         tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
     }
 }
