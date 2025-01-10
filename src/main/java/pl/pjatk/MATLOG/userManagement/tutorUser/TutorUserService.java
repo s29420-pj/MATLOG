@@ -119,11 +119,15 @@ public class TutorUserService {
         return tutorUserDTOMapper.mapToProfile(getTutorUserById(id));
     }
 
-    public boolean addSpecialization(String id, SchoolSubject specialization) {
-        return getTutorUserById(id).addSpecializationItem(specialization);
+    public void addSpecialization(String id, SchoolSubject specialization) {
+        TutorUser tutorUser = getTutorUserById(id);
+        tutorUser.addSpecializationItem(specialization);
+        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
     }
 
-    public boolean addSpecializations(String id, Collection<SchoolSubject> specializations) {
-        return getTutorUserById(id).addSpecializationItem(specializations);
+    public void addSpecializations(String id, Collection<SchoolSubject> specializations) {
+        TutorUser tutorUser = getTutorUserById(id);
+        tutorUser.addSpecializationItem(specializations);
+        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
     }
 }

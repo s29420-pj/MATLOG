@@ -38,14 +38,16 @@ public class TutorUserController {
     }
 
     @PutMapping("/add/specializations/{id}")
-    public ResponseEntity<Boolean> addSpecializations(@PathVariable String id,
-                                                     @RequestBody Collection<SchoolSubject> specialization) {
-        return ResponseEntity.ok(tutorUserService.addSpecializations(id, specialization));
+    public ResponseEntity<Void> addSpecializations(@PathVariable String id,
+                                                     @RequestBody Collection<SchoolSubject> specializations) {
+        tutorUserService.addSpecializations(id, specializations);
+        return ResponseEntity.accepted().build();
     }
 
     @PutMapping("/add/specialization/{id}")
-    public ResponseEntity<Boolean> addSpecialization(@PathVariable String id,
+    public ResponseEntity<Void> addSpecialization(@PathVariable String id,
                                                      @RequestBody SchoolSubject specialization) {
-        return ResponseEntity.ok(tutorUserService.addSpecialization(id, specialization));
+        tutorUserService.addSpecialization(id, specialization);
+        return ResponseEntity.accepted().build();
     }
 }
