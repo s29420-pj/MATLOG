@@ -3,10 +3,11 @@ package pl.pjatk.MATLOG.userManagement.tutorUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.pjatk.MATLOG.Domain.Enums.Role;
-import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
-import pl.pjatk.MATLOG.userManagement.tutorUser.dto.ReviewCreationDTO;
-import pl.pjatk.MATLOG.userManagement.tutorUser.dto.ReviewDTO;
+import pl.pjatk.MATLOG.domain.enums.Role;
+import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
+import pl.pjatk.MATLOG.reviewManagement.ReviewService;
+import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
+import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
@@ -34,50 +35,57 @@ public class TutorUserController {
                 .body("Tried to create " + userDTO.role() + " as TutorUser");
     }
 
-    @GetMapping("/get/profile/{id}")
-    public ResponseEntity<TutorUserProfileDTO> getTutorProfile(@PathVariable String id) {
-        return ResponseEntity.ok(tutorUserService.getTutorUserProfile(id));
+    @GetMapping("/get/profile/{tutorId}")
+    public ResponseEntity<TutorUserProfileDTO> getTutorProfile(@PathVariable String tutorId) {
+        return ResponseEntity.ok(tutorUserService.getTutorUserProfile(tutorId));
     }
 
-    @PutMapping("/add/collection/specialization/{id}")
-    public ResponseEntity<Void> addSpecialization(@PathVariable String id,
+    @PutMapping("/change/password/{tutorId}")
+    public ResponseEntity<Void> changePassword(@PathVariable String tutorId,
+                                               @RequestBody String rawPassword) {
+        tutorUserService.changePassword(tutorId, rawPassword);
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping("/add/biography/{tutorId}")
+    public ResponseEntity<Void> changeBiography(@PathVariable String tutorId,
+                                                @RequestBody String biography) {
+        tutorUserService.changeBiography(tutorId, biography);
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping("/add/specializations/{tutorId}")
+    public ResponseEntity<Void> addSpecialization(@PathVariable String tutorId,
                                                   @RequestBody Collection<SchoolSubject> specializations) {
-        tutorUserService.addSpecialization(id, specializations);
+        tutorUserService.addSpecialization(tutorId, specializations);
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping("/add/specialization/{id}")
-    public ResponseEntity<Void> addSpecialization(@PathVariable String id,
-                                                  @RequestBody SchoolSubject specialization) {
-        tutorUserService.addSpecialization(id, specialization);
-        return ResponseEntity.accepted().build();
-    }
-
-    @PutMapping("/remove/collection/specialization/{id}")
-    public ResponseEntity<Void> removeSpecialization(@PathVariable String id,
+    @PutMapping("/remove/specializations/{tutorId}")
+    public ResponseEntity<Void> removeSpecialization(@PathVariable String tutorId,
                                                      @RequestBody Collection<SchoolSubject> specializations) {
-        tutorUserService.removeSpecialization(id, specializations);
+        tutorUserService.removeSpecialization(tutorId, specializations);
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping("/remove/specialization/{id}")
-    public ResponseEntity<Void> removeSpecialization(@PathVariable String id,
+    @PutMapping("/remove/specialization/{tutorId}")
+    public ResponseEntity<Void> removeSpecialization(@PathVariable String tutorId,
                                                      @RequestBody SchoolSubject specialization) {
-        tutorUserService.removeSpecialization(id, specialization);
+        tutorUserService.removeSpecialization(tutorId, specialization);
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping("/add/review/{id}")
-    public ResponseEntity<Void> addReview(@PathVariable String id,
+    @PostMapping("/add/review/{tutorId}")
+    public ResponseEntity<Void> addReview(@PathVariable String tutorId,
                                           @RequestBody ReviewCreationDTO reviewCreationDTO) {
-        tutorUserService.addReview(id, reviewCreationDTO);
+        tutorUserService.addReview(tutorId, reviewCreationDTO);
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping("/remove/review/{id}")
-    public ResponseEntity<Void> removeReview(@PathVariable String id,
+    @PutMapping("/remove/review/{tutorId}")
+    public ResponseEntity<Void> removeReview(@PathVariable String tutorId,
                                              @RequestBody ReviewDTO reviewDTO) {
-        tutorUserService.removeReview(id, reviewDTO);
+        tutorUserService.removeReview(tutorId, reviewDTO);
         return ResponseEntity.accepted().build();
     }
 }

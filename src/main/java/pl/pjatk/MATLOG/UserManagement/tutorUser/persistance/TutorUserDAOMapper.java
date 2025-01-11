@@ -1,7 +1,8 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser.persistance;
 
 import org.springframework.stereotype.Component;
-import pl.pjatk.MATLOG.Domain.TutorUser;
+import pl.pjatk.MATLOG.domain.TutorUser;
+import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAOMapper;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 
 import java.util.stream.Collectors;

@@ -2,11 +2,10 @@ package pl.pjatk.MATLOG.userManagement.studentUser;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pl.pjatk.MATLOG.Domain.Enums.Role;
+import org.springframework.web.bind.annotation.*;
+import pl.pjatk.MATLOG.domain.enums.Role;
+import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserProfileDTO;
+import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 @RestController
@@ -29,4 +28,23 @@ public class StudentUserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Tried to create " + userRegistrationDTO.role() + " as StudentUser");
     }
+
+    @GetMapping("/get/profile/{id}")
+    public ResponseEntity<StudentUserProfileDTO> getStudentProfile(String id) {
+        return ResponseEntity.ok(studentUserService.getStudentProfile(id));
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<StudentUserDAO> getStudentUser(@PathVariable String id) {
+        return ResponseEntity.ok(studentUserService.getStudentUserDAOById(id));
+    }
+
+    @PutMapping("/change/password/{id}")
+    public ResponseEntity<Void> changePassword(@PathVariable String id,
+                                               @RequestParam String rawPassword) {
+        studentUserService.changePassword(id, rawPassword);
+        return ResponseEntity.accepted().build();
+    }
+
+
 }

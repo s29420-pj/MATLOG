@@ -26,7 +26,6 @@ public class WebAuthorizationConfiguration {
                 .cors(cors -> cors.disable())
                 .formLogin(e -> e
                         .successForwardUrl("/block"))
-                .oauth2Login(Customizer.withDefaults())
                 .authorizeHttpRequests(
                     auth -> auth
                             .anyRequest().permitAll()

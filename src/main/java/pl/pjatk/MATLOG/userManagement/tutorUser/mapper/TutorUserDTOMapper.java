@@ -1,7 +1,8 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser.mapper;
 
-import pl.pjatk.MATLOG.Domain.TutorUser;
+import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
+import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.PrivateLessonTutorUserDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;

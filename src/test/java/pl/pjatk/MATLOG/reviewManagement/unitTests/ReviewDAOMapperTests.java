@@ -5,24 +5,24 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import pl.pjatk.MATLOG.Domain.Enums.Rate;
-import pl.pjatk.MATLOG.Domain.Review;
-import pl.pjatk.MATLOG.Domain.StudentUser;
-import pl.pjatk.MATLOG.Domain.TutorUser;
+import pl.pjatk.MATLOG.domain.Review;
+import pl.pjatk.MATLOG.domain.StudentUser;
+import pl.pjatk.MATLOG.domain.TutorUser;
+import pl.pjatk.MATLOG.domain.enums.Rate;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.StandardUserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
-import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
+import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
+import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
-import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDAOMapper;
-import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {ReviewDAOMapper.class,

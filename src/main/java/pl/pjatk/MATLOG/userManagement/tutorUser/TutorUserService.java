@@ -1,21 +1,24 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser;
 
 import jakarta.transaction.Transactional;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
-import pl.pjatk.MATLOG.Domain.Review;
-import pl.pjatk.MATLOG.Domain.TutorUser;
-import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
+import org.springframework.web.reactive.function.client.WebClient;
+import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
+import pl.pjatk.MATLOG.domain.Review;
+import pl.pjatk.MATLOG.domain.TutorUser;
+import pl.pjatk.MATLOG.reviewManagement.ReviewService;
+import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
+import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewRepository;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.userManagement.tutorUser.dto.ReviewCreationDTO;
-import pl.pjatk.MATLOG.userManagement.tutorUser.dto.ReviewDTO;
+import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
+import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
-import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.ReviewDTOMapper;
+import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.TutorUserDTOMapper;
+import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserRepository;
@@ -33,39 +36,21 @@ import java.util.Optional;
 public class TutorUserService {
 
     private final TutorUserRepository tutorUserRepository;
-    private final PasswordEncoder passwordEncoder;
     private final TutorUserDAOMapper tutorUserDAOMapper;
     private final TutorUserDTOMapper tutorUserDTOMapper;
+    private final PasswordEncoder passwordEncoder;
     private final UserPasswordValidator passwordValidator;
-    private final ReviewDTOMapper reviewDTOMapper;
+    private final ReviewService reviewService;
 
     public TutorUserService(TutorUserRepository tutorUserRepository,
                             PasswordEncoder passwordEncoder, TutorUserDAOMapper tutorUserDAOMapper, TutorUserDTOMapper tutorUserDTOMapper,
-                            UserPasswordValidator passwordValidator, ReviewDTOMapper reviewDTOMapper) {
+                            UserPasswordValidator passwordValidator, ReviewService reviewService) {
         this.tutorUserRepository = tutorUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.tutorUserDAOMapper = tutorUserDAOMapper;
         this.tutorUserDTOMapper = tutorUserDTOMapper;
         this.passwordValidator = passwordValidator;
-        this.reviewDTOMapper = reviewDTOMapper;
-    }
-
-    /**
-     *
-     * @param emailAddress Email address of the tutor user
-     * @return TutorUser
-     * @throws UsernameNotFoundException if tutor with provided email address has not been found
-     * @throws UserInvalidEmailAddressException if provided email address is null or empty
-     */
-    public TutorUser findUserByEmailAddress(String emailAddress) throws UserInvalidEmailAddressException, UsernameNotFoundException {
-        if (emailAddress == null || emailAddress.isEmpty()) {
-            throw new UserInvalidEmailAddressException();
-        }
-        Optional<TutorUserDAO> userFromDatabase = tutorUserRepository.findByEmailAddress(emailAddress);
-        if (userFromDatabase.isEmpty()) {
-            throw new UserNotFoundException();
-        }
-        return tutorUserDAOMapper.mapToDomain(userFromDatabase.get());
+        this.reviewService = reviewService;
     }
 
     /**
@@ -96,11 +81,63 @@ public class TutorUserService {
 
     /**
      * Method which is used to change tutor's user password.
-     * @param tutorUser Tutor user which will have password changed.
+     * @param id Tutor's user which will have password changed.
      * @param rawPassword new password
      */
-    public void changePassword(TutorUser tutorUser, String rawPassword) {
+    public void changePassword(String id, String rawPassword) {
+        TutorUser tutorUser = getTutorUserById(id);
         tutorUser.changePassword(passwordEncoder.encode(rawPassword), passwordValidator);
+        save(tutorUser);
+    }
+
+    public TutorUserProfileDTO getTutorUserProfile(String id) {
+        TutorUser tutor = getTutorUserById(id);
+        return tutorUserDTOMapper.mapToProfile(getTutorUserById(id));
+    }
+
+    public void changeBiography(String id, String biography) {
+        TutorUser tutorUser = getTutorUserById(id);
+        tutorUser.changeBiography(biography);
+        save(tutorUser);
+    }
+
+    public void addSpecialization(String id, SchoolSubject specialization) {
+        TutorUser tutorUser = getTutorUserById(id);
+        tutorUser.addSpecializationItem(specialization);
+        save(tutorUser);
+    }
+
+    public void addSpecialization(String id, Collection<SchoolSubject> specializations) {
+        TutorUser tutorUser = getTutorUserById(id);
+        tutorUser.addSpecializationItem(specializations);
+        save(tutorUser);
+    }
+
+    public void removeSpecialization(String id, SchoolSubject specialization) {
+        TutorUser tutorUser = getTutorUserById(id);
+        tutorUser.removeSpecializationItem(specialization);
+        save(tutorUser);
+    }
+
+    public void removeSpecialization(String id, Collection<SchoolSubject> specializations) {
+        TutorUser tutorUser = getTutorUserById(id);
+        tutorUser.removeSpecializationItem(specializations);
+        save(tutorUser);
+    }
+
+    public void addReview(String tutorId, ReviewCreationDTO reviewCreationDTO) {
+        TutorUser tutorUser = getTutorUserById(tutorId);
+        tutorUser.addReview(reviewService.mapToDomain(reviewCreationDTO));
+        save(tutorUser);
+    }
+
+    public void removeReview(String id, ReviewDTO reviewDTO) {
+        TutorUser tutorUser = getTutorUserById(id);
+        tutorUser.removeReview(reviewService.mapToDomain(reviewDTO));
+        save(tutorUser);
+    }
+
+    public void save(TutorUser tutorUser) {
         tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
     }
 
@@ -118,46 +155,5 @@ public class TutorUserService {
         Optional<TutorUserDAO> tutorFromDb = tutorUserRepository.findById(id);
         if (tutorFromDb.isEmpty()) throw new UserNotFoundException();
         return tutorUserDAOMapper.mapToDomain(tutorFromDb.get());
-    }
-
-    public TutorUserProfileDTO getTutorUserProfile(String id) {
-        TutorUser tutor = getTutorUserById(id);
-        return tutorUserDTOMapper.mapToProfile(getTutorUserById(id));
-    }
-
-    public void addSpecialization(String id, SchoolSubject specialization) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.addSpecializationItem(specialization);
-        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
-    }
-
-    public void addSpecialization(String id, Collection<SchoolSubject> specializations) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.addSpecializationItem(specializations);
-        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
-    }
-
-    public void removeSpecialization(String id, SchoolSubject specialization) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.removeSpecializationItem(specialization);
-        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
-    }
-
-    public void removeSpecialization(String id, Collection<SchoolSubject> specializations) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.removeSpecializationItem(specializations);
-        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
-    }
-
-    public void addReview(String id, ReviewCreationDTO reviewCreationDTO) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.addReview(reviewDTOMapper.mapToDomain(reviewCreationDTO));
-        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
-    }
-
-    public void removeReview(String id, ReviewDTO reviewDTO) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.removeReview(reviewDTOMapper.mapToDomain(reviewDTO));
-        tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
     }
 }

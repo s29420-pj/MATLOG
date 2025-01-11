@@ -2,7 +2,7 @@ package pl.pjatk.MATLOG.userManagement.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.pjatk.MATLOG.Domain.User;
+import pl.pjatk.MATLOG.domain.User;
 
 import java.util.Collection;
 

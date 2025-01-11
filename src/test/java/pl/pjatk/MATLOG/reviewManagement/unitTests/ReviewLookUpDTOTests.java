@@ -1,7 +1,7 @@
 package pl.pjatk.MATLOG.reviewManagement.unitTests;
 
 import org.junit.jupiter.api.Test;
-import pl.pjatk.MATLOG.Domain.Enums.Rate;
+import pl.pjatk.MATLOG.domain.enums.Rate;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.StandardUserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserReviewLookUpDTO;

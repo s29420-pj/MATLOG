@@ -1,6 +1,6 @@
 package pl.pjatk.MATLOG.userManagement.studentUser.mapper;
 
-import pl.pjatk.MATLOG.Domain.StudentUser;
+import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.PrivateLessonStudentUserDTO;
 
