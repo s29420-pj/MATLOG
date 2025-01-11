@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.pjatk.MATLOG.Domain.StudentUser;
+import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.AuthenticationProviderService;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.MatlogUserDetailsService;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.StandardUserPasswordValidator;

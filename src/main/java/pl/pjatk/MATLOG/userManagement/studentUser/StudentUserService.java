@@ -1,14 +1,14 @@
 package pl.pjatk.MATLOG.userManagement.studentUser;
 
 import jakarta.transaction.Transactional;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.UserInvalidEmailAddressException;
-import pl.pjatk.MATLOG.Domain.StudentUser;
-import pl.pjatk.MATLOG.Domain.User;
+import pl.pjatk.MATLOG.domain.StudentUser;
+import pl.pjatk.MATLOG.domain.User;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
+import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserDTOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
@@ -44,17 +44,6 @@ public class StudentUserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public StudentUser findUserByEmailAddress(String emailAddress) {
-        if (emailAddress == null || emailAddress.isEmpty()) {
-            throw new UserInvalidEmailAddressException();
-        }
-        Optional<StudentUserDAO> studentUserDAO = studentUserRepository.findByEmailAddress(emailAddress);
-        if (studentUserDAO.isEmpty()) {
-            throw new UsernameNotFoundException("Student user not found");
-        }
-        return studentUserDAOMapper.mapToDomain(studentUserDAO.get());
-    }
-
     public void registerUser(UserRegistrationDTO userDTO) throws IllegalArgumentException, UserAlreadyExistsException {
         if (userDTO == null) {
             throw new IllegalArgumentException("Please provide valid UserDTO");
@@ -73,5 +62,31 @@ public class StudentUserService {
         StudentUserDAO student = studentUserDAOMapper.mapToDAO(domainUser);
 
         studentUserRepository.save(student);
+    }
+
+    public StudentUserProfileDTO getStudentProfile(String id) {
+        StudentUser studentUser = getStudentUserById(id);
+        return studentUserDTOMapper.mapToDTO(studentUser);
+    }
+
+    public void changePassword(String id, String rawPassword) {
+        StudentUser studentUser = getStudentUserById(id);
+        studentUser.changePassword(passwordEncoder.encode(rawPassword), userPasswordValidator);
+        studentUserRepository.save(studentUserDAOMapper.mapToDAO(studentUser));
+    }
+
+    private boolean checkIfStudentUserExists(String id) {
+        Optional<StudentUserDAO> student = studentUserRepository.findById(id);
+        return student.isPresent();
+    }
+
+    public StudentUser getStudentUserById(String id) {
+        Optional<StudentUserDAO> studentUserDAO = studentUserRepository.findById(id);
+        if (studentUserDAO.isEmpty()) throw new UserNotFoundException();
+        return studentUserDAOMapper.mapToDomain(studentUserDAO.get());
+    }
+
+    public StudentUserDAO getStudentUserDAOById(String id) {
+        return studentUserRepository.findById(id).get();
     }
 }

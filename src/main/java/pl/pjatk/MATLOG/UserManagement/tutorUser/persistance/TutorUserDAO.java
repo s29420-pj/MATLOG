@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
-import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
+import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 
 import java.time.LocalDate;
 import java.util.Set;

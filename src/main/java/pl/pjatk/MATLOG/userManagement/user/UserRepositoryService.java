@@ -1,7 +1,7 @@
 package pl.pjatk.MATLOG.userManagement.user;
 
 import org.springframework.stereotype.Service;
-import pl.pjatk.MATLOG.Domain.User;
+import pl.pjatk.MATLOG.domain.User;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserRepository;

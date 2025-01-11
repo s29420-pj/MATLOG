@@ -1,13 +1,12 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser;
 
 import jakarta.transaction.Transactional;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
-import pl.pjatk.MATLOG.Domain.Review;
-import pl.pjatk.MATLOG.Domain.TutorUser;
-import pl.pjatk.MATLOG.Domain.Exceptions.UserExceptions.*;
+import org.springframework.web.reactive.function.client.WebClient;
+import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
+import pl.pjatk.MATLOG.domain.Review;
+import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
@@ -16,6 +15,7 @@ import pl.pjatk.MATLOG.userManagement.tutorUser.dto.ReviewDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.ReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.TutorUserDTOMapper;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.ReviewDAOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserRepository;
@@ -38,34 +38,22 @@ public class TutorUserService {
     private final TutorUserDTOMapper tutorUserDTOMapper;
     private final UserPasswordValidator passwordValidator;
     private final ReviewDTOMapper reviewDTOMapper;
+    private final ReviewDAOMapper reviewDAOMapper;
+    private final ReviewRepository reviewRepository;
+    private final WebClient webClient;
 
     public TutorUserService(TutorUserRepository tutorUserRepository,
                             PasswordEncoder passwordEncoder, TutorUserDAOMapper tutorUserDAOMapper, TutorUserDTOMapper tutorUserDTOMapper,
-                            UserPasswordValidator passwordValidator, ReviewDTOMapper reviewDTOMapper) {
+                            UserPasswordValidator passwordValidator, ReviewDTOMapper reviewDTOMapper, ReviewDAOMapper reviewDAOMapper, ReviewRepository reviewRepository, WebClient webClient) {
         this.tutorUserRepository = tutorUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.tutorUserDAOMapper = tutorUserDAOMapper;
         this.tutorUserDTOMapper = tutorUserDTOMapper;
         this.passwordValidator = passwordValidator;
         this.reviewDTOMapper = reviewDTOMapper;
-    }
-
-    /**
-     *
-     * @param emailAddress Email address of the tutor user
-     * @return TutorUser
-     * @throws UsernameNotFoundException if tutor with provided email address has not been found
-     * @throws UserInvalidEmailAddressException if provided email address is null or empty
-     */
-    public TutorUser findUserByEmailAddress(String emailAddress) throws UserInvalidEmailAddressException, UsernameNotFoundException {
-        if (emailAddress == null || emailAddress.isEmpty()) {
-            throw new UserInvalidEmailAddressException();
-        }
-        Optional<TutorUserDAO> userFromDatabase = tutorUserRepository.findByEmailAddress(emailAddress);
-        if (userFromDatabase.isEmpty()) {
-            throw new UserNotFoundException();
-        }
-        return tutorUserDAOMapper.mapToDomain(userFromDatabase.get());
+        this.reviewDAOMapper = reviewDAOMapper;
+        this.reviewRepository = reviewRepository;
+        this.webClient = webClient;
     }
 
     /**
@@ -96,28 +84,13 @@ public class TutorUserService {
 
     /**
      * Method which is used to change tutor's user password.
-     * @param tutorUser Tutor user which will have password changed.
+     * @param id Tutor's user which will have password changed.
      * @param rawPassword new password
      */
-    public void changePassword(TutorUser tutorUser, String rawPassword) {
+    public void changePassword(String id, String rawPassword) {
+        TutorUser tutorUser = getTutorUserById(id);
         tutorUser.changePassword(passwordEncoder.encode(rawPassword), passwordValidator);
         tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
-    }
-
-    /**
-     * Method that checks if user with provided email address exists.
-     * @param emailAddress email address of user
-     * @return boolean - true if exists, false otherwise.
-     */
-    private boolean checkIfTutorExists(String emailAddress) {
-        Optional<TutorUserDAO> tutor = tutorUserRepository.findByEmailAddress(emailAddress);
-        return tutor.isPresent();
-    }
-
-    private TutorUser getTutorUserById(String id) {
-        Optional<TutorUserDAO> tutorFromDb = tutorUserRepository.findById(id);
-        if (tutorFromDb.isEmpty()) throw new UserNotFoundException();
-        return tutorUserDAOMapper.mapToDomain(tutorFromDb.get());
     }
 
     public TutorUserProfileDTO getTutorUserProfile(String id) {
@@ -156,6 +129,10 @@ public class TutorUserService {
     }
 
     public void addReview(String id, ReviewCreationDTO reviewCreationDTO) {
+        Review review = reviewDTOMapper.mapToDomain(reviewCreationDTO);
+
+        reviewRepository.save(reviewDAOMapper.mapToDAO(review));
+
         TutorUser tutorUser = getTutorUserById(id);
         tutorUser.addReview(reviewDTOMapper.mapToDomain(reviewCreationDTO));
         tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
@@ -164,6 +141,23 @@ public class TutorUserService {
     public void removeReview(String id, ReviewDTO reviewDTO) {
         TutorUser tutorUser = getTutorUserById(id);
         tutorUser.removeReview(reviewDTOMapper.mapToDomain(reviewDTO));
+        reviewRepository.removeById(reviewDTO.id());
         tutorUserRepository.save(tutorUserDAOMapper.mapToDAO(tutorUser));
+    }
+
+    /**
+     * Method that checks if user with provided email address exists.
+     * @param emailAddress email address of user
+     * @return boolean - true if exists, false otherwise.
+     */
+    private boolean checkIfTutorExists(String emailAddress) {
+        Optional<TutorUserDAO> tutor = tutorUserRepository.findByEmailAddress(emailAddress);
+        return tutor.isPresent();
+    }
+
+    private TutorUser getTutorUserById(String id) {
+        Optional<TutorUserDAO> tutorFromDb = tutorUserRepository.findById(id);
+        if (tutorFromDb.isEmpty()) throw new UserNotFoundException();
+        return tutorUserDAOMapper.mapToDomain(tutorFromDb.get());
     }
 }

@@ -1,7 +1,7 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser.persistance;
 
 import jakarta.persistence.*;
-import pl.pjatk.MATLOG.Domain.Enums.Rate;
+import pl.pjatk.MATLOG.domain.enums.Rate;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
 
 import java.time.LocalDateTime;

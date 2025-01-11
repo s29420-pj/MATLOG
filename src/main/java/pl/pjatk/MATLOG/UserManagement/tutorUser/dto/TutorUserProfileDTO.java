@@ -1,6 +1,6 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser.dto;
 
-import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
+import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 
 import java.util.Set;
 

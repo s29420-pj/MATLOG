@@ -3,8 +3,8 @@ package pl.pjatk.MATLOG.userManagement.tutorUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.pjatk.MATLOG.Domain.Enums.Role;
-import pl.pjatk.MATLOG.Domain.Enums.SchoolSubject;
+import pl.pjatk.MATLOG.domain.enums.Role;
+import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.ReviewCreationDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.ReviewDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
@@ -37,6 +37,13 @@ public class TutorUserController {
     @GetMapping("/get/profile/{id}")
     public ResponseEntity<TutorUserProfileDTO> getTutorProfile(@PathVariable String id) {
         return ResponseEntity.ok(tutorUserService.getTutorUserProfile(id));
+    }
+
+    @PutMapping("/change/password/{id}")
+    public ResponseEntity<Void> changePassword(@PathVariable String id,
+                                               @RequestParam String rawPassword) {
+        tutorUserService.changePassword(id, rawPassword);
+        return ResponseEntity.accepted().build();
     }
 
     @PutMapping("/add/biography/{id}")
@@ -74,7 +81,7 @@ public class TutorUserController {
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping("/add/review/{id}")
+    @PostMapping("/add/review/{id}")
     public ResponseEntity<Void> addReview(@PathVariable String id,
                                           @RequestBody ReviewCreationDTO reviewCreationDTO) {
         tutorUserService.addReview(id, reviewCreationDTO);
