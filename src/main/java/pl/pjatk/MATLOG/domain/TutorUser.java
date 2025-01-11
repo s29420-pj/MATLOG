@@ -3,10 +3,7 @@ package pl.pjatk.MATLOG.domain;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Class that represents Tutor in application. It extends User abstract class.
@@ -18,6 +15,7 @@ public final class TutorUser extends User {
     private String biography;
     private final Set<SchoolSubject> specializations;
     private final Set<Review> reviews;
+    private final Set<PrivateLesson> privateLessons;
 
     /**
      * Method that returns specializationList.
@@ -88,6 +86,10 @@ public final class TutorUser extends User {
         return reviews.remove(review);
     }
 
+    public boolean addPrivateLesson(PrivateLesson privateLesson) { return privateLessons.add(privateLesson); }
+
+    public boolean removePrivateLesson(PrivateLesson privateLesson) { return privateLessons.remove(privateLesson); }
+
     public Set<Review> getReviews() {
         return Set.copyOf(reviews);
     }
@@ -106,6 +108,7 @@ public final class TutorUser extends User {
         this.biography = Objects.requireNonNullElseGet(builder.biography, String::new);
         this.specializations = Objects.requireNonNullElseGet(builder.specializations, HashSet::new);
         this.reviews = Objects.requireNonNullElseGet(builder.reviews, HashSet::new);
+        this.privateLessons = Objects.requireNonNullElseGet(builder.privateLessons, HashSet::new);
     }
 
     /**
@@ -125,6 +128,7 @@ public final class TutorUser extends User {
         private String biography;
         private Set<SchoolSubject> specializations;
         private Set<Review> reviews;
+        private Set<PrivateLesson> privateLessons;
 
         /**
          * Method that initializes biography.
@@ -148,6 +152,11 @@ public final class TutorUser extends User {
 
         public TutorBuilder withReviews(Set<Review> reviews) {
             this.reviews = reviews;
+            return self();
+        }
+
+        public TutorBuilder withPrivateLessons(Set<PrivateLesson> privateLessons) {
+            this.privateLessons = privateLessons;
             return self();
         }
 
