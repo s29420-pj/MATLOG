@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.userManagement.tutorUser.persistance;
+package pl.pjatk.MATLOG.reviewManagement.persistance;
 
 import jakarta.persistence.*;
 import pl.pjatk.MATLOG.domain.enums.Rate;

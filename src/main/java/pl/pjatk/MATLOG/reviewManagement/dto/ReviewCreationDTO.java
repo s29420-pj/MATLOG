@@ -1,4 +1,4 @@
-package pl.pjatk.MATLOG.userManagement.tutorUser.dto;
+package pl.pjatk.MATLOG.reviewManagement.dto;
 
 import pl.pjatk.MATLOG.domain.enums.Rate;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserReviewLookUpDTO;

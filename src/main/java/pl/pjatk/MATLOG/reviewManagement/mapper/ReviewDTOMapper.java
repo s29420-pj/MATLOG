@@ -1,9 +1,9 @@
-package pl.pjatk.MATLOG.userManagement.tutorUser.mapper;
+package pl.pjatk.MATLOG.reviewManagement.mapper;
 
 import pl.pjatk.MATLOG.domain.Review;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
-import pl.pjatk.MATLOG.userManagement.tutorUser.dto.ReviewCreationDTO;
-import pl.pjatk.MATLOG.userManagement.tutorUser.dto.ReviewDTO;
+import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
+import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
 
 @Mapper
 public class ReviewDTOMapper {
