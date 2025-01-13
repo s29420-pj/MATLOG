@@ -2,6 +2,7 @@ package pl.pjatk.MATLOG.userManagement.tutorUser.persistance;
 
 import org.springframework.stereotype.Component;
 import pl.pjatk.MATLOG.domain.TutorUser;
+import pl.pjatk.MATLOG.privateLessonManagement.persistance.PrivateLessonDAOMapper;
 import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAOMapper;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 
@@ -16,7 +17,8 @@ public class TutorUserDAOMapper {
     private final UserPasswordValidator userPasswordValidator;
     private final ReviewDAOMapper reviewDAOMapper;
 
-    public TutorUserDAOMapper(UserPasswordValidator userPasswordValidator, ReviewDAOMapper reviewDAOMapper) {
+    public TutorUserDAOMapper(UserPasswordValidator userPasswordValidator,
+                              ReviewDAOMapper reviewDAOMapper) {
         this.userPasswordValidator = userPasswordValidator;
         this.reviewDAOMapper = reviewDAOMapper;
     }
