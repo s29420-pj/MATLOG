@@ -44,7 +44,7 @@ public class PrivateLessonDAO {
     }
 
     PrivateLessonDAO(String id,
-                            TutorUserDAO tutor,
+                        TutorUserDAO tutor,
                             StudentUserDAO student,
                             String connectionCode,
                             PrivateLessonStatus status,

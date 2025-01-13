@@ -1,11 +1,10 @@
-package pl.pjatk.MATLOG.userManagement.unitTests;
+package pl.pjatk.MATLOG.userManagement.user;
 
 import org.junit.jupiter.api.Test;
 import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.domain.User;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.StandardUserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.userManagement.user.SecurityUser;
 
 import java.time.LocalDate;
 

@@ -2,98 +2,110 @@ package pl.pjatk.MATLOG.domain;
 
 import org.junit.jupiter.api.Test;
 import pl.pjatk.MATLOG.domain.enums.Rate;
-import pl.pjatk.MATLOG.userManagement.securityConfiguration.StandardUserPasswordValidator;
-import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserReviewLookUpDTO;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ReviewTests {
-
-    private static final String testComment = "testComment";
-    private static final LocalDateTime testDateTime = LocalDateTime.now().minusHours(3);
-    private static final UserPasswordValidator userPasswordValidator = new StandardUserPasswordValidator();
-    private static final StudentUser testStudent = StudentUser.builder()
-            .withFirstName("Ethan")
-            .withLastName("Hovermann")
-            .withEmailAddress("example@example.com")
-            .withPassword("testPassword!", userPasswordValidator)
-            .withDateOfBirth(LocalDate.now().minusYears(50))
-            .withIsAccountNonLocked(true)
-            .build();
-    private static final TutorUser testTutor = TutorUser.builder()
-            .withFirstName("Emily")
-            .withLastName("Rose")
-            .withEmailAddress("example@example.com")
-            .withPassword("testP@ssword", userPasswordValidator)
-            .withBiography("Im happy")
-            .withIsAccountNonLocked(true)
-            .withDateOfBirth(LocalDate.now().minusYears(31))
-            .build();
+class ReviewTests {
 
     @Test
-    void createReviewNullId() {
+    void testReviewBuilderWithValidData() {
+
+        String reviewId = UUID.randomUUID().toString();
+        String comment = "Great lesson!";
+        Rate rate = Rate.FIVE;
+        LocalDateTime reviewTime = LocalDateTime.now();
+        StudentUserReviewLookUpDTO student = new StudentUserReviewLookUpDTO("studentId", "John Doe");
+
         Review review = Review.builder()
-                .withComment(testComment)
-                .withRate(Rate.FIVE)
-                .withDateAndTimeOfReview(testDateTime)
-                .withStudent(testStudent)
-                .withTutor(testTutor)
+                .withId(reviewId)
+                .withComment(comment)
+                .withRate(rate)
+                .withDateAndTimeOfReview(reviewTime)
+                .withStudent(student)
                 .build();
 
-        assertAll(() -> {
-            assertNotNull(review.getId());
-            assertEquals(testComment, review.getComment());
-            assertEquals(Rate.FIVE, review.getRate());
-            assertEquals(testDateTime, review.getDateAndTimeOfComment());
-            assertEquals(testStudent, review.getStudentUser());
-            assertEquals(testTutor, review.getTutorUser());
-        });
+        assertEquals(reviewId, review.getId());
+        assertEquals(comment, review.getComment());
+        assertEquals(rate, review.getRate());
+        assertEquals(reviewTime, review.getDateAndTimeOfComment());
+        assertEquals(student, review.getStudentUser());
     }
 
     @Test
-    void createReviewEmptyId() {
+    void testReviewBuilderGeneratesRandomIdWhenNotProvided() {
+        Rate rate = Rate.FOUR;
+        StudentUserReviewLookUpDTO student = new StudentUserReviewLookUpDTO("studentId", "John Doe");
+
         Review review = Review.builder()
-                .withId("")
-                .withComment(testComment)
-                .withRate(Stars.FIVE)
-                .withDateAndTimeOfReview(testDateTime)
-                .withStudent(testStudent)
-                .withTutor(testTutor)
+                .withRate(rate)
+                .withStudent(student)
                 .build();
 
-        assertAll(() -> {
-            assertNotNull(review.getId());
-            assertFalse(review.getId().isEmpty());
-            assertEquals(testComment, review.getComment());
-            assertEquals(Stars.FIVE, review.getRate());
-            assertEquals(testDateTime, review.getDateAndTimeOfComment());
-            assertEquals(testStudent, review.getStudentUser());
-            assertEquals(testTutor, review.getTutorUser());
-        });
+        assertNotNull(review.getId());
+        assertFalse(review.getId().isEmpty());
     }
 
     @Test
-    void createReviewWithId() {
+    void testReviewBuilderGeneratesCurrentDateWhenNotProvided() {
+        Rate rate = Rate.THREE;
+        StudentUserReviewLookUpDTO student = new StudentUserReviewLookUpDTO("studentId", "John Doe");
+
         Review review = Review.builder()
-                .withId(UUID.randomUUID().toString())
-                .withComment(testComment)
-                .withRate(Stars.FIVE)
-                .withDateAndTimeOfReview(testDateTime)
-                .withStudent(testStudent)
-                .withTutor(testTutor)
+                .withRate(rate)
+                .withStudent(student)
                 .build();
 
-        assertAll(() -> {
-            assertNotNull(review.getId());
-            assertEquals(testComment, review.getComment());
-            assertEquals(Stars.FIVE, review.getRate());
-            assertEquals(testDateTime, review.getDateAndTimeOfComment());
-            assertEquals(testStudent, review.getStudentUser());
-            assertEquals(testTutor, review.getTutorUser());
-        });
+        assertNotNull(review.getDateAndTimeOfComment());
+        assertTrue(review.getDateAndTimeOfComment().isBefore(LocalDateTime.now().plusSeconds(1)));
+    }
+
+    @Test
+    void testReviewBuilderGeneratesEmptyCommentWhenNotProvided() {
+        Rate rate = Rate.FIVE;
+        StudentUserReviewLookUpDTO student = new StudentUserReviewLookUpDTO("studentId", "John Doe");
+
+        Review review = Review.builder()
+                .withRate(rate)
+                .withStudent(student)
+                .build();
+
+        assertEquals("", review.getComment());
+    }
+
+    @Test
+    void testReviewBuilderThrowsExceptionForNullRate() {
+        StudentUserReviewLookUpDTO student = new StudentUserReviewLookUpDTO("studentId", "John Doe");
+
+        assertThrows(NullPointerException.class, () ->
+                Review.builder()
+                        .withStudent(student)
+                        .build()
+        );
+    }
+
+    @Test
+    void testReviewBuilderThrowsExceptionForNullStudent() {
+        Rate rate = Rate.FIVE;
+
+        assertThrows(NullPointerException.class, () ->
+                Review.builder()
+                        .withRate(rate)
+                        .build()
+        );
+    }
+
+    @Test
+    void testReviewBuilderCreatesUniqueIdsForSeparateInstances() {
+        StudentUserReviewLookUpDTO student = new StudentUserReviewLookUpDTO("studentId", "John Doe");
+        Rate rate = Rate.FIVE;
+
+        Review review1 = Review.builder().withRate(rate).withStudent(student).build();
+        Review review2 = Review.builder().withRate(rate).withStudent(student).build();
+
+        assertNotEquals(review1.getId(), review2.getId());
     }
 }
