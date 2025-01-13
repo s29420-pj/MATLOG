@@ -5,6 +5,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
+import pl.pjatk.MATLOG.privateLessonManagement.persistance.PrivateLessonDAO;
 import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
 
 import java.time.LocalDate;

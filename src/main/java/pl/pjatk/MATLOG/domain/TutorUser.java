@@ -3,10 +3,7 @@ package pl.pjatk.MATLOG.domain;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Class that represents Tutor in application. It extends User abstract class.
@@ -18,23 +15,6 @@ public final class TutorUser extends User {
     private String biography;
     private final Set<SchoolSubject> specializations;
     private final Set<Review> reviews;
-
-    /**
-     * Method that returns specializationList.
-     * @return Copy of set containing specializations.
-     */
-    public Set<SchoolSubject> getSpecializations() {
-        return Set.copyOf(specializations);
-    }
-
-    /**
-     * Method that returns biography of the Tutor
-     * @return biography as String representation.
-     */
-    public String getBiography() {
-        return biography;
-    }
-
 
     /**
      * Method that adds specialization item to the list of specializations.
@@ -90,6 +70,22 @@ public final class TutorUser extends User {
 
     public Set<Review> getReviews() {
         return Set.copyOf(reviews);
+    }
+
+    /**
+     * Method that returns specializationList.
+     * @return Copy of set containing specializations.
+     */
+    public Set<SchoolSubject> getSpecializations() {
+        return Set.copyOf(specializations);
+    }
+
+    /**
+     * Method that returns biography of the Tutor
+     * @return biography as String representation.
+     */
+    public String getBiography() {
+        return biography;
     }
 
     /**

@@ -29,4 +29,18 @@ public class PrivateLessonDAOMapper {
                 .withConnectionCode(privateLessonDAO.connectionCode)
                 .build();
     }
+
+    public PrivateLessonDAO mapToDAO(PrivateLesson privateLesson) {
+        return new PrivateLessonDAO(
+                privateLesson.getId(),
+                tutorUserDAOMapper.mapToDAO(privateLesson.getTutor()),
+                studentUserDAOMapper.mapToDAO(privateLesson.getStudent()),
+                privateLesson.getConnectionCode(),
+                privateLesson.getStatus(),
+                privateLesson.isAvailableOffline(),
+                privateLesson.getStartTime(),
+                privateLesson.getEndTime(),
+                privateLesson.getPrice()
+        );
+    }
 }

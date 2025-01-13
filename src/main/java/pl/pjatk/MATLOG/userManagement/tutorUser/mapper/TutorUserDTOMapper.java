@@ -2,6 +2,7 @@ package pl.pjatk.MATLOG.userManagement.tutorUser.mapper;
 
 import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
+import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonDTOMapper;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.PrivateLessonTutorUserDTO;
@@ -15,10 +16,13 @@ public class TutorUserDTOMapper {
 
     private final UserPasswordValidator userPasswordValidator;
     private final ReviewDTOMapper reviewDTOMapper;
+    private final PrivateLessonDTOMapper privateLessonDTOMapper;
 
-    public TutorUserDTOMapper(UserPasswordValidator userPasswordValidator, ReviewDTOMapper reviewDTOMapper) {
+    public TutorUserDTOMapper(UserPasswordValidator userPasswordValidator,
+                              ReviewDTOMapper reviewDTOMapper, PrivateLessonDTOMapper privateLessonDTOMapper) {
         this.userPasswordValidator = userPasswordValidator;
         this.reviewDTOMapper = reviewDTOMapper;
+        this.privateLessonDTOMapper = privateLessonDTOMapper;
     }
 
     public TutorUser mapToDomain(UserRegistrationDTO userDTO) {
