@@ -16,7 +16,7 @@ import java.util.UUID;
  */
 @Getter
 public abstract class Lesson {
-    @Id
+
     private final String id;
     private final String ownerId;
     private final String title;
