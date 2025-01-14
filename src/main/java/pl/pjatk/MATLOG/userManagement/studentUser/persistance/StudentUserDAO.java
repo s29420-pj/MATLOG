@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.userManagement.studentUser.persistance;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,8 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.time.LocalDate;
 import java.util.Set;
 
-/**
- */
+@Getter
 @Entity(name = "student_user")
 public class StudentUserDAO {
 

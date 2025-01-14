@@ -1,12 +1,14 @@
 package pl.pjatk.MATLOG.privateLessonManagement.persistance;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import pl.pjatk.MATLOG.domain.enums.PrivateLessonStatus;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
 
 import java.time.LocalDateTime;
 
+@Getter
 @Entity(name = "private_lesson")
 public class PrivateLessonDAO {
 
@@ -44,7 +46,7 @@ public class PrivateLessonDAO {
     }
 
     PrivateLessonDAO(String id,
-                            TutorUserDAO tutor,
+                        TutorUserDAO tutor,
                             StudentUserDAO student,
                             String connectionCode,
                             PrivateLessonStatus status,

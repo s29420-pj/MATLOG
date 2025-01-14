@@ -1,16 +1,17 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser.persistance;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
-import pl.pjatk.MATLOG.privateLessonManagement.persistance.PrivateLessonDAO;
 import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
 
 import java.time.LocalDate;
 import java.util.Set;
 
+@Getter
 @Entity(name = "tutor_user")
 public class TutorUserDAO {
 
@@ -34,7 +35,7 @@ public class TutorUserDAO {
 
     @Column
     @Fetch(value = FetchMode.JOIN)
-    @ElementCollection(targetClass = GrantedAuthority.class)
+    @ElementCollection(targetClass = GrantedAuthority.class, fetch = FetchType.EAGER)
     Set<GrantedAuthority> authorities;
 
     @Column
@@ -45,10 +46,10 @@ public class TutorUserDAO {
 
     @Enumerated(EnumType.STRING)
     @Fetch(value = FetchMode.JOIN)
-    @ElementCollection(targetClass = SchoolSubject.class)
+    @ElementCollection(targetClass = SchoolSubject.class, fetch = FetchType.EAGER)
     Set<SchoolSubject> specializations;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     Set<ReviewDAO> reviews;
 
     protected TutorUserDAO() {

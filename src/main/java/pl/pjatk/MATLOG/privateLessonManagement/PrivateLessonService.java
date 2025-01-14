@@ -8,6 +8,8 @@ import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonCreateDTO;
 import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonDTO;
 import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonDTOMapper;
 import pl.pjatk.MATLOG.privateLessonManagement.persistance.PrivateLessonDAOMapper;
+import pl.pjatk.MATLOG.userManagement.studentUser.StudentUserService;
+import pl.pjatk.MATLOG.userManagement.tutorUser.TutorUserService;
 
 import java.util.List;
 
@@ -18,32 +20,45 @@ public class PrivateLessonService {
     private final PrivateLessonRepository privateLessonRepository;
     private final PrivateLessonDAOMapper privateLessonDAOMapper;
     private final PrivateLessonDTOMapper privateLessonDTOMapper;
+    private final StudentUserService studentUserService;
+    private final TutorUserService tutorUserService;
 
-    public PrivateLessonService(PrivateLessonRepository privateLessonRepository, PrivateLessonDAOMapper privateLessonDAOMapper, PrivateLessonDTOMapper privateLessonDTOMapper) {
+    public PrivateLessonService(PrivateLessonRepository privateLessonRepository,
+                                PrivateLessonDAOMapper privateLessonDAOMapper,
+                                PrivateLessonDTOMapper privateLessonDTOMapper,
+                                StudentUserService studentUserService,
+                                TutorUserService tutorUserService) {
         this.privateLessonRepository = privateLessonRepository;
         this.privateLessonDAOMapper = privateLessonDAOMapper;
         this.privateLessonDTOMapper = privateLessonDTOMapper;
+        this.studentUserService = studentUserService;
+        this.tutorUserService = tutorUserService;
     }
 
     public void createPrivateLesson(PrivateLessonCreateDTO privateLesson) {
         if (privateLesson == null) throw new IllegalArgumentException("Private lesson cannot be null");
 
-        List<PrivateLesson> existingLesson = privateLessonRepository.findAllByTutor_Id(privateLesson.tutor().id())
-                .stream()
-                .map(privateLessonDAOMapper::mapToDomain)
-                .toList();
+        if (hasConflict(privateLesson)) throw new PrivateLessonInvalidTimeException();
 
-        boolean hasConflict = existingLesson.stream()
-                .anyMatch(lesson -> lesson.getStartTime().isBefore(privateLesson.endTime())
-                        && lesson.getEndTime().isAfter(privateLesson.startTime()));
+        PrivateLesson domainLesson = privateLessonDTOMapper.mapToDomain(privateLesson,
+                tutorUserService.getTutorUserById(privateLesson.tutorId()),
+                null, null);
 
-        if (hasConflict) throw new PrivateLessonInvalidTimeException();
+        privateLessonRepository.save(privateLessonDAOMapper.mapToDAO(domainLesson));
     }
 
     public List<PrivateLessonDTO> getPrivateLessonsByTutorId(String id) {
         return getDomainPrivateLessonsByTutorId(id).stream()
                 .map(privateLessonDTOMapper::mapToDTO)
                 .toList();
+    }
+
+    private boolean hasConflict(PrivateLessonCreateDTO privateLessonCreateDTO) {
+        return privateLessonRepository.findAllByTutor_Id(privateLessonCreateDTO.tutorId())
+                .stream()
+                .anyMatch(lesson ->
+                        lesson.getStartTime().isBefore(privateLessonCreateDTO.endTime())
+                        && lesson.getEndTime().isAfter(privateLessonCreateDTO.startTime()));
     }
 
     private List<PrivateLesson> getDomainPrivateLessonsByTutorId(String id) {

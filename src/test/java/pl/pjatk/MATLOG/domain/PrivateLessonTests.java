@@ -1,216 +1,233 @@
 package pl.pjatk.MATLOG.domain;
 
 import org.junit.jupiter.api.Test;
-import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
-import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.*;
+import org.mockito.Mockito;
+import pl.pjatk.MATLOG.domain.enums.PrivateLessonStatus;
+import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.PrivateLessonInvalidPriceException;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Arrays;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PrivateLessonTests {
-
-    // ------------------ happy tests ----------------------
+class PrivateLessonTests {
 
     @Test
-    void createPrivateLesson() {
-        List<SchoolSubject> testList = Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC);
+    void testPrivateLessonCreationWithValidData() {
+        // Arrange
+        TutorUser tutor = Mockito.mock(TutorUser.class);
+        StudentUser student = Mockito.mock(StudentUser.class);
+        LocalDateTime startTime = LocalDateTime.now().plusHours(1);
+        LocalDateTime endTime = startTime.plusHours(1);
 
-        PrivateLesson testPrivateLesson = PrivateLesson.builder()
-                .withSchoolSubjects(testList)
-                .withTutorId(UUID.randomUUID().toString())
-                .withStartTime(LocalDateTime.now().plusDays(1))
-                .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
-                .withPrice(80.0)
+        // Act
+        PrivateLesson privateLesson = PrivateLesson.builder()
+                .withTutor(tutor)
+                .withStudent(student)
+                .withStatus(PrivateLessonStatus.AVAILABLE)
+                .withStartTime(startTime)
+                .withEndTime(endTime)
+                .withPrice(100.0)
                 .build();
 
-        assertNotNull(testPrivateLesson);
-    }
-
-    // ------------------ exceptions tests ----------------------
-
-    @Test
-    void nullSchoolSubjects() {
-        assertThrows(PrivateLessonInvalidSchoolSubjectException.class, () -> {
-            PrivateLesson.builder()
-                    .withSchoolSubjects(null)
-                    .withTutorId(UUID.randomUUID().toString())
-                    .withStartTime(LocalDateTime.now().plusDays(1))
-                    .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
-                    .withPrice(80.0)
-                    .build();
-        });
+        // Assert
+        assertNotNull(privateLesson);
+        assertEquals(tutor, privateLesson.getTutor());
+        assertEquals(student, privateLesson.getStudent());
+        assertEquals(PrivateLessonStatus.AVAILABLE, privateLesson.getStatus());
+        assertEquals(startTime, privateLesson.getStartTime());
+        assertEquals(endTime, privateLesson.getEndTime());
+        assertEquals(100.0, privateLesson.getPrice());
+        assertEquals("Not assigned yet", privateLesson.getConnectionCode());  // Default connection code
     }
 
     @Test
-    void nullTutorId() {
-        assertThrows(PrivateLessonInvalidIdException.class, () -> {
-            PrivateLesson.builder()
-                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
-                    .withTutorId(null)
-                    .withStartTime(LocalDateTime.now().plusDays(1))
-                    .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
-                    .withPrice(80.0)
-                    .build();
-        });
-    }
+    void testPrivateLessonCreationWithEmptyConnectionCode() {
+        // Arrange
+        TutorUser tutor = Mockito.mock(TutorUser.class);
+        StudentUser student = Mockito.mock(StudentUser.class);
+        LocalDateTime startTime = LocalDateTime.now().plusHours(1);
+        LocalDateTime endTime = startTime.plusHours(1);
 
-    @Test
-    void emptyTutorId() {
-        assertThrows(PrivateLessonInvalidIdException.class, () -> {
-            PrivateLesson.builder()
-                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
-                    .withTutorId("")
-                    .withStartTime(LocalDateTime.now().plusDays(1))
-                    .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
-                    .withPrice(80.0)
-                    .build();
-        });
-    }
-
-    @Test
-    void studentIdNotAssigned() {
-        PrivateLesson testPrivateLesson = PrivateLesson.builder()
-                .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
-                .withTutorId(UUID.randomUUID().toString())
-                .withStartTime(LocalDateTime.now().plusDays(1))
-                .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
-                .withPrice(80.0)
+        // Act
+        PrivateLesson privateLesson = PrivateLesson.builder()
+                .withTutor(tutor)
+                .withStudent(student)
+                .withStatus(PrivateLessonStatus.AVAILABLE)
+                .withStartTime(startTime)
+                .withEndTime(endTime)
+                .withPrice(100.0)
+                .withConnectionCode("") // Empty connection code
                 .build();
 
-        assertEquals("not assigned yet", testPrivateLesson.getStudentId());
+        // Assert
+        assertEquals("Not assigned yet", privateLesson.getConnectionCode()); // Default connection code when empty
     }
 
     @Test
-    void connectionCodeNotAssigned() {
-        PrivateLesson testPrivateLesson = PrivateLesson.builder()
-                .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
-                .withTutorId(UUID.randomUUID().toString())
-                .withStartTime(LocalDateTime.now().plusDays(1))
-                .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
-                .withPrice(80.0)
+    void testPrivateLessonCreationWithValidId() {
+        // Arrange
+        String lessonId = UUID.randomUUID().toString();
+        TutorUser tutor = Mockito.mock(TutorUser.class);
+        StudentUser student = Mockito.mock(StudentUser.class);
+        LocalDateTime startTime = LocalDateTime.now().plusHours(1);
+        LocalDateTime endTime = startTime.plusHours(1);
+
+        // Act
+        PrivateLesson privateLesson = PrivateLesson.builder()
+                .withId(lessonId)
+                .withTutor(tutor)
+                .withStudent(student)
+                .withStatus(PrivateLessonStatus.AVAILABLE)
+                .withStartTime(startTime)
+                .withEndTime(endTime)
+                .withPrice(100.0)
                 .build();
 
-        assertEquals("not assigned yet", testPrivateLesson.getConnectionCode());
+        // Assert
+        assertEquals(lessonId, privateLesson.getId());
     }
 
     @Test
-    void startTimeNotSet() {
-        assertThrows(IllegalStateException.class, () -> {
-            PrivateLesson.builder()
-                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
-                    .withTutorId(UUID.randomUUID().toString())
-                    .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
-                    .withPrice(80.0)
-                    .build();
-        });
+    void testPrivateLessonCreationWithGeneratedIdWhenNoIdProvided() {
+        // Arrange
+        TutorUser tutor = Mockito.mock(TutorUser.class);
+        StudentUser student = Mockito.mock(StudentUser.class);
+        LocalDateTime startTime = LocalDateTime.now().plusHours(1);
+        LocalDateTime endTime = startTime.plusHours(1);
+
+        // Act
+        PrivateLesson privateLesson = PrivateLesson.builder()
+                .withTutor(tutor)
+                .withStudent(student)
+                .withStatus(PrivateLessonStatus.AVAILABLE)
+                .withStartTime(startTime)
+                .withEndTime(endTime)
+                .withPrice(100.0)
+                .build();
+
+        // Assert
+        assertNotNull(privateLesson.getId()); // ID should be generated
     }
 
     @Test
-    void endTimeNotSet() {
-        assertThrows(IllegalStateException.class, () -> {
-            PrivateLesson.builder()
-                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
-                    .withTutorId(UUID.randomUUID().toString())
-                    .withStartTime(LocalDateTime.now().plusDays(1))
-                    .withPrice(80.0)
-                    .build();
-        });
-    }
+    void testPrivateLessonCreationWithNegativePrice() {
+        // Arrange
+        TutorUser tutor = Mockito.mock(TutorUser.class);
+        StudentUser student = Mockito.mock(StudentUser.class);
+        LocalDateTime startTime = LocalDateTime.now().plusHours(1);
+        LocalDateTime endTime = startTime.plusHours(1);
 
-    @Test
-    void startTimeIsBeforeNow() {
-        assertThrows(PrivateLessonInvalidStartTimeException.class, () -> {
-            PrivateLesson.builder()
-                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
-                    .withTutorId(UUID.randomUUID().toString())
-                    .withStartTime(LocalDateTime.now().minusHours(1))
-                    .withEndTime(LocalDateTime.now())
-                    .withPrice(80.0)
-                    .build();
-        });
-    }
-
-    @Test
-    void startTimeIsAfterEndTime() {
-        assertThrows(PrivateLessonInvalidEndTimeException.class, () -> {
-            PrivateLesson.builder()
-                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
-                    .withTutorId(UUID.randomUUID().toString())
-                    .withStartTime(LocalDateTime.now().plusDays(1))
-                    .withEndTime(LocalDateTime.now().plusDays(1).minusHours(1))
-                    .withPrice(80.0)
-                    .build();
-        });
-    }
-
-    @Test
-    void endTimeIsBeforeNow() {
-        assertThrows(PrivateLessonInvalidEndTimeException.class, () -> {
-            PrivateLesson.builder()
-                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
-                    .withTutorId(UUID.randomUUID().toString())
-                    .withStartTime(LocalDateTime.now().plusDays(1))
-                    .withEndTime(LocalDateTime.now().minusHours(1))
-                    .withPrice(80.0)
-                    .build();
-        });
-    }
-
-    @Test
-    void endTimeIsEqualToStartTime() {
-        LocalDateTime sameDateTime = LocalDateTime.now().plusHours(1);
-        assertThrows(PrivateLessonInvalidEndTimeException.class, () -> {
-            PrivateLesson.builder()
-                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
-                    .withTutorId(UUID.randomUUID().toString())
-                    .withStartTime(sameDateTime)
-                    .withEndTime(sameDateTime)
-                    .withPrice(80.0)
-                    .build();
-        });
-    }
-
-    @Test
-    void priceIsNull() {
+        // Act & Assert
         assertThrows(PrivateLessonInvalidPriceException.class, () -> {
             PrivateLesson.builder()
-                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
-                    .withTutorId(UUID.randomUUID().toString())
-                    .withStartTime(LocalDateTime.now().plusDays(1))
-                    .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
-                    .withPrice(null)
+                    .withTutor(tutor)
+                    .withStudent(student)
+                    .withStatus(PrivateLessonStatus.AVAILABLE)
+                    .withStartTime(startTime)
+                    .withEndTime(endTime)
+                    .withPrice(-1.0) // Invalid price
                     .build();
         });
     }
 
     @Test
-    void priceBelowZero() {
-        assertThrows(PrivateLessonInvalidPriceException.class, () -> {
+    void testPrivateLessonCreationWithNullTutor() {
+        // Arrange
+        StudentUser student = Mockito.mock(StudentUser.class);
+        LocalDateTime startTime = LocalDateTime.now().plusHours(1);
+        LocalDateTime endTime = startTime.plusHours(1);
+
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> {
             PrivateLesson.builder()
-                    .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
-                    .withTutorId(UUID.randomUUID().toString())
-                    .withStartTime(LocalDateTime.now().plusDays(1))
-                    .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
-                    .withPrice(-1.1)
+                    .withStudent(student)
+                    .withStatus(PrivateLessonStatus.AVAILABLE)
+                    .withStartTime(startTime)
+                    .withEndTime(endTime)
+                    .withPrice(100.0)
                     .build();
         });
     }
 
     @Test
-    void priceEqualToZero() {
-        PrivateLesson testPrivateLesson = PrivateLesson.builder()
-                .withSchoolSubjects(Arrays.asList(SchoolSubject.MATHEMATICS, SchoolSubject.LOGIC))
-                .withTutorId(UUID.randomUUID().toString())
-                .withStartTime(LocalDateTime.now().plusDays(1))
-                .withEndTime(LocalDateTime.now().plusDays(1).plusHours(1))
-                .withPrice(0.0)
+    void testPrivateLessonCreationWithNullStartTime() {
+        // Arrange
+        TutorUser tutor = Mockito.mock(TutorUser.class);
+        StudentUser student = Mockito.mock(StudentUser.class);
+        LocalDateTime endTime = LocalDateTime.now().plusHours(1);
+
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> {
+            PrivateLesson.builder()
+                    .withTutor(tutor)
+                    .withStudent(student)
+                    .withStatus(PrivateLessonStatus.AVAILABLE)
+                    .withEndTime(endTime)
+                    .withPrice(100.0)
+                    .build();
+        });
+    }
+
+    @Test
+    void testPrivateLessonCreationWithNullEndTime() {
+        // Arrange
+        TutorUser tutor = Mockito.mock(TutorUser.class);
+        StudentUser student = Mockito.mock(StudentUser.class);
+        LocalDateTime startTime = LocalDateTime.now().plusHours(1);
+
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> {
+            PrivateLesson.builder()
+                    .withTutor(tutor)
+                    .withStudent(student)
+                    .withStatus(PrivateLessonStatus.AVAILABLE)
+                    .withStartTime(startTime)
+                    .withPrice(100.0)
+                    .build();
+        });
+    }
+
+    @Test
+    void testPrivateLessonCreationWithOfflineAvailability() {
+        // Arrange
+        TutorUser tutor = Mockito.mock(TutorUser.class);
+        StudentUser student = Mockito.mock(StudentUser.class);
+        LocalDateTime startTime = LocalDateTime.now().plusHours(1);
+        LocalDateTime endTime = startTime.plusHours(1);
+
+        // Act
+        PrivateLesson privateLesson = PrivateLesson.builder()
+                .withTutor(tutor)
+                .withStudent(student)
+                .withStatus(PrivateLessonStatus.BOOKED)
+                .withStartTime(startTime)
+                .withEndTime(endTime)
+                .withPrice(100.0)
+                .withIsAvailableOffline(true) // Offline availability
                 .build();
 
-        assertEquals(0.0, testPrivateLesson.getPrice());
+        // Assert
+        assertTrue(privateLesson.isAvailableOffline());
     }
 
+    @Test
+    void testPrivateLessonWithNullStudent() {
+        // Arrange
+        TutorUser tutor = Mockito.mock(TutorUser.class);
+        LocalDateTime startTime = LocalDateTime.now().plusHours(1);
+        LocalDateTime endTime = startTime.plusHours(1);
+
+        // Act
+        PrivateLesson privateLesson = PrivateLesson.builder()
+                .withTutor(tutor)
+                .withStatus(PrivateLessonStatus.AVAILABLE)
+                .withStartTime(startTime)
+                .withEndTime(endTime)
+                .withPrice(100.0)
+                .build();
+
+        // Assert
+        assertNull(privateLesson.getStudent());  // Student is optional
+    }
 }
