@@ -34,7 +34,7 @@ public class TutorUserDAO {
 
     @Column
     @Fetch(value = FetchMode.JOIN)
-    @ElementCollection(targetClass = GrantedAuthority.class)
+    @ElementCollection(targetClass = GrantedAuthority.class, fetch = FetchType.EAGER)
     Set<GrantedAuthority> authorities;
 
     @Column
@@ -45,10 +45,10 @@ public class TutorUserDAO {
 
     @Enumerated(EnumType.STRING)
     @Fetch(value = FetchMode.JOIN)
-    @ElementCollection(targetClass = SchoolSubject.class)
+    @ElementCollection(targetClass = SchoolSubject.class, fetch = FetchType.EAGER)
     Set<SchoolSubject> specializations;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     Set<ReviewDAO> reviews;
 
     protected TutorUserDAO() {

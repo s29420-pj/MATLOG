@@ -8,6 +8,8 @@ import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonCreateDTO;
 import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonDTO;
 import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonDTOMapper;
 import pl.pjatk.MATLOG.privateLessonManagement.persistance.PrivateLessonDAOMapper;
+import pl.pjatk.MATLOG.userManagement.studentUser.StudentUserService;
+import pl.pjatk.MATLOG.userManagement.tutorUser.TutorUserService;
 
 import java.util.List;
 
@@ -18,11 +20,19 @@ public class PrivateLessonService {
     private final PrivateLessonRepository privateLessonRepository;
     private final PrivateLessonDAOMapper privateLessonDAOMapper;
     private final PrivateLessonDTOMapper privateLessonDTOMapper;
+    private final StudentUserService studentUserService;
+    private final TutorUserService tutorUserService;
 
-    public PrivateLessonService(PrivateLessonRepository privateLessonRepository, PrivateLessonDAOMapper privateLessonDAOMapper, PrivateLessonDTOMapper privateLessonDTOMapper) {
+    public PrivateLessonService(PrivateLessonRepository privateLessonRepository,
+                                PrivateLessonDAOMapper privateLessonDAOMapper,
+                                PrivateLessonDTOMapper privateLessonDTOMapper,
+                                StudentUserService studentUserService,
+                                TutorUserService tutorUserService) {
         this.privateLessonRepository = privateLessonRepository;
         this.privateLessonDAOMapper = privateLessonDAOMapper;
         this.privateLessonDTOMapper = privateLessonDTOMapper;
+        this.studentUserService = studentUserService;
+        this.tutorUserService = tutorUserService;
     }
 
     public void createPrivateLesson(PrivateLessonCreateDTO privateLesson) {
