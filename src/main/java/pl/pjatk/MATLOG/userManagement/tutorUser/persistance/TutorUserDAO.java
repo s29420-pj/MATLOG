@@ -1,16 +1,17 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser.persistance;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
-import pl.pjatk.MATLOG.privateLessonManagement.persistance.PrivateLessonDAO;
 import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAO;
 
 import java.time.LocalDate;
 import java.util.Set;
 
+@Getter
 @Entity(name = "tutor_user")
 public class TutorUserDAO {
 

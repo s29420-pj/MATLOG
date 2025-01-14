@@ -151,7 +151,7 @@ public class TutorUserService {
         return tutor.isPresent();
     }
 
-    private TutorUser getTutorUserById(String id) {
+    public TutorUser getTutorUserById(String id) {
         Optional<TutorUserDAO> tutorFromDb = tutorUserRepository.findById(id);
         if (tutorFromDb.isEmpty()) throw new UserNotFoundException();
         return tutorUserDAOMapper.mapToDomain(tutorFromDb.get());
