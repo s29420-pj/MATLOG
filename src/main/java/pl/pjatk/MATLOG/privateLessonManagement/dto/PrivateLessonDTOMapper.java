@@ -36,6 +36,7 @@ public class PrivateLessonDTOMapper {
                 .withIsAvailableOffline(privateLessonCreateDTO.isAvailableOffline())
                 .withStartTime(privateLessonCreateDTO.startTime())
                 .withEndTime(privateLessonCreateDTO.endTime())
+                .withPrice(privateLessonCreateDTO.price())
                 .build();
     }
 }
