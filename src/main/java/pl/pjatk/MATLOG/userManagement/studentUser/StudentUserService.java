@@ -28,19 +28,19 @@ public class StudentUserService {
     private final UserPasswordValidator userPasswordValidator;
     private final StudentUserDAOMapper studentUserDAOMapper;
     private final StudentUserDTOMapper studentUserDTOMapper;
-    private final StudentUserReviewDTOMapper studentUserReviewDTOMapper;
     private final PasswordEncoder passwordEncoder;
 
     public StudentUserService(StudentUserRepository studentUserRepository,
                               UserRepositoryService userRepositoryService,
-                              UserPasswordValidator userPasswordValidator, StudentUserDAOMapper studentUserDAOMapper, StudentUserDTOMapper studentUserDTOMapper, StudentUserReviewDTOMapper studentUserReviewDTOMapper,
+                              UserPasswordValidator userPasswordValidator,
+                              StudentUserDAOMapper studentUserDAOMapper,
+                              StudentUserDTOMapper studentUserDTOMapper,
                               PasswordEncoder passwordEncoder) {
         this.studentUserRepository = studentUserRepository;
         this.userRepositoryService = userRepositoryService;
         this.userPasswordValidator = userPasswordValidator;
         this.studentUserDAOMapper = studentUserDAOMapper;
         this.studentUserDTOMapper = studentUserDTOMapper;
-        this.studentUserReviewDTOMapper = studentUserReviewDTOMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -75,18 +75,9 @@ public class StudentUserService {
         studentUserRepository.save(studentUserDAOMapper.mapToDAO(studentUser));
     }
 
-    private boolean checkIfStudentUserExists(String id) {
-        Optional<StudentUserDAO> student = studentUserRepository.findById(id);
-        return student.isPresent();
-    }
-
     public StudentUser getStudentUserById(String id) {
         Optional<StudentUserDAO> studentUserDAO = studentUserRepository.findById(id);
         if (studentUserDAO.isEmpty()) throw new UserNotFoundException();
         return studentUserDAOMapper.mapToDomain(studentUserDAO.get());
-    }
-
-    public StudentUserDAO getStudentUserDAOById(String id) {
-        return studentUserRepository.findById(id).get();
     }
 }

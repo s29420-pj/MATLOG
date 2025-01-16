@@ -34,11 +34,6 @@ public class StudentUserController {
         return ResponseEntity.ok(studentUserService.getStudentProfile(id));
     }
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<StudentUserDAO> getStudentUser(@PathVariable String id) {
-        return ResponseEntity.ok(studentUserService.getStudentUserDAOById(id));
-    }
-
     @PutMapping("/change/password/{id}")
     public ResponseEntity<Void> changePassword(@PathVariable String id,
                                                @RequestParam String rawPassword) {

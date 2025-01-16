@@ -13,13 +13,21 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import pl.pjatk.MATLOG.domain.Review;
+import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.domain.enums.Rate;
 import pl.pjatk.MATLOG.domain.enums.Role;
 import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
+import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
+import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserReviewLookUpDTO;
+import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserReviewDTOMapper;
+import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
+import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserRepository;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
@@ -49,6 +57,21 @@ public class TutorUserServiceIT {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private StudentUserRepository studentUserRepository;
+
+    @Autowired
+    private UserPasswordValidator userPasswordValidator;
+
+    @Autowired
+    private StudentUserDAOMapper studentUserDAOMapper;
+
+    @Autowired
+    private StudentUserReviewDTOMapper studentUserReviewDTOMapper;
+
+    @Autowired
+    private ReviewDTOMapper reviewDTOMapper;
 
     @Container
     private static PostgreSQLContainer<?> postgres =
@@ -217,29 +240,78 @@ public class TutorUserServiceIT {
                 LocalDate.now().minusYears(17),
                 Role.TUTOR
         );
-
         tutorUserService.registerUser(userDTO);
 
-        String id = tutorUserRepository.findByEmailAddress("example@example.com").get().getId();
+        String tutorId = tutorUserRepository.findByEmailAddress("example@example.com").get().getId();
+
+        StudentUser studentUser = StudentUser.builder()
+                .withFirstName("testFirstName")
+                .withLastName("testLastName")
+                .withEmailAddress("testEmailAddress@example.com")
+                .withPassword("P@ssword!", userPasswordValidator)
+                .build();
+        studentUserRepository.save(studentUserDAOMapper.mapToDAO(studentUser));
 
         var reviewCreationDTO = new ReviewCreationDTO(
                 Rate.FIVE,
                 "testComment",
                 LocalDateTime.now().minusHours(3),
-                new StudentUserReviewLookUpDTO(UUID.randomUUID().toString(), "testFirstName")
+                studentUserReviewDTOMapper.mapToStudentReviewLookUpDTO(studentUser)
         );
 
-        // student o takim id nie istnieje. trzeba dodac go do studentUserRepository zeby mozna bylo
-        // utworzyc new StudentUserReviewLookUpDTO
-        tutorUserService.addReview(id, reviewCreationDTO);
+        tutorUserService.addReview(tutorId, reviewCreationDTO);
 
-        var reviewSet = tutorUserService.getTutorUserById(id).getReviews();
+        var reviewSet = tutorUserService.getTutorUserById(tutorId).getReviews();
 
         assertAll(() -> {
             assertFalse(reviewSet.isEmpty());
             assertEquals(reviewCreationDTO.studentUser(),
                     reviewSet.stream().findFirst().get().getStudentUser());
         });
+    }
+
+    @Test
+    void shouldRemoveReview() {
+        UserRegistrationDTO userDTO = new UserRegistrationDTO(
+                "testName",
+                "testLastName",
+                "example@example.com",
+                "P@ssword!",
+                LocalDate.now().minusYears(17),
+                Role.TUTOR
+        );
+        tutorUserService.registerUser(userDTO);
+
+        StudentUser studentUser = StudentUser.builder()
+                .withFirstName("testFirstName")
+                .withLastName("testLastName")
+                .withEmailAddress("testEmailAddress@example.com")
+                .withPassword("P@ssword!", userPasswordValidator)
+                .build();
+        studentUserRepository.save(studentUserDAOMapper.mapToDAO(studentUser));
+
+        var reviewCreationDTO = new ReviewCreationDTO(
+                Rate.FIVE,
+                "testComment",
+                LocalDateTime.now().minusHours(3),
+                studentUserReviewDTOMapper.mapToStudentReviewLookUpDTO(studentUser)
+        );
+
+        String tutorId = tutorUserRepository.findByEmailAddress("example@example.com").get().getId();
+
+        tutorUserService.addReview(tutorId, reviewCreationDTO);
+
+        ReviewDTO review = tutorUserService.getTutorUserProfile(tutorId).reviews().stream()
+                        .findFirst().get();
+
+        System.out.println(review.id());
+
+        tutorUserService.removeReview(tutorId, review.id());
+        tutorUserService.getTutorUserProfile(tutorId).reviews()
+                        .forEach(System.out::println);
+
+        assertTrue(tutorUserService.getTutorUserProfile(tutorId)
+                .reviews().isEmpty());
     }
 
     @Test

@@ -82,6 +82,12 @@ class StudentUserServiceIT {
     }
 
     @Test
+    void shouldThrowExceptionWhenUserRegistrationDTOIsNull() {
+        assertThatThrownBy(() -> studentUserService.registerUser(null))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
     void shouldNotRegisterUserWithDuplicateEmail() {
         UserRegistrationDTO userDTO = new UserRegistrationDTO(
                 "testName",

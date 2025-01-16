@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser.persistance;
 
 import org.springframework.stereotype.Component;
+import pl.pjatk.MATLOG.configuration.annotations.Mapper;
 import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.privateLessonManagement.persistance.PrivateLessonDAOMapper;
 import pl.pjatk.MATLOG.reviewManagement.persistance.ReviewDAOMapper;
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Mapper that is used to map TutorUser to TutorUserDAO and vice versa.
  */
-@Component
+@Mapper
 public class TutorUserDAOMapper {
 
     private final UserPasswordValidator userPasswordValidator;

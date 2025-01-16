@@ -5,9 +5,6 @@ import pl.pjatk.MATLOG.configuration.annotations.Mapper;
 import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.domain.enums.PrivateLessonStatus;
-import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserPrivateLessonDTOMapper;
-import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.TutorUserPrivateLessonDTOMapper;
-import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
 
 @Mapper
 public class PrivateLessonDTOMapper {
