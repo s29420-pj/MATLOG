@@ -68,13 +68,6 @@ public class TutorUserController {
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping("/remove/specialization/{tutorId}")
-    public ResponseEntity<Void> removeSpecialization(@PathVariable String tutorId,
-                                                     @RequestBody SchoolSubject specialization) {
-        tutorUserService.removeSpecialization(tutorId, specialization);
-        return ResponseEntity.accepted().build();
-    }
-
     @PostMapping("/add/review/{tutorId}")
     public ResponseEntity<Void> addReview(@PathVariable String tutorId,
                                           @RequestBody ReviewCreationDTO reviewCreationDTO) {

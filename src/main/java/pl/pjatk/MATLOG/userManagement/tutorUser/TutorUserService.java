@@ -101,21 +101,9 @@ public class TutorUserService {
         save(tutorUser);
     }
 
-    public void addSpecialization(String id, SchoolSubject specialization) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.addSpecializationItem(specialization);
-        save(tutorUser);
-    }
-
     public void addSpecialization(String id, Collection<SchoolSubject> specializations) {
         TutorUser tutorUser = getTutorUserById(id);
         tutorUser.addSpecializationItem(specializations);
-        save(tutorUser);
-    }
-
-    public void removeSpecialization(String id, SchoolSubject specialization) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.removeSpecializationItem(specialization);
         save(tutorUser);
     }
 
