@@ -49,7 +49,7 @@ public class TutorUserDAO {
     @ElementCollection(targetClass = SchoolSubject.class, fetch = FetchType.EAGER)
     Set<SchoolSubject> specializations;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     Set<ReviewDAO> reviews;
 
     protected TutorUserDAO() {

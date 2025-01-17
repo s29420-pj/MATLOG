@@ -1,12 +1,14 @@
 package pl.pjatk.MATLOG.reviewManagement.persistance;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import pl.pjatk.MATLOG.domain.enums.Rate;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
 
 import java.time.LocalDateTime;
 
 @Entity(name = "review")
+@Getter
 public class ReviewDAO {
 
     @Id

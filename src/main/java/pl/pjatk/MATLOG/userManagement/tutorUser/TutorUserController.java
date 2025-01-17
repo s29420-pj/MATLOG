@@ -7,10 +7,12 @@ import pl.pjatk.MATLOG.domain.enums.Role;
 import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
+import pl.pjatk.MATLOG.userManagement.exceptions.TutorUserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 import java.util.Collection;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/tutor/user/controller")
@@ -36,7 +38,10 @@ public class TutorUserController {
 
     @GetMapping("/get/profile/{tutorId}")
     public ResponseEntity<TutorUserProfileDTO> getTutorProfile(@PathVariable String tutorId) {
-        return ResponseEntity.ok(tutorUserService.getTutorUserProfile(tutorId));
+        return Stream.of(tutorUserService.getTutorUserProfile(tutorId))
+                .map(ResponseEntity::ok)
+                .findFirst()
+                .orElseThrow(TutorUserNotFoundException::new);
     }
 
     @PutMapping("/change/password/{tutorId}")
@@ -67,13 +72,6 @@ public class TutorUserController {
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping("/remove/specialization/{tutorId}")
-    public ResponseEntity<Void> removeSpecialization(@PathVariable String tutorId,
-                                                     @RequestBody SchoolSubject specialization) {
-        tutorUserService.removeSpecialization(tutorId, specialization);
-        return ResponseEntity.accepted().build();
-    }
-
     @PostMapping("/add/review/{tutorId}")
     public ResponseEntity<Void> addReview(@PathVariable String tutorId,
                                           @RequestBody ReviewCreationDTO reviewCreationDTO) {
@@ -83,8 +81,8 @@ public class TutorUserController {
 
     @PutMapping("/remove/review/{tutorId}")
     public ResponseEntity<Void> removeReview(@PathVariable String tutorId,
-                                             @RequestBody ReviewDTO reviewDTO) {
-        tutorUserService.removeReview(tutorId, reviewDTO);
+                                             @RequestParam String reviewId) {
+        tutorUserService.removeReview(tutorId, reviewId);
         return ResponseEntity.accepted().build();
     }
 }

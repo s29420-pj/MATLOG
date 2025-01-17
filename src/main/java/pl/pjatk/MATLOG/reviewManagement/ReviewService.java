@@ -49,7 +49,7 @@ public class ReviewService {
     }
 
 
-    private Review findReviewById(String id) {
+    public Review findReviewById(String id) {
         Optional<ReviewDAO> reviewDAO = reviewRepository.findById(id);
         if (reviewDAO.isEmpty()) throw new ReviewNotFoundException();
         return reviewDAOMapper.mapToDomain(reviewDAO.get());

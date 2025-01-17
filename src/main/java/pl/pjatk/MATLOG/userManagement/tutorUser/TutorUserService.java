@@ -85,7 +85,6 @@ public class TutorUserService {
     }
 
     public TutorUserProfileDTO getTutorUserProfile(String id) {
-        TutorUser tutor = getTutorUserById(id);
         return tutorUserDTOMapper.mapToProfile(getTutorUserById(id));
     }
 
@@ -95,21 +94,9 @@ public class TutorUserService {
         save(tutorUser);
     }
 
-    public void addSpecialization(String id, SchoolSubject specialization) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.addSpecializationItem(specialization);
-        save(tutorUser);
-    }
-
     public void addSpecialization(String id, Collection<SchoolSubject> specializations) {
         TutorUser tutorUser = getTutorUserById(id);
         tutorUser.addSpecializationItem(specializations);
-        save(tutorUser);
-    }
-
-    public void removeSpecialization(String id, SchoolSubject specialization) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.removeSpecializationItem(specialization);
         save(tutorUser);
     }
 
@@ -125,9 +112,9 @@ public class TutorUserService {
         save(tutorUser);
     }
 
-    public void removeReview(String id, ReviewDTO reviewDTO) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.removeReview(reviewService.mapToDomain(reviewDTO));
+    public void removeReview(String tutorId, String reviewId) {
+        TutorUser tutorUser = getTutorUserById(tutorId);
+        tutorUser.removeReview(reviewService.findReviewById(reviewId));
         save(tutorUser);
     }
 
