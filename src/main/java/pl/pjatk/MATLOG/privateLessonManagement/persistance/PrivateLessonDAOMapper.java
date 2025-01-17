@@ -22,6 +22,7 @@ public class PrivateLessonDAOMapper {
                 .withId(privateLessonDAO.id)
                 .withTutor(tutorUserDAOMapper.mapToDomain(privateLessonDAO.tutor))
                 .withStudent(studentUserDAOMapper.mapToDomain(privateLessonDAO.student))
+                .withConnectionCode(privateLessonDAO.connectionCode)
                 .withStatus(privateLessonDAO.status)
                 .withStartTime(privateLessonDAO.startTime)
                 .withEndTime(privateLessonDAO.endTime)
