@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface PrivateLessonRepository extends JpaRepository<PrivateLessonDAO, String> {
     List<PrivateLessonDAO> findAllByTutor_Id(String tutorId);
+    List<PrivateLessonDAO> findAllByStudent_Id(String studentId);
 }
