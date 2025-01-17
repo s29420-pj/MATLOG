@@ -47,9 +47,7 @@ public final class PrivateLesson {
     }
 
     public void changeConnectionCode(String connectionCode) {
-        if (this.connectionCode.equals("Not assigned yet")) {
-            this.connectionCode = connectionCode;
-        }
+        this.connectionCode = connectionCode;
     }
 
     /**

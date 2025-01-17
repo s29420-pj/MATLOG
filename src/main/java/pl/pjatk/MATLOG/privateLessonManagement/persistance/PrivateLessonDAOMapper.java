@@ -20,7 +20,11 @@ public class PrivateLessonDAOMapper {
         return PrivateLesson.builder()
                 .withId(privateLessonDAO.id)
                 .withTutor(tutorUserDAOMapper.mapToDomain(privateLessonDAO.tutor))
-                .withStudent(studentUserDAOMapper.mapToDomain(privateLessonDAO.student))
+                .withStudent(
+                        privateLessonDAO.student != null
+                                ? studentUserDAOMapper.mapToDomain(privateLessonDAO.student)
+                                : null
+                )
                 .withConnectionCode(privateLessonDAO.connectionCode)
                 .withStatus(privateLessonDAO.status)
                 .withStartTime(privateLessonDAO.startTime)
@@ -35,7 +39,7 @@ public class PrivateLessonDAOMapper {
         return new PrivateLessonDAO(
                 privateLesson.getId(),
                 tutorUserDAOMapper.mapToDAO(privateLesson.getTutor()),
-                studentUserDAOMapper.mapToDAO(privateLesson.getStudent()),
+                privateLesson.getStudent() != null ? studentUserDAOMapper.mapToDAO(privateLesson.getStudent()) : null, // Obsługa null
                 privateLesson.getConnectionCode(),
                 privateLesson.getStatus(),
                 privateLesson.isAvailableOffline(),

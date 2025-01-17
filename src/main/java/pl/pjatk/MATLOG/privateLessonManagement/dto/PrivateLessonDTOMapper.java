@@ -11,13 +11,13 @@ public class PrivateLessonDTOMapper {
 
     public PrivateLessonDTO mapToDTO(PrivateLesson privateLesson) {
         return new PrivateLessonDTO(
-            privateLesson.getId(),
-            privateLesson.getTutor().getId(),
-            privateLesson.getStudent().getId(),
-            privateLesson.isAvailableOffline(),
-            privateLesson.getStartTime(),
-            privateLesson.getEndTime(),
-            privateLesson.getPrice()
+                privateLesson.getId(),
+                privateLesson.getTutor().getId(),
+                privateLesson.getStudent() != null ? privateLesson.getStudent().getId() : null, // Obsługa null
+                privateLesson.isAvailableOffline(),
+                privateLesson.getStartTime(),
+                privateLesson.getEndTime(),
+                privateLesson.getPrice()
         );
     }
 
