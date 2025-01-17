@@ -1,7 +1,6 @@
 package pl.pjatk.MATLOG.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 import pl.pjatk.MATLOG.domain.enums.PrivateLessonStatus;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.PrivateLessonInvalidPriceException;
 

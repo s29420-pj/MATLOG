@@ -8,7 +8,8 @@ import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidato
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SecurityUserTests {
 

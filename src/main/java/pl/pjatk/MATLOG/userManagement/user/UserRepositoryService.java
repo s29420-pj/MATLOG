@@ -2,11 +2,11 @@ package pl.pjatk.MATLOG.userManagement.user;
 
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.domain.User;
-import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
+import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserRepository;
-import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserRepository;
 
 import java.util.Optional;

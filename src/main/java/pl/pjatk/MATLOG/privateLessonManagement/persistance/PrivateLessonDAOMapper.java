@@ -1,8 +1,7 @@
 package pl.pjatk.MATLOG.privateLessonManagement.persistance;
 
-import pl.pjatk.MATLOG.domain.PrivateLesson;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
-import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonCreateDTO;
+import pl.pjatk.MATLOG.domain.PrivateLesson;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
 

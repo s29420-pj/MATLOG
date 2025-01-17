@@ -8,7 +8,10 @@ import pl.pjatk.MATLOG.userManagement.securityConfiguration.StandardUserPassword
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 

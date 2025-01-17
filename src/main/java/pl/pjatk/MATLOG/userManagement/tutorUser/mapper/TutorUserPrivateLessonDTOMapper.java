@@ -1,8 +1,7 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser.mapper;
 
-import pl.pjatk.MATLOG.domain.PrivateLesson;
-import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
+import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.PrivateLessonTutorUserDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;

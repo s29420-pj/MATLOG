@@ -1,7 +1,7 @@
 package pl.pjatk.MATLOG.reviewManagement.mapper;
 
-import pl.pjatk.MATLOG.domain.Review;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
+import pl.pjatk.MATLOG.domain.Review;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
 

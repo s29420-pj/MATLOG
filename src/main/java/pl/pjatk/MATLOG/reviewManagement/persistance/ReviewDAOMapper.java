@@ -2,7 +2,6 @@ package pl.pjatk.MATLOG.reviewManagement.persistance;
 
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
 import pl.pjatk.MATLOG.domain.Review;
-import pl.pjatk.MATLOG.userManagement.studentUser.StudentUserService;
 import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
 

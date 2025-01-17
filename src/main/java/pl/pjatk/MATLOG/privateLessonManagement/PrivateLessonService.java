@@ -1,13 +1,11 @@
 package pl.pjatk.MATLOG.privateLessonManagement;
 
 import jakarta.transaction.Transactional;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import pl.pjatk.MATLOG.domain.PrivateLesson;
 import pl.pjatk.MATLOG.domain.StudentUser;
-import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.domain.enums.PrivateLessonStatus;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.PrivateLessonInvalidTimeException;
-import pl.pjatk.MATLOG.domain.PrivateLesson;
 import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonCreateDTO;
 import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonDTO;
 import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonDTOMapper;
