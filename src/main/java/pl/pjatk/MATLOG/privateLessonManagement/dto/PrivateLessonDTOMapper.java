@@ -1,7 +1,7 @@
 package pl.pjatk.MATLOG.privateLessonManagement.dto;
 
-import pl.pjatk.MATLOG.domain.PrivateLesson;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
+import pl.pjatk.MATLOG.domain.PrivateLesson;
 import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.domain.enums.PrivateLessonStatus;
@@ -11,13 +11,13 @@ public class PrivateLessonDTOMapper {
 
     public PrivateLessonDTO mapToDTO(PrivateLesson privateLesson) {
         return new PrivateLessonDTO(
-            privateLesson.getId(),
-            privateLesson.getTutor().getId(),
-            privateLesson.getStudent().getId(),
-            privateLesson.isAvailableOffline(),
-            privateLesson.getStartTime(),
-            privateLesson.getEndTime(),
-            privateLesson.getPrice()
+                privateLesson.getId(),
+                privateLesson.getTutor().getId(),
+                privateLesson.getStudent() != null ? privateLesson.getStudent().getId() : null, // Obsługa null
+                privateLesson.isAvailableOffline(),
+                privateLesson.getStartTime(),
+                privateLesson.getEndTime(),
+                privateLesson.getPrice()
         );
     }
 
@@ -33,6 +33,7 @@ public class PrivateLessonDTOMapper {
                 .withIsAvailableOffline(privateLessonCreateDTO.isAvailableOffline())
                 .withStartTime(privateLessonCreateDTO.startTime())
                 .withEndTime(privateLessonCreateDTO.endTime())
+                .withPrice(privateLessonCreateDTO.price())
                 .build();
     }
 }

@@ -1,7 +1,7 @@
 package pl.pjatk.MATLOG.userManagement.studentUser.persistance;
 
-import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
+import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserReviewLookUpDTO;
 
