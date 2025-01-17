@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 import pl.pjatk.MATLOG.domain.enums.PrivateLessonStatus;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.PrivateLessonInvalidPriceException;
 
@@ -18,13 +19,39 @@ public final class PrivateLesson {
 
     private final String id;
     private final TutorUser tutor;
-    private final StudentUser student;
-    private final String connectionCode;
-    private final PrivateLessonStatus status;
-    private final boolean isAvailableOffline;
+    private StudentUser student;
+    private String connectionCode;
+    private PrivateLessonStatus status;
+    private boolean isAvailableOffline;
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
     private final Double price;
+
+    public void assignStudent(StudentUser student) {
+        if (this.student != null) {
+            throw new IllegalStateException("Student is already assigned to this lesson");
+        } else {
+            this.student = student;
+        }
+    }
+
+    public void unassignStudent() {
+        if (this.student == null) {
+            throw new IllegalStateException("Student is not assigned to this lesson");
+        } else {
+            this.student = null;
+        }
+    }
+
+    public void changeStatus(PrivateLessonStatus status) {
+        this.status = status;
+    }
+
+    public void changeConnectionCode(String connectionCode) {
+        if (this.connectionCode.equals("Not assigned yet")) {
+            this.connectionCode = connectionCode;
+        }
+    }
 
     /**
      * PrivateLesson constructor that creates object with provided data from builder. Data is validated.
