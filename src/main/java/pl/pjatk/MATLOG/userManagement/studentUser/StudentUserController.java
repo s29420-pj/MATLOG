@@ -29,13 +29,13 @@ public class StudentUserController {
     }
 
     @GetMapping("/get/profile/{id}")
-    public ResponseEntity<StudentUserProfileDTO> getStudentProfile(String id) {
+    public ResponseEntity<StudentUserProfileDTO> getStudentProfile(@PathVariable String id) {
         return ResponseEntity.ok(studentUserService.getStudentProfile(id));
     }
 
     @PutMapping("/change/password/{id}")
     public ResponseEntity<Void> changePassword(@PathVariable String id,
-                                               @RequestParam String rawPassword) {
+                                               @RequestBody String rawPassword) {
         studentUserService.changePassword(id, rawPassword);
         return ResponseEntity.accepted().build();
     }

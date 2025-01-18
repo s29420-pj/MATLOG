@@ -1,13 +1,15 @@
 package pl.pjatk.MATLOG.userManagement.studentUser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -18,28 +20,28 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import pl.pjatk.MATLOG.domain.enums.Role;
+import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 import java.time.LocalDate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class StudentUserControllerIT {
 
     @Autowired
-    private MockMvc mockMvc;
+    private TestRestTemplate restTemplate;
 
     @Autowired
     private StudentUserService studentUserService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private static final String baseUrl = "/student/user/controller";
 
     @Container
     private static PostgreSQLContainer<?> postgres =
@@ -71,25 +73,26 @@ public class StudentUserControllerIT {
                 "P@ssword!", LocalDate.now().minusYears(20),
                 Role.STUDENT);
 
-        mockMvc.perform(post("/student/user/controller/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isCreated())
-                .andExpect(content().string("Student user testEmailAddress@example.com has been registered"));
+        ResponseEntity<String> response = restTemplate.postForEntity(baseUrl + "/register", dto, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getBody()).isEqualTo("Student user testEmailAddress@example.com has been registered");
     }
 
     @Test
     void shouldReturnBadRequestWhenRoleIsNotStudent() throws Exception {
-        UserRegistrationDTO dto = new UserRegistrationDTO("testFirstName",
-                "testLastName", "testEmailAddress@example.com",
-                "P@ssword!", LocalDate.now().minusYears(20),
-                Role.TUTOR);
+        UserRegistrationDTO userDTO = new UserRegistrationDTO(
+                "testFirstName",
+                "testLastName",
+                "testEmailAddress@example.com",
+                "testPassword!",
+                LocalDate.now().minusYears(30),
+                Role.TUTOR
+        );
 
-        mockMvc.perform(post("/student/user/controller/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Tried to create TUTOR as StudentUser"));
+        ResponseEntity<String> response = restTemplate.postForEntity(baseUrl + "/register", userDTO, String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody()).isEqualTo("Tried to create TUTOR as StudentUser");
     }
 
     @Test
@@ -99,15 +102,15 @@ public class StudentUserControllerIT {
                 "P@ssword!", LocalDate.now().minusYears(20),
                 Role.STUDENT);
 
-        mockMvc.perform(post("/student/user/controller/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(dto)));
+        restTemplate.postForEntity(baseUrl + "/register", dto, String.class);
 
-        var userId = studentUserService.getStudentProfileByEmailAddress(dto.emailAddress());
+        var userId = studentUserService.getStudentProfileByEmailAddress(dto.emailAddress()).id();
 
-        mockMvc.perform(get("/student/user/controller/get/profile/", userId))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(userId));
+        ResponseEntity<StudentUserProfileDTO> response =
+                restTemplate.getForEntity(baseUrl + "/get/profile/" + userId, StudentUserProfileDTO.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
     }
 
     @Test
@@ -117,16 +120,18 @@ public class StudentUserControllerIT {
                 "P@ssword!", LocalDate.now().minusYears(20),
                 Role.STUDENT);
 
-        mockMvc.perform(post("/student/user/controller/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(dto)));
+        restTemplate.postForEntity(baseUrl + "/register", dto, String.class);
 
-        String rawPassword = "newpassword123";
+        String rawPassword = "newPassword123";
 
         var userId = studentUserService.getStudentProfileByEmailAddress(dto.emailAddress()).id();
 
-        mockMvc.perform(put("/student/user/controller/change/password/{id}", userId)
-                        .param("rawPassword", rawPassword))
-                .andExpect(status().isAccepted());
+        ResponseEntity<Void> response = restTemplate.withBasicAuth(dto.emailAddress(), dto.password())
+                .exchange(baseUrl + "/change/password/" + userId,
+                        HttpMethod.PUT,
+                        new HttpEntity<>(rawPassword),
+                        Void.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
     }
 }
