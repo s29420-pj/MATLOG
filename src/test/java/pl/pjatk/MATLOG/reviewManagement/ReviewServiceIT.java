@@ -49,9 +49,6 @@ public class ReviewServiceIT {
     private ReviewService reviewService;
 
     @Autowired
-    private ReviewRepository reviewRepository;
-
-    @Autowired
     private StudentUserRepository studentUserRepository;
 
     @Autowired

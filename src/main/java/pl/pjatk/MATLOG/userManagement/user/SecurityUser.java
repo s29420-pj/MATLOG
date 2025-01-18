@@ -18,6 +18,8 @@ public final class SecurityUser implements UserDetails {
         this.user = user;
     }
 
+    public String getId() { return user.getId();}
+
     @Override
     public String getUsername() {
         return user.getEmailAddress();
