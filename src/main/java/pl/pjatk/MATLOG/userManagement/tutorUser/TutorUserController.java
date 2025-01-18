@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.pjatk.MATLOG.domain.enums.Role;
 import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
-import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
 import pl.pjatk.MATLOG.userManagement.exceptions.TutorUserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;

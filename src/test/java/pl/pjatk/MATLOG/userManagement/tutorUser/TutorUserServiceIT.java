@@ -13,7 +13,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-import pl.pjatk.MATLOG.domain.Review;
 import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.domain.enums.Rate;
@@ -24,7 +23,6 @@ import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserReviewLookUpDTO;
 import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserRepository;
@@ -37,7 +35,6 @@ import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
