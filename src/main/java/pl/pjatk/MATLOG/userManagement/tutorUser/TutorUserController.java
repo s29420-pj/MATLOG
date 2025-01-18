@@ -80,7 +80,7 @@ public class TutorUserController {
 
     @PutMapping("/remove/review/{tutorId}")
     public ResponseEntity<Void> removeReview(@PathVariable String tutorId,
-                                             @RequestParam String reviewId) {
+                                             @RequestBody String reviewId) {
         tutorUserService.removeReview(tutorId, reviewId);
         return ResponseEntity.accepted().build();
     }
