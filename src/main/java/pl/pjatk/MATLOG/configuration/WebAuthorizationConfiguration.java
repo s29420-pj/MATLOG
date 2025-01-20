@@ -31,6 +31,7 @@ public class WebAuthorizationConfiguration {
                             .requestMatchers("/tutor/user/controller/register").permitAll()
                             .requestMatchers("/student/user/controller/register").permitAll()
                             .requestMatchers("/tutor/user/controller/get/profile/**").permitAll()
+                            .requestMatchers("/tutor/user/controller/get/tutors").permitAll()
                             .requestMatchers("/student/user/controller/get/profile/**").permitAll()
                             .requestMatchers("/tutor/user/controller/change/password/**").hasAuthority("TUTOR_USER")
                             .requestMatchers("/tutor/user/controller/add/biography/**").hasAuthority("TUTOR_USER")

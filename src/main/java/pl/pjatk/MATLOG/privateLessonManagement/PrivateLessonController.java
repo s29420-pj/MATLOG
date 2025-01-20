@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/private_lesson/available/controller")
+@CrossOrigin(origins = "http://localhost:4200")
 public class PrivateLessonController {
 
     private final PrivateLessonService privateLessonService;

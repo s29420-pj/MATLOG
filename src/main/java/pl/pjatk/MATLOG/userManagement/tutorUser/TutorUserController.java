@@ -11,10 +11,12 @@ import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/tutor/user/controller")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TutorUserController {
 
     private final TutorUserService tutorUserService;
@@ -33,6 +35,11 @@ public class TutorUserController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Tried to create " + userDTO.role() + " as TutorUser");
+    }
+
+    @GetMapping("/get/tutors")
+    public ResponseEntity<List<TutorUserProfileDTO>> getAllTutors() {
+        return ResponseEntity.ok(tutorUserService.getAllTutors());
     }
 
     @GetMapping("/get/profile/{tutorId}")
