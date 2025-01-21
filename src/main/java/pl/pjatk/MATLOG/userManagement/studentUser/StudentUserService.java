@@ -69,10 +69,20 @@ public class StudentUserService {
         return studentUserDTOMapper.mapToDTO(studentUser);
     }
 
+    public StudentUserProfileDTO getStudentProfileByEmailAddress(String emailAddress) {
+        return studentUserDTOMapper.mapToDTO(getStudentUserByEmailAdress(emailAddress));
+    }
+
     public void changePassword(String id, String rawPassword) {
         StudentUser studentUser = getStudentUserById(id);
         studentUser.changePassword(passwordEncoder.encode(rawPassword), userPasswordValidator);
         studentUserRepository.save(studentUserDAOMapper.mapToDAO(studentUser));
+    }
+
+    private StudentUser getStudentUserByEmailAdress(String emailAddress) {
+        Optional<StudentUserDAO> studentUserDAO = studentUserRepository.findByEmailAddress(emailAddress);
+        if (studentUserDAO.isEmpty()) throw new UserNotFoundException();
+        return studentUserDAOMapper.mapToDomain(studentUserDAO.get());
     }
 
     public StudentUser getStudentUserById(String id) {

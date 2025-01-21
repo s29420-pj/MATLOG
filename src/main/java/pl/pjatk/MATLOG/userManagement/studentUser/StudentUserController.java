@@ -5,11 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pjatk.MATLOG.domain.enums.Role;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserProfileDTO;
-import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 @RestController
 @RequestMapping("/student/user/controller")
+@CrossOrigin(origins = "http://localhost:4200")
 public class StudentUserController {
 
     private final StudentUserService studentUserService;
@@ -30,16 +30,14 @@ public class StudentUserController {
     }
 
     @GetMapping("/get/profile/{id}")
-    public ResponseEntity<StudentUserProfileDTO> getStudentProfile(String id) {
+    public ResponseEntity<StudentUserProfileDTO> getStudentProfile(@PathVariable String id) {
         return ResponseEntity.ok(studentUserService.getStudentProfile(id));
     }
 
     @PutMapping("/change/password/{id}")
     public ResponseEntity<Void> changePassword(@PathVariable String id,
-                                               @RequestParam String rawPassword) {
+                                               @RequestBody String rawPassword) {
         studentUserService.changePassword(id, rawPassword);
         return ResponseEntity.accepted().build();
     }
-
-
 }

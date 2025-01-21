@@ -1,13 +1,16 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser;
 
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
+import pl.pjatk.MATLOG.domain.exceptions.userExceptions.UserEmptyPasswordException;
 import pl.pjatk.MATLOG.reviewManagement.ReviewService;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
+import pl.pjatk.MATLOG.userManagement.exceptions.TutorUserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
@@ -19,6 +22,7 @@ import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserRepository;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -79,13 +83,25 @@ public class TutorUserService {
      * @param rawPassword new password
      */
     public void changePassword(String id, String rawPassword) {
+        if (rawPassword == null || rawPassword.isEmpty()) throw new UserEmptyPasswordException();
         TutorUser tutorUser = getTutorUserById(id);
         tutorUser.changePassword(passwordEncoder.encode(rawPassword), passwordValidator);
         save(tutorUser);
     }
 
+    public List<TutorUserProfileDTO> getAllTutors() {
+        return tutorUserRepository.findAll().stream()
+                .map(tutorUserDAOMapper::mapToDomain)
+                .map(tutorUserDTOMapper::mapToProfile)
+                .toList();
+    }
+
     public TutorUserProfileDTO getTutorUserProfile(String id) {
         return tutorUserDTOMapper.mapToProfile(getTutorUserById(id));
+    }
+
+    public TutorUserProfileDTO getTutorUserProfileByEmailAddress(String emailAddress) {
+        return tutorUserDTOMapper.mapToProfile(getTutorUserByEmailAddress(emailAddress));
     }
 
     public void changeBiography(String id, String biography) {
@@ -134,7 +150,13 @@ public class TutorUserService {
 
     public TutorUser getTutorUserById(String id) {
         Optional<TutorUserDAO> tutorFromDb = tutorUserRepository.findById(id);
-        if (tutorFromDb.isEmpty()) throw new UserNotFoundException();
+        if (tutorFromDb.isEmpty()) throw new TutorUserNotFoundException();
         return tutorUserDAOMapper.mapToDomain(tutorFromDb.get());
+    }
+
+    public TutorUser getTutorUserByEmailAddress(String emailAddress) {
+        Optional<TutorUserDAO> tutorFromDB = tutorUserRepository.findByEmailAddress(emailAddress);
+        if (tutorFromDB.isEmpty()) throw new TutorUserNotFoundException();
+        return tutorUserDAOMapper.mapToDomain(tutorFromDB.get());
     }
 }
