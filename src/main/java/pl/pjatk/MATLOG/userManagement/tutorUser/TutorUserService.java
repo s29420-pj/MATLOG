@@ -1,7 +1,6 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser;
 
 import jakarta.transaction.Transactional;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.domain.TutorUser;
@@ -9,11 +8,13 @@ import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 import pl.pjatk.MATLOG.domain.exceptions.userExceptions.UserEmptyPasswordException;
 import pl.pjatk.MATLOG.reviewManagement.ReviewService;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
-import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
+import pl.pjatk.MATLOG.reviewManagement.dto.ReviewRemoveDTO;
 import pl.pjatk.MATLOG.userManagement.exceptions.TutorUserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
-import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserChangeBiographyDTO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserChangePasswordDTO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserEditSpecializationDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.TutorUserDTOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
@@ -79,13 +80,12 @@ public class TutorUserService {
 
     /**
      * Method which is used to change tutor's user password.
-     * @param id Tutor's user which will have password changed.
-     * @param rawPassword new password
+     * @param tutorUserChangePasswordDTO DTO representation of the tutor user with ID and new password.
      */
-    public void changePassword(String id, String rawPassword) {
-        if (rawPassword == null || rawPassword.isEmpty()) throw new UserEmptyPasswordException();
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.changePassword(passwordEncoder.encode(rawPassword), passwordValidator);
+    public void changePassword(TutorUserChangePasswordDTO tutorUserChangePasswordDTO) {
+        if (tutorUserChangePasswordDTO.rawPassword() == null || tutorUserChangePasswordDTO.rawPassword().isEmpty()) throw new UserEmptyPasswordException();
+        TutorUser tutorUser = getTutorUserById(tutorUserChangePasswordDTO.id());
+        tutorUser.changePassword(passwordEncoder.encode(tutorUserChangePasswordDTO.rawPassword()), passwordValidator);
         save(tutorUser);
     }
 
@@ -104,33 +104,33 @@ public class TutorUserService {
         return tutorUserDTOMapper.mapToProfile(getTutorUserByEmailAddress(emailAddress));
     }
 
-    public void changeBiography(String id, String biography) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.changeBiography(biography);
+    public void changeBiography(TutorUserChangeBiographyDTO tutorUserChangeBiographyDTO) {
+        TutorUser tutorUser = getTutorUserById(tutorUserChangeBiographyDTO.id());
+        tutorUser.changeBiography(tutorUserChangeBiographyDTO.biography());
         save(tutorUser);
     }
 
-    public void addSpecialization(String id, Collection<SchoolSubject> specializations) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.addSpecializationItem(specializations);
+    public void addSpecialization(TutorUserEditSpecializationDTO tutorUserEditSpecializationDTO) {
+        TutorUser tutorUser = getTutorUserById(tutorUserEditSpecializationDTO.id());
+        tutorUser.addSpecializationItem(tutorUserEditSpecializationDTO.specializations());
         save(tutorUser);
     }
 
-    public void removeSpecialization(String id, Collection<SchoolSubject> specializations) {
-        TutorUser tutorUser = getTutorUserById(id);
-        tutorUser.removeSpecializationItem(specializations);
+    public void removeSpecialization(TutorUserEditSpecializationDTO tutorUserEditSpecializationDTO) {
+        TutorUser tutorUser = getTutorUserById(tutorUserEditSpecializationDTO.id());
+        tutorUser.removeSpecializationItem(tutorUserEditSpecializationDTO.specializations());
         save(tutorUser);
     }
 
-    public void addReview(String tutorId, ReviewCreationDTO reviewCreationDTO) {
-        TutorUser tutorUser = getTutorUserById(tutorId);
+    public void addReview(ReviewCreationDTO reviewCreationDTO) {
+        TutorUser tutorUser = getTutorUserById(reviewCreationDTO.tutorId());
         tutorUser.addReview(reviewService.mapToDomain(reviewCreationDTO));
         save(tutorUser);
     }
 
-    public void removeReview(String tutorId, String reviewId) {
-        TutorUser tutorUser = getTutorUserById(tutorId);
-        tutorUser.removeReview(reviewService.findReviewById(reviewId));
+    public void removeReview(ReviewRemoveDTO reviewRemoveDTO) {
+        TutorUser tutorUser = getTutorUserById(reviewRemoveDTO.tutorId());
+        tutorUser.removeReview(reviewService.findReviewById(reviewRemoveDTO.reviewId()));
         save(tutorUser);
     }
 

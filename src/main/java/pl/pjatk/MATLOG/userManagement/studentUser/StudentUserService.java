@@ -8,6 +8,7 @@ import pl.pjatk.MATLOG.domain.User;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserChangePasswordDTO;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserDTOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserReviewDTOMapper;
@@ -73,9 +74,9 @@ public class StudentUserService {
         return studentUserDTOMapper.mapToDTO(getStudentUserByEmailAdress(emailAddress));
     }
 
-    public void changePassword(String id, String rawPassword) {
-        StudentUser studentUser = getStudentUserById(id);
-        studentUser.changePassword(passwordEncoder.encode(rawPassword), userPasswordValidator);
+    public void changePassword(StudentUserChangePasswordDTO studentUserChangePasswordDTO) {
+        StudentUser studentUser = getStudentUserById(studentUserChangePasswordDTO.id());
+        studentUser.changePassword(passwordEncoder.encode(studentUserChangePasswordDTO.rawPassword()), userPasswordValidator);
         studentUserRepository.save(studentUserDAOMapper.mapToDAO(studentUser));
     }
 
