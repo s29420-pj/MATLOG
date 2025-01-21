@@ -6,9 +6,7 @@ import pl.pjatk.MATLOG.domain.PrivateLesson;
 import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.domain.enums.PrivateLessonStatus;
 import pl.pjatk.MATLOG.domain.exceptions.lessonExceptions.PrivateLessonInvalidTimeException;
-import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonCreateDTO;
-import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonDTO;
-import pl.pjatk.MATLOG.privateLessonManagement.dto.PrivateLessonDTOMapper;
+import pl.pjatk.MATLOG.privateLessonManagement.dto.*;
 import pl.pjatk.MATLOG.privateLessonManagement.persistance.PrivateLessonDAO;
 import pl.pjatk.MATLOG.privateLessonManagement.persistance.PrivateLessonDAOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.StudentUserService;
@@ -52,17 +50,17 @@ public class PrivateLessonService {
         save(domainLesson);
     }
 
-    public void bookPrivateLesson(String id, String studentId) {
-        PrivateLesson privateLesson = getDomainPrivateLessonById(id);
+    public void bookPrivateLesson(PrivateLessonBookDTO privateLessonBookDTO) {
+        PrivateLesson privateLesson = getDomainPrivateLessonById(privateLessonBookDTO.id());
 
-        privateLesson.assignStudent(getStudentUserById(studentId));
+        privateLesson.assignStudent(getStudentUserById(privateLessonBookDTO.studentId()));
         privateLesson.changeStatus(PrivateLessonStatus.BOOKED);
 
         privateLessonRepository.save(privateLessonDAOMapper.mapToDAO(privateLesson));
     }
 
-    public void paidPrivateLesson(String id) {
-        PrivateLesson privateLesson = getDomainPrivateLessonById(id);
+    public void paidPrivateLesson(PrivateLessonPaidDTO privateLessonPaidDTO) {
+        PrivateLesson privateLesson = getDomainPrivateLessonById(privateLessonPaidDTO.id());
 
         privateLesson.changeConnectionCode(generateConnectionCode());
         privateLesson.changeStatus(PrivateLessonStatus.PAID);
@@ -70,8 +68,8 @@ public class PrivateLessonService {
         privateLessonRepository.save(privateLessonDAOMapper.mapToDAO(privateLesson));
     }
 
-    public void cancelPrivateLesson(String id) {
-        PrivateLesson privateLesson = getDomainPrivateLessonById(id);
+    public void cancelPrivateLesson(PrivateLessonCancelDTO privateLessonCancelDTO) {
+        PrivateLesson privateLesson = getDomainPrivateLessonById(privateLessonCancelDTO.id());
 
         privateLesson.unassignStudent();
         privateLesson.changeConnectionCode(null);
@@ -80,8 +78,8 @@ public class PrivateLessonService {
         save(privateLesson);
     }
 
-    public void deletePrivateLesson(String id) {
-        privateLessonRepository.deleteById(id);
+    public void deletePrivateLesson(PrivateLessonDeleteDTO privateLessonDeleteDTO) {
+        privateLessonRepository.deleteById(privateLessonDeleteDTO.id());
     }
 
     public List<PrivateLessonDTO> getAllPrivateLessons() {
