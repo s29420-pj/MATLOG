@@ -57,7 +57,7 @@ public class TutorUserService {
      * @throws IllegalArgumentException If DTO is null
      * @throws UserAlreadyExistsException if user with provided email address exists.
      */
-    public String registerUser(UserRegistrationDTO userDTO) throws IllegalArgumentException, UserAlreadyExistsException {
+    public void registerUser(UserRegistrationDTO userDTO) throws IllegalArgumentException, UserAlreadyExistsException {
         if (userDTO == null) {
             throw new IllegalArgumentException("Please provide valid UserDTO");
         }
@@ -75,7 +75,6 @@ public class TutorUserService {
         TutorUserDAO tutor = tutorUserDAOMapper.mapToDAO(domainUser);
 
         tutorUserRepository.save(tutor);
-        return domainUser.getId();
     }
 
     /**

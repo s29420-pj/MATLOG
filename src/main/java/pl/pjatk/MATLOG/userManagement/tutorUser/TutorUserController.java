@@ -28,10 +28,10 @@ public class TutorUserController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody UserRegistrationDTO userDTO) {
         if (userDTO.role().equals(Role.TUTOR)) {
-            String id = tutorUserService.registerUser(userDTO);
+            tutorUserService.registerUser(userDTO);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(id);
+                    .body("Tutor user " + userDTO.emailAddress() + " has been registered");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Tried to create " + userDTO.role() + " as TutorUser");

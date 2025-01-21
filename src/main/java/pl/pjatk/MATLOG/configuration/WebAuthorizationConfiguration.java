@@ -1,51 +1,21 @@
 package pl.pjatk.MATLOG.configuration;
 
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class WebAuthorizationConfiguration {
 
     private final AuthenticationProvider authenticationProvider;
-    private final CustomCorsConfiguration customCorsConfiguration;
 
-    public WebAuthorizationConfiguration(AuthenticationProvider authenticationProvider,
-                                         CustomCorsConfiguration customCorsConfiguration) {
+    public WebAuthorizationConfiguration(AuthenticationProvider authenticationProvider) {
         this.authenticationProvider = authenticationProvider;
-        this.customCorsConfiguration = customCorsConfiguration;
-    }
-
-    @Bean
-    public FilterRegistrationBean corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:4200"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-        config.setAllowedHeaders(List.of(
-                HttpHeaders.AUTHORIZATION,
-                HttpHeaders.CONTENT_TYPE,
-                HttpHeaders.ACCEPT
-        ));
-        config.setAllowCredentials(true);
-        config.setMaxAge(3600L);
-        source.registerCorsConfiguration("/**", config);
-        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        bean.setOrder(-102);
-        return bean;
     }
 
     @Bean
@@ -55,9 +25,9 @@ public class WebAuthorizationConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
                 .httpBasic(Customizer.withDefaults())
+                .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(
                     auth -> auth
-                            .requestMatchers("/login").permitAll()
                             .requestMatchers("/tutor/user/controller/register").permitAll()
                             .requestMatchers("/student/user/controller/register").permitAll()
                             .requestMatchers("/tutor/user/controller/get/profile/**").permitAll()
