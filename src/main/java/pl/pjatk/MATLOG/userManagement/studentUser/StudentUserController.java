@@ -9,6 +9,7 @@ import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 @RestController
 @RequestMapping("/student/user/controller")
+@CrossOrigin(origins = "http://localhost:4200")
 public class StudentUserController {
 
     private final StudentUserService studentUserService;

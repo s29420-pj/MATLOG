@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser;
 
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.domain.TutorUser;
@@ -21,6 +22,7 @@ import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserRepository;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -85,6 +87,13 @@ public class TutorUserService {
         TutorUser tutorUser = getTutorUserById(id);
         tutorUser.changePassword(passwordEncoder.encode(rawPassword), passwordValidator);
         save(tutorUser);
+    }
+
+    public List<TutorUserProfileDTO> getAllTutors() {
+        return tutorUserRepository.findAll().stream()
+                .map(tutorUserDAOMapper::mapToDomain)
+                .map(tutorUserDTOMapper::mapToProfile)
+                .toList();
     }
 
     public TutorUserProfileDTO getTutorUserProfile(String id) {
