@@ -20,16 +20,21 @@ import pl.pjatk.MATLOG.domain.enums.Role;
 import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
+import pl.pjatk.MATLOG.reviewManagement.dto.ReviewRemoveDTO;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserRepository;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserChangeBiographyDTO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserChangePasswordDTO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserEditSpecializationDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserRepository;
+import pl.pjatk.MATLOG.userManagement.user.dto.LoggedUserDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 import java.time.LocalDate;
@@ -147,7 +152,7 @@ public class TutorUserServiceIT {
 
         String id = tutorUserRepository.findByEmailAddress("example@example.com").get().getId();
 
-        tutorUserService.changeBiography(id, "testBio");
+        tutorUserService.changeBiography(new TutorUserChangeBiographyDTO(id, "testBio"));
 
         TutorUserDAO tutorUserDAO = tutorUserRepository.findByEmailAddress("example@example.com").get();
 
@@ -172,7 +177,7 @@ public class TutorUserServiceIT {
 
         TutorUserDAO tutorUserDAO = tutorUserRepository.findByEmailAddress("example@example.com").orElseThrow();
         TutorUser tutor = tutorUserDAOMapper.mapToDomain(tutorUserDAO);
-        tutorUserService.changePassword(tutor.getId(), "newPassword123!");
+        tutorUserService.changePassword(new TutorUserChangePasswordDTO(tutor.getId(), "newPassword123!"));
 
         assertTrue(passwordEncoder.matches("newPassword123!",
                 tutorUserDAOMapper.mapToDomain(
@@ -197,7 +202,7 @@ public class TutorUserServiceIT {
                 tutorUserRepository.findByEmailAddress("example@example.com").orElseThrow()
         );
 
-        tutorUserService.addSpecialization(tutorUser.getId(), List.of(SchoolSubject.MATHEMATICS));
+        tutorUserService.addSpecialization(new TutorUserEditSpecializationDTO(tutorUser.getId(), List.of(SchoolSubject.MATHEMATICS)));
 
         TutorUserProfileDTO profileDTO = tutorUserService.getTutorUserProfile(tutorUser.getId());
         assertTrue(profileDTO.specializations().contains(SchoolSubject.MATHEMATICS));
@@ -220,8 +225,8 @@ public class TutorUserServiceIT {
                 tutorUserRepository.findByEmailAddress("example@example.com").orElseThrow()
         );
 
-        tutorUserService.addSpecialization(tutorUser.getId(), List.of(SchoolSubject.MATHEMATICS));
-        tutorUserService.removeSpecialization(tutorUser.getId(), List.of(SchoolSubject.MATHEMATICS));
+        tutorUserService.addSpecialization(new TutorUserEditSpecializationDTO(tutorUser.getId(), List.of(SchoolSubject.MATHEMATICS)));
+        tutorUserService.removeSpecialization(new TutorUserEditSpecializationDTO(tutorUser.getId(), List.of(SchoolSubject.MATHEMATICS)));
 
         assertTrue(tutorUserRepository.findById(tutorUser.getId()).get()
                 .getSpecializations().isEmpty());
@@ -251,12 +256,13 @@ public class TutorUserServiceIT {
 
         var reviewCreationDTO = new ReviewCreationDTO(
                 Rate.FIVE,
+                tutorId,
                 "testComment",
                 LocalDateTime.now().minusHours(3),
                 studentUserReviewDTOMapper.mapToStudentReviewLookUpDTO(studentUser)
         );
 
-        tutorUserService.addReview(tutorId, reviewCreationDTO);
+        tutorUserService.addReview(reviewCreationDTO);
 
         var reviewSet = tutorUserService.getTutorUserById(tutorId).getReviews();
 
@@ -277,7 +283,7 @@ public class TutorUserServiceIT {
                 LocalDate.now().minusYears(17),
                 Role.TUTOR
         );
-        tutorUserService.registerUser(userDTO);
+        LoggedUserDTO loggedUserDTO = tutorUserService.registerUser(userDTO);
 
         StudentUser studentUser = StudentUser.builder()
                 .withFirstName("testFirstName")
@@ -289,6 +295,7 @@ public class TutorUserServiceIT {
 
         var reviewCreationDTO = new ReviewCreationDTO(
                 Rate.FIVE,
+                loggedUserDTO.getId(),
                 "testComment",
                 LocalDateTime.now().minusHours(3),
                 studentUserReviewDTOMapper.mapToStudentReviewLookUpDTO(studentUser)
@@ -296,14 +303,14 @@ public class TutorUserServiceIT {
 
         String tutorId = tutorUserRepository.findByEmailAddress("example@example.com").get().getId();
 
-        tutorUserService.addReview(tutorId, reviewCreationDTO);
+        tutorUserService.addReview(reviewCreationDTO);
 
         ReviewDTO review = tutorUserService.getTutorUserProfile(tutorId).reviews().stream()
                         .findFirst().get();
 
         System.out.println(review.id());
 
-        tutorUserService.removeReview(tutorId, review.id());
+        tutorUserService.removeReview(new ReviewRemoveDTO(tutorId, review.id()));
         tutorUserService.getTutorUserProfile(tutorId).reviews()
                         .forEach(System.out::println);
 

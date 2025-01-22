@@ -26,7 +26,10 @@ import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
 import pl.pjatk.MATLOG.userManagement.studentUser.StudentUserService;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserReviewLookUpDTO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserChangePasswordDTO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserEditSpecializationDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
+import pl.pjatk.MATLOG.userManagement.user.dto.LoggedUserDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 import java.time.LocalDate;
@@ -86,10 +89,11 @@ public class TutorUserControllerIT {
                 Role.TUTOR
         );
 
-        ResponseEntity<String> response = restTemplate.postForEntity(baseUrl + "/register", userDTO, String.class);
+        ResponseEntity<LoggedUserDTO> response = restTemplate.postForEntity(baseUrl + "/register", userDTO, LoggedUserDTO.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(response.getBody()).isEqualTo("Tutor user testEmailAddress@example.com has been registered");
+        assertThat(response.getBody().getId()).isNotEmpty();
+        assertThat(response.getBody().getUsername()).isEqualTo(userDTO.emailAddress());
     }
 
     @Test
@@ -103,10 +107,9 @@ public class TutorUserControllerIT {
                 Role.STUDENT
         );
 
-        ResponseEntity<String> response = restTemplate.postForEntity(baseUrl + "/register", userDTO, String.class);
+        ResponseEntity<LoggedUserDTO> response = restTemplate.postForEntity(baseUrl + "/register", userDTO, LoggedUserDTO.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(response.getBody()).isEqualTo("Tried to create STUDENT as TutorUser");
     }
 
     @Test
@@ -158,9 +161,9 @@ public class TutorUserControllerIT {
 
         ResponseEntity<Void> response = restTemplate.withBasicAuth(userDTO.emailAddress(), userDTO.password())
                 .exchange(
-                baseUrl + "/change/password/" + tutorId,
+                baseUrl + "/change/password",
                 HttpMethod.PUT,
-                new HttpEntity<>(newPassword),
+                new HttpEntity<>(new TutorUserChangePasswordDTO(tutorId, newPassword)),
                 Void.class
         );
 
@@ -187,9 +190,9 @@ public class TutorUserControllerIT {
 
         ResponseEntity<Void> response = restTemplate.withBasicAuth(userDTO.emailAddress(), userDTO.password())
                 .exchange(
-                    baseUrl + "/change/password/" + tutorId,
+                    baseUrl + "/change/password",
                     HttpMethod.PUT,
-                    new HttpEntity<>(invalidPassword),
+                    new HttpEntity<>(new TutorUserChangePasswordDTO(tutorId, invalidPassword)),
                     Void.class
                 );
 
@@ -214,9 +217,9 @@ public class TutorUserControllerIT {
 
         ResponseEntity<Void> response = restTemplate.withBasicAuth(userDTO.emailAddress(), userDTO.password())
                 .exchange(
-                    baseUrl + "/add/specializations/" + tutorId,
+                    baseUrl + "/add/specializations",
                     HttpMethod.PUT,
-                    new HttpEntity<>(specializations),
+                    new HttpEntity<>(new TutorUserEditSpecializationDTO(tutorId, specializations)),
                     Void.class
                 );
 
@@ -241,9 +244,9 @@ public class TutorUserControllerIT {
 
         ResponseEntity<Void> response = restTemplate.withBasicAuth(userDTO.emailAddress(), userDTO.password())
                 .exchange(
-                baseUrl + "/remove/specializations/" + tutorId,
+                baseUrl + "/remove/specializations",
                 HttpMethod.PUT,
-                new HttpEntity<>(specializations),
+                new HttpEntity<>(new TutorUserEditSpecializationDTO(tutorId, specializations)),
                 Void.class
         );
 
@@ -278,6 +281,7 @@ public class TutorUserControllerIT {
 
         ReviewCreationDTO reviewCreationDTO = new ReviewCreationDTO(
                 Rate.FOUR,
+                tutorId,
                 "testComment",
                 LocalDateTime.now().minusHours(3),
                 new StudentUserReviewLookUpDTO(studentId, "testFirstName2")
@@ -285,7 +289,7 @@ public class TutorUserControllerIT {
 
         ResponseEntity<Void> response = restTemplate.withBasicAuth(studentUserDTO.emailAddress(), studentUserDTO.password())
                 .postForEntity(
-                baseUrl + "/add/review/" + tutorId,
+                baseUrl + "/add/review",
                 reviewCreationDTO,
                 Void.class
         );

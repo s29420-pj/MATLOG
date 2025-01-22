@@ -1,28 +1,27 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser;
 
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.domain.TutorUser;
-import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 import pl.pjatk.MATLOG.domain.exceptions.userExceptions.UserEmptyPasswordException;
 import pl.pjatk.MATLOG.reviewManagement.ReviewService;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewRemoveDTO;
+import pl.pjatk.MATLOG.userManagement.exceptions.InvalidPasswordException;
 import pl.pjatk.MATLOG.userManagement.exceptions.TutorUserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
-import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserChangeBiographyDTO;
-import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserChangePasswordDTO;
-import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserEditSpecializationDTO;
-import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
+import pl.pjatk.MATLOG.userManagement.tutorUser.dto.*;
 import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.TutorUserDTOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.tutorUser.persistance.TutorUserRepository;
+import pl.pjatk.MATLOG.userManagement.user.dto.CredentialsDTO;
+import pl.pjatk.MATLOG.userManagement.user.dto.LoggedUserDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +57,7 @@ public class TutorUserService {
      * @throws IllegalArgumentException If DTO is null
      * @throws UserAlreadyExistsException if user with provided email address exists.
      */
-    public void registerUser(UserRegistrationDTO userDTO) throws IllegalArgumentException, UserAlreadyExistsException {
+    public LoggedUserDTO registerUser(UserRegistrationDTO userDTO) throws IllegalArgumentException, UserAlreadyExistsException {
         if (userDTO == null) {
             throw new IllegalArgumentException("Please provide valid UserDTO");
         }
@@ -76,6 +75,21 @@ public class TutorUserService {
         TutorUserDAO tutor = tutorUserDAOMapper.mapToDAO(domainUser);
 
         tutorUserRepository.save(tutor);
+
+        return login(new CredentialsDTO(userDTO.emailAddress(), userDTO.password()));
+    }
+
+    public LoggedUserDTO login(CredentialsDTO credentialsDTO) {
+        TutorUserDAO tutorUserDAO = tutorUserRepository.findByEmailAddress(credentialsDTO.emailAddress())
+                .orElseThrow(TutorUserNotFoundException::new);
+
+        TutorUser tutorUser = tutorUserDAOMapper.mapToDomain(tutorUserDAO);
+
+        if (!passwordEncoder.matches(credentialsDTO.password(), tutorUser.getPassword())) {
+            throw new InvalidPasswordException("Invalid password", HttpStatus.BAD_REQUEST);
+        }
+
+        return tutorUserDTOMapper.mapToLogin(tutorUser);
     }
 
     /**
@@ -87,6 +101,17 @@ public class TutorUserService {
         TutorUser tutorUser = getTutorUserById(tutorUserChangePasswordDTO.id());
         tutorUser.changePassword(passwordEncoder.encode(tutorUserChangePasswordDTO.rawPassword()), passwordValidator);
         save(tutorUser);
+    }
+
+    public void changeEmailAddress(TutorUserChangeEmailAddressDTO tutorUserChangeEmailAddressDTO) {
+        try {
+            getTutorUserByEmailAddress(tutorUserChangeEmailAddressDTO.newEmailAddress());
+        } catch (TutorUserNotFoundException ex) {
+            TutorUser tutorUser = getTutorUserById(tutorUserChangeEmailAddressDTO.tutorId());
+            tutorUser.changeEmailAddress(tutorUserChangeEmailAddressDTO.newEmailAddress());
+            save(tutorUser);
+        }
+        throw new UserAlreadyExistsException();
     }
 
     public List<TutorUserProfileDTO> getAllTutors() {

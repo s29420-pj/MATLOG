@@ -17,6 +17,7 @@ import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.domain.enums.Role;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
+import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserChangePasswordDTO;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserRepository;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
@@ -132,7 +133,7 @@ class StudentUserServiceIT {
         studentUserService.registerUser(userDTO);
         String id = studentUserRepository.findByEmailAddress("example@example.com").get().getId();
 
-        studentUserService.changePassword(id, "newpassword123");
+        studentUserService.changePassword(new StudentUserChangePasswordDTO(id, "newpassword123"));
         StudentUser studentUser = studentUserService.getStudentUserById(id);
 
         assertThat(passwordEncoder.matches("newpassword123", studentUser.getPassword())).isTrue();

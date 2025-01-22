@@ -4,12 +4,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import pl.pjatk.MATLOG.domain.exceptions.userExceptions.*;
 import pl.pjatk.MATLOG.reviewManagement.exceptions.ReviewNotFoundException;
+import pl.pjatk.MATLOG.userManagement.exceptions.InvalidPasswordException;
 import pl.pjatk.MATLOG.userManagement.exceptions.TutorUserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.domain.exceptions.reviewExceptions.*;
+import pl.pjatk.MATLOG.userManagement.user.dto.ErrorDTO;
 
 @ControllerAdvice
 public class UserExceptionHandler {
@@ -95,6 +98,13 @@ public class UserExceptionHandler {
     public ResponseEntity<String> handleUserUnsecurePasswordException(UserUnsecurePasswordException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorDTO> handleInvalidPasswordException(InvalidPasswordException ex) {
+        return ResponseEntity.status(ex.getHttpStatus())
+                .body(new ErrorDTO(ex.getMessage()));
     }
 
 
