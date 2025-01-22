@@ -12,6 +12,7 @@ import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserChangeBiographyDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserChangePasswordDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserEditSpecializationDTO;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
+import pl.pjatk.MATLOG.userManagement.user.dto.CredentialsDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 import java.util.Collection;
@@ -40,6 +41,9 @@ public class TutorUserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Tried to create " + userDTO.role() + " as TutorUser");
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<TutorUserProfileDTO> login(@RequestBody CredentialsDTO credentialsDTO)
 
     @GetMapping("/get/tutors")
     public ResponseEntity<List<TutorUserProfileDTO>> getAllTutors() {
