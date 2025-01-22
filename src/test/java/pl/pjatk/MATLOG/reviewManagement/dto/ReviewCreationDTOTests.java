@@ -19,6 +19,7 @@ public class ReviewCreationDTOTests {
         var testStudentUser = new StudentUserReviewLookUpDTO(UUID.randomUUID().toString(), "testFirstName");
         var reviewCreationDTO = new ReviewCreationDTO(
                 Rate.FIVE,
+                UUID.randomUUID().toString(),
                 "testComment",
                 testDateTime,
                 testStudentUser

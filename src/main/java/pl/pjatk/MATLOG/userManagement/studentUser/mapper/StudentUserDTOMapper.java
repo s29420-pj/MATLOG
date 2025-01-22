@@ -4,6 +4,7 @@ import pl.pjatk.MATLOG.configuration.annotations.Mapper;
 import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserProfileDTO;
+import pl.pjatk.MATLOG.userManagement.user.dto.LoggedUserDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 @Mapper
@@ -32,5 +33,15 @@ public class StudentUserDTOMapper {
             studentUser.getLastName(),
             studentUser.getDateOfBirth()
         );
+    }
+
+    public LoggedUserDTO mapToLogin(StudentUser studentUser) {
+        return LoggedUserDTO.builder()
+                .id(studentUser.getId())
+                .username(studentUser.getEmailAddress())
+                .firstName(studentUser.getFirstName())
+                .lastName(studentUser.getLastName())
+                .token("")
+                .build();
     }
 }

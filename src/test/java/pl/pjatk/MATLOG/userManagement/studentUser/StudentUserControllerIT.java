@@ -18,6 +18,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import pl.pjatk.MATLOG.domain.enums.Role;
+import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserChangePasswordDTO;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
@@ -122,9 +123,9 @@ public class StudentUserControllerIT {
         var userId = studentUserService.getStudentProfileByEmailAddress(dto.emailAddress()).id();
 
         ResponseEntity<Void> response = restTemplate.withBasicAuth(dto.emailAddress(), dto.password())
-                .exchange(baseUrl + "/change/password/" + userId,
+                .exchange(baseUrl + "/change/password",
                         HttpMethod.PUT,
-                        new HttpEntity<>(rawPassword),
+                        new HttpEntity<>(new StudentUserChangePasswordDTO(userId, rawPassword)),
                         Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);

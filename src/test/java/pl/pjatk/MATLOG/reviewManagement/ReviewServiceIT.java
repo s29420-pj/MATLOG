@@ -16,7 +16,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import pl.pjatk.MATLOG.domain.Review;
 import pl.pjatk.MATLOG.domain.StudentUser;
+import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.domain.enums.Rate;
+import pl.pjatk.MATLOG.domain.enums.Role;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewDTO;
 import pl.pjatk.MATLOG.reviewManagement.exceptions.ReviewNotFoundException;
@@ -28,6 +30,9 @@ import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserReviewDTOMap
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserRepository;
+import pl.pjatk.MATLOG.userManagement.tutorUser.TutorUserService;
+import pl.pjatk.MATLOG.userManagement.user.dto.LoggedUserDTO;
+import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -50,6 +55,9 @@ public class ReviewServiceIT {
 
     @Autowired
     private StudentUserRepository studentUserRepository;
+
+    @Autowired
+    private TutorUserService tutorUserService;
 
     @Autowired
     private StudentUserDAOMapper studentUserDAOMapper;
@@ -93,10 +101,20 @@ public class ReviewServiceIT {
                 .build();
         studentUserRepository.save(studentUserDAOMapper.mapToDAO(studentUser));
 
+        LoggedUserDTO loggedUserDTO = tutorUserService.registerUser(new UserRegistrationDTO(
+                "testFirstName",
+                "test2",
+                "test@example.com",
+                "@DFDFfgffsdf2",
+                LocalDate.now().minusYears(30),
+                Role.TUTOR
+        ));
+
+
         LocalDateTime dateTime = LocalDateTime.now().minusHours(2);
 
         ReviewCreationDTO reviewCreationDTO = new ReviewCreationDTO(
-                Rate.FIVE, "testComment", dateTime,
+                Rate.FIVE, loggedUserDTO.getId(), "testComment", dateTime,
                 studentUserReviewDTOMapper.mapToStudentReviewLookUpDTO(studentUser));
 
         ReviewDAO savedReview = reviewService.save(reviewCreationDTO);
@@ -119,10 +137,19 @@ public class ReviewServiceIT {
                 .build();
         studentUserRepository.save(studentUserDAOMapper.mapToDAO(studentUser));
 
+        LoggedUserDTO loggedUserDTO = tutorUserService.registerUser(new UserRegistrationDTO(
+                "testFirstName",
+                "test2",
+                "test@example.com",
+                "@DFDFfgffsdf2",
+                LocalDate.now().minusYears(30),
+                Role.TUTOR
+        ));
+
         LocalDateTime dateTime = LocalDateTime.now().minusHours(2);
 
         ReviewCreationDTO reviewCreationDTO = new ReviewCreationDTO(
-                Rate.FIVE, "testComment", dateTime,
+                Rate.FIVE, loggedUserDTO.getId(), "testComment", dateTime,
                 studentUserReviewDTOMapper.mapToStudentReviewLookUpDTO(studentUser));
 
         ReviewDAO savedReview = reviewService.save(reviewCreationDTO);
@@ -151,8 +178,17 @@ public class ReviewServiceIT {
 
         LocalDateTime dateTime = LocalDateTime.now().minusHours(2);
 
+        LoggedUserDTO loggedUserDTO = tutorUserService.registerUser(new UserRegistrationDTO(
+                "testFirstName",
+                "test2",
+                "test@example.com",
+                "@DFDFfgffsdf2",
+                LocalDate.now().minusYears(30),
+                Role.TUTOR
+        ));
+
         ReviewCreationDTO reviewCreationDTO = new ReviewCreationDTO(
-                Rate.FIVE, "testComment", dateTime,
+                Rate.FIVE, loggedUserDTO.getId(), "testComment", dateTime,
                 studentUserReviewDTOMapper.mapToStudentReviewLookUpDTO(studentUser));
 
         Review review = reviewService.mapToDomain(reviewCreationDTO);

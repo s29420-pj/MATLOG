@@ -59,6 +59,7 @@ public class ReviewDTOMapperTests {
     void shouldMapCreationDTOToReview() {
         ReviewCreationDTO creationDTO = new ReviewCreationDTO(
                 Rate.FOUR,
+                UUID.randomUUID().toString(),
                 "testComment",
                 LocalDateTime.now(),
                 new StudentUserReviewLookUpDTO(UUID.randomUUID().toString(), "testName")

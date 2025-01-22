@@ -5,6 +5,7 @@ import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDTOMapper;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.TutorUserProfileDTO;
+import pl.pjatk.MATLOG.userManagement.user.dto.LoggedUserDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 import java.util.stream.Collectors;
@@ -42,5 +43,15 @@ public class TutorUserDTOMapper {
                         .map(reviewDTOMapper::mapToDTO)
                         .collect(Collectors.toSet())
         );
+    }
+
+    public LoggedUserDTO mapToLogin(TutorUser tutorUser) {
+        return LoggedUserDTO.builder()
+                .id(tutorUser.getId())
+                .firstName(tutorUser.getFirstName())
+                .lastName(tutorUser.getLastName())
+                .username(tutorUser.getEmailAddress())
+                .token("")
+                .build();
     }
 }

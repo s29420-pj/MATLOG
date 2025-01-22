@@ -29,7 +29,7 @@ public abstract class User {
     private final String id;
     private final String firstName;
     private final String lastName;
-    private final String emailAddress;
+    private String emailAddress;
     private String password;
     private final LocalDate dateOfBirth;
     private final Set<GrantedAuthority> authorities;
@@ -92,6 +92,10 @@ public abstract class User {
         }
         if (!passwordValidator.isSecure(password)) throw new UserUnsecurePasswordException();
         this.password = password;
+    }
+
+    public void changeEmailAddress(String newEmailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public void unblock() {
