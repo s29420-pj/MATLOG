@@ -11,9 +11,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.AuthenticationProviderService;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.JWTAuthFilter;
 
 import java.util.List;
 
@@ -21,9 +24,9 @@ import java.util.List;
 @EnableWebSecurity
 public class WebAuthorizationConfiguration {
 
-    private final AuthenticationProvider authenticationProvider;
+    private final AuthenticationProviderService authenticationProvider;
 
-    public WebAuthorizationConfiguration(AuthenticationProvider authenticationProvider) {
+    public WebAuthorizationConfiguration(AuthenticationProviderService authenticationProvider) {
         this.authenticationProvider = authenticationProvider;
     }
 
@@ -54,13 +57,10 @@ public class WebAuthorizationConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authenticationProvider(authenticationProvider)
                 .csrf(csrf -> csrf.disable())
+                .addFilterBefore(new JWTAuthFilter(authenticationProvider), BasicAuthenticationFilter.class)
                 .sessionManagement(customizer ->
                         customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .cors(cors -> cors.disable())
-                .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(
                     auth -> auth
                             .requestMatchers("/tutor/user/controller/login").permitAll()

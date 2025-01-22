@@ -7,6 +7,7 @@ import pl.pjatk.MATLOG.domain.enums.Role;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewCreationDTO;
 import pl.pjatk.MATLOG.reviewManagement.dto.ReviewRemoveDTO;
 import pl.pjatk.MATLOG.userManagement.exceptions.TutorUserNotFoundException;
+import pl.pjatk.MATLOG.userManagement.securityConfiguration.AuthenticationProviderService;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.*;
 import pl.pjatk.MATLOG.userManagement.user.dto.CredentialsDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.LoggedUserDTO;
@@ -21,15 +22,18 @@ import java.util.stream.Stream;
 public class TutorUserController {
 
     private final TutorUserService tutorUserService;
+    private final AuthenticationProviderService authenticationProviderService;
 
-    public TutorUserController(TutorUserService tutorUserService) {
+    public TutorUserController(TutorUserService tutorUserService, AuthenticationProviderService authenticationProviderService) {
         this.tutorUserService = tutorUserService;
+        this.authenticationProviderService = authenticationProviderService;
     }
 
     @PostMapping("/register")
     public ResponseEntity<LoggedUserDTO> register(@RequestBody UserRegistrationDTO userDTO) {
         if (userDTO.role().equals(Role.TUTOR)) {
             LoggedUserDTO loggedUserDTO = tutorUserService.registerUser(userDTO);
+            loggedUserDTO.setToken(authenticationProviderService.createToken(loggedUserDTO));
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(loggedUserDTO);
@@ -39,7 +43,9 @@ public class TutorUserController {
 
     @PostMapping("/login")
     public ResponseEntity<LoggedUserDTO> login(@RequestBody CredentialsDTO credentialsDTO) {
-        return ResponseEntity.ok(tutorUserService.login(credentialsDTO));
+        LoggedUserDTO login = tutorUserService.login(credentialsDTO);
+        login.setToken(authenticationProviderService.createToken(login));
+        return ResponseEntity.ok(login);
     }
 
     @GetMapping("/get/tutors")
