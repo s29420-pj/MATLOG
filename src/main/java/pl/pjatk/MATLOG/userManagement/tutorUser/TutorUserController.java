@@ -18,7 +18,6 @@ import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/tutor/user/controller")
-@CrossOrigin(origins = "http://localhost:4200")
 public class TutorUserController {
 
     private final TutorUserService tutorUserService;

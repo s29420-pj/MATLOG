@@ -12,6 +12,7 @@ import pl.pjatk.MATLOG.reviewManagement.dto.ReviewRemoveDTO;
 import pl.pjatk.MATLOG.userManagement.exceptions.InvalidPasswordException;
 import pl.pjatk.MATLOG.userManagement.exceptions.TutorUserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
+import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
 import pl.pjatk.MATLOG.userManagement.tutorUser.dto.*;
 import pl.pjatk.MATLOG.userManagement.tutorUser.mapper.TutorUserDTOMapper;
@@ -72,16 +73,14 @@ public class TutorUserService {
 
         domainUser.changePassword(passwordEncoder.encode(userDTO.password()), passwordValidator);
 
-        TutorUserDAO tutor = tutorUserDAOMapper.mapToDAO(domainUser);
-
-        tutorUserRepository.save(tutor);
+        save(domainUser);
 
         return login(new CredentialsDTO(userDTO.emailAddress(), userDTO.password()));
     }
 
     public LoggedUserDTO login(CredentialsDTO credentialsDTO) {
         TutorUserDAO tutorUserDAO = tutorUserRepository.findByEmailAddress(credentialsDTO.emailAddress())
-                .orElseThrow(TutorUserNotFoundException::new);
+                .orElseThrow(UserNotFoundException::new);
 
         TutorUser tutorUser = tutorUserDAOMapper.mapToDomain(tutorUserDAO);
 

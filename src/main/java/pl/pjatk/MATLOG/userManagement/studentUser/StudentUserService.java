@@ -1,13 +1,18 @@
 package pl.pjatk.MATLOG.userManagement.studentUser;
 
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjatk.MATLOG.domain.StudentUser;
+import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.domain.User;
+import pl.pjatk.MATLOG.userManagement.exceptions.InvalidPasswordException;
+import pl.pjatk.MATLOG.userManagement.exceptions.TutorUserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserAlreadyExistsException;
 import pl.pjatk.MATLOG.userManagement.exceptions.UserNotFoundException;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
+import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserChangeEmailAddressDTO;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserChangePasswordDTO;
 import pl.pjatk.MATLOG.userManagement.studentUser.dto.StudentUserProfileDTO;
 import pl.pjatk.MATLOG.userManagement.studentUser.mapper.StudentUserDTOMapper;
@@ -16,6 +21,8 @@ import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAO;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserDAOMapper;
 import pl.pjatk.MATLOG.userManagement.studentUser.persistance.StudentUserRepository;
 import pl.pjatk.MATLOG.userManagement.user.UserRepositoryService;
+import pl.pjatk.MATLOG.userManagement.user.dto.CredentialsDTO;
+import pl.pjatk.MATLOG.userManagement.user.dto.LoggedUserDTO;
 import pl.pjatk.MATLOG.userManagement.user.dto.UserRegistrationDTO;
 
 import java.util.Optional;
@@ -45,7 +52,7 @@ public class StudentUserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void registerUser(UserRegistrationDTO userDTO) throws IllegalArgumentException, UserAlreadyExistsException {
+    public LoggedUserDTO registerUser(UserRegistrationDTO userDTO) throws IllegalArgumentException, UserAlreadyExistsException {
         if (userDTO == null) {
             throw new IllegalArgumentException("Please provide valid UserDTO");
         }
@@ -60,9 +67,22 @@ public class StudentUserService {
 
         domainUser.changePassword(passwordEncoder.encode(userDTO.password()), userPasswordValidator);
 
-        StudentUserDAO student = studentUserDAOMapper.mapToDAO(domainUser);
+        save(domainUser);
 
-        studentUserRepository.save(student);
+        return login(new CredentialsDTO(userDTO.emailAddress(), userDTO.password()));
+    }
+
+    public LoggedUserDTO login(CredentialsDTO credentialsDTO) {
+        StudentUserDAO studentUserDAO = studentUserRepository.findByEmailAddress(credentialsDTO.emailAddress())
+                .orElseThrow(UserNotFoundException::new);
+
+        var student = studentUserDAOMapper.mapToDomain(studentUserDAO);
+
+        if (!passwordEncoder.matches(credentialsDTO.password(), student.getPassword())) {
+            throw new InvalidPasswordException("Invalid password", HttpStatus.BAD_REQUEST);
+        }
+
+        return studentUserDTOMapper.mapToLogin(student);
     }
 
     public StudentUserProfileDTO getStudentProfile(String id) {
@@ -77,7 +97,18 @@ public class StudentUserService {
     public void changePassword(StudentUserChangePasswordDTO studentUserChangePasswordDTO) {
         StudentUser studentUser = getStudentUserById(studentUserChangePasswordDTO.id());
         studentUser.changePassword(passwordEncoder.encode(studentUserChangePasswordDTO.rawPassword()), userPasswordValidator);
-        studentUserRepository.save(studentUserDAOMapper.mapToDAO(studentUser));
+        save(studentUser);
+    }
+
+    public void changeEmailAddress(StudentUserChangeEmailAddressDTO studentUserChangeEmailAddressDTO) {
+        try {
+            getStudentProfileByEmailAddress(studentUserChangeEmailAddressDTO.newEmailAddress());
+        } catch (TutorUserNotFoundException ex) {
+            StudentUser studentUser = getStudentUserById(studentUserChangeEmailAddressDTO.studentId());
+            studentUser.changeEmailAddress(studentUserChangeEmailAddressDTO.newEmailAddress());
+            save(studentUser);
+        }
+        throw new UserAlreadyExistsException();
     }
 
     private StudentUser getStudentUserByEmailAdress(String emailAddress) {
@@ -90,5 +121,9 @@ public class StudentUserService {
         Optional<StudentUserDAO> studentUserDAO = studentUserRepository.findById(id);
         if (studentUserDAO.isEmpty()) throw new UserNotFoundException();
         return studentUserDAOMapper.mapToDomain(studentUserDAO.get());
+    }
+
+    public void save(StudentUser studentUser) {
+        studentUserDAOMapper.mapToDAO(studentUser);
     }
 }

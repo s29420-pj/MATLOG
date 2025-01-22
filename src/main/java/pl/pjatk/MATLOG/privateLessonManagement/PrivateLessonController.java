@@ -2,14 +2,12 @@ package pl.pjatk.MATLOG.privateLessonManagement;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.pjatk.MATLOG.domain.PrivateLesson;
 import pl.pjatk.MATLOG.privateLessonManagement.dto.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/private_lesson/")
-@CrossOrigin(origins = "http://localhost:4200")
 public class PrivateLessonController {
 
     private final PrivateLessonService privateLessonService;
