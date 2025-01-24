@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.domain;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import pl.pjatk.MATLOG.domain.enums.Role;
 
 /**
  * Concrete class representing Student in application
@@ -42,8 +43,8 @@ public final class StudentUser extends User {
      */
     private StudentUser(StudentUserBuilder builder) {
         super(builder);
-        if (!getAuthorities().contains(new SimpleGrantedAuthority("STUDENT_USER")))
-            addAuthority(new SimpleGrantedAuthority("STUDENT_USER"));
+        if (!getAuthorities().contains(new SimpleGrantedAuthority(Role.STUDENT.name())))
+            addAuthority(new SimpleGrantedAuthority(Role.STUDENT.name()));
     }
 
 }

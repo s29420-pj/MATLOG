@@ -36,9 +36,6 @@ public class AuthenticationProviderService {
 
     private final UserRepositoryService userRepositoryService;
 
-    @Value("${security.jwt.token.secret-key:secret-key}")
-    private String secretKey;
-
     private SecretKey signingKey;
 
     @PostConstruct
@@ -48,7 +45,8 @@ public class AuthenticationProviderService {
 
     public String createToken(LoggedUserDTO loggedUserDTO) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 3_600_000);
+        Date validity = new Date(now.getTime() + 3_600_000); // 1-hour expiration
+
         return Jwts.builder()
                 .setSubject(loggedUserDTO.getUsername())
                 .claim("id", loggedUserDTO.getId())
@@ -63,30 +61,31 @@ public class AuthenticationProviderService {
     }
 
     public Authentication validateToken(String token) {
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(signingKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
 
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(signingKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+            List<String> roles = claims.get("roles", List.class);
 
-        List<String> roles = claims.get("roles", List.class);
+            List<SimpleGrantedAuthority> authorities = roles.stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .toList();
 
-        List<SimpleGrantedAuthority> authorities = roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .toList();
+            LoggedUserDTO user = LoggedUserDTO.builder()
+                    .username(claims.getSubject())
+                    .id(claims.get("id", String.class))
+                    .firstName(claims.get("firstName", String.class))
+                    .lastName(claims.get("lastName", String.class))
+                    .roles(roles)
+                    .build();
 
-        LoggedUserDTO user = LoggedUserDTO.builder()
-                .username(claims.getSubject())
-                .id(claims.get("id", String.class))
-                .firstName(claims.get("firstName", String.class))
-                .lastName(claims.get("lastName", String.class))
-                .roles(roles)
-                .build();
-
-        User domainUser = userRepositoryService.findUserByEmailAddress(user.getUsername());
-
-        return new UsernamePasswordAuthenticationToken(user, null, authorities);
+            return new UsernamePasswordAuthenticationToken(user, null, authorities);
+        } catch (Exception e) {
+            throw new BadCredentialsException("Invalid JWT token", e);
+        }
     }
 
 }

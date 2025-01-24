@@ -1,5 +1,6 @@
 package pl.pjatk.MATLOG.userManagement.studentUser.mapper;
 
+import org.springframework.security.core.GrantedAuthority;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
 import pl.pjatk.MATLOG.domain.StudentUser;
 import pl.pjatk.MATLOG.userManagement.securityConfiguration.UserPasswordValidator;
@@ -42,6 +43,9 @@ public class StudentUserDTOMapper {
                 .firstName(studentUser.getFirstName())
                 .lastName(studentUser.getLastName())
                 .token("")
+                .roles(studentUser.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .toList())
                 .build();
     }
 }

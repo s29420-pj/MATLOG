@@ -1,5 +1,6 @@
 package pl.pjatk.MATLOG.userManagement.tutorUser.mapper;
 
+import org.springframework.security.core.GrantedAuthority;
 import pl.pjatk.MATLOG.configuration.annotations.Mapper;
 import pl.pjatk.MATLOG.domain.TutorUser;
 import pl.pjatk.MATLOG.reviewManagement.mapper.ReviewDTOMapper;
@@ -52,6 +53,9 @@ public class TutorUserDTOMapper {
                 .lastName(tutorUser.getLastName())
                 .username(tutorUser.getEmailAddress())
                 .token("")
+                .roles(tutorUser.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .toList())
                 .build();
     }
 }

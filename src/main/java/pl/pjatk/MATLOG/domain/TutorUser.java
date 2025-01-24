@@ -1,6 +1,7 @@
 package pl.pjatk.MATLOG.domain;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import pl.pjatk.MATLOG.domain.enums.Role;
 import pl.pjatk.MATLOG.domain.enums.SchoolSubject;
 
 import java.util.Collection;
@@ -100,8 +101,8 @@ public final class TutorUser extends User {
      */
     private TutorUser(TutorBuilder builder) {
         super(builder);
-        if (!getAuthorities().contains(new SimpleGrantedAuthority("TUTOR_USER")))
-            addAuthority(new SimpleGrantedAuthority("TUTOR_USER"));
+        if (!getAuthorities().contains(new SimpleGrantedAuthority(Role.TUTOR.name())))
+            addAuthority(new SimpleGrantedAuthority(Role.TUTOR.name()));
         this.biography = Objects.requireNonNullElseGet(builder.biography, String::new);
         this.specializations = Objects.requireNonNullElseGet(builder.specializations, HashSet::new);
         this.reviews = Objects.requireNonNullElseGet(builder.reviews, HashSet::new);
