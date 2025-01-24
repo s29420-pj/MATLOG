@@ -30,7 +30,7 @@ public class TutorUserDAO {
     @Column(nullable = false)
     String password;
 
-    @Column()
+    @Column
     LocalDate dateOfBirth;
 
     @Column

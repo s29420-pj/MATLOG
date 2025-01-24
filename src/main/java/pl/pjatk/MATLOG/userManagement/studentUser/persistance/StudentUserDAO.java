@@ -1,9 +1,6 @@
 package pl.pjatk.MATLOG.userManagement.studentUser.persistance;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -17,19 +14,19 @@ import java.util.Set;
 public class StudentUserDAO {
 
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false)
     String id;
 
-    @Column(name = "first_name", nullable = false)
+    @Column(nullable = false)
     String firstName;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(nullable = false)
     String lastName;
 
-    @Column(name = "email_address", nullable = false)
+    @Column(unique = true, nullable = false)
     String emailAddress;
 
-    @Column(name = "password", nullable = false, columnDefinition = "text")
+    @Column(nullable = false)
     String password;
 
     @Column
@@ -37,7 +34,7 @@ public class StudentUserDAO {
 
     @Column
     @Fetch(value = FetchMode.JOIN)
-    @ElementCollection(targetClass = GrantedAuthority.class)
+    @ElementCollection(targetClass = GrantedAuthority.class, fetch = FetchType.EAGER)
     Set<GrantedAuthority> authorities;
 
     @Column

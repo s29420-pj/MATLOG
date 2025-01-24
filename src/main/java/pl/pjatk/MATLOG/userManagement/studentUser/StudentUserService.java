@@ -124,6 +124,7 @@ public class StudentUserService {
     }
 
     public void save(StudentUser studentUser) {
-        studentUserDAOMapper.mapToDAO(studentUser);
+        studentUserRepository.save(studentUserDAOMapper.mapToDAO(studentUser));
+
     }
 }
