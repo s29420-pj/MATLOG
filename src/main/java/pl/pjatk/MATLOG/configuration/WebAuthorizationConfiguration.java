@@ -79,6 +79,17 @@ public class WebAuthorizationConfiguration {
                             .requestMatchers("/tutor/user/controller/remove/review").hasAuthority("ADMINISTRATOR_USER")
                             .requestMatchers("/student/user/controller/change/emailAddress").hasAuthority("STUDENT")
                             .requestMatchers("/student/user/controller/change/password").hasAuthority("STUDENT")
+                            .requestMatchers("/private_lesson/tutor/get-all-available/**").hasAuthority("STUDENT")
+                            .requestMatchers("/private_lesson/tutor/get-all-booked/**").hasAuthority("TUTOR")
+                            .requestMatchers("/private_lesson/tutor/get-all-paid/**").hasAuthority("TUTOR")
+                            .requestMatchers("/private_lesson/tutor/get-all/**").hasAuthority("TUTOR")
+                            .requestMatchers("/private_lesson/student/get-all/**").hasAuthority("STUDENT")
+                            .requestMatchers("/private_lesson/student/get-all-booked/**").hasAuthority("STUDENT")
+                            .requestMatchers("/private_lesson/student/get-all-paid/**").hasAuthority("STUDENT")
+                            .requestMatchers("/private_lesson/student/book").hasAuthority("STUDENT")
+                            .requestMatchers("/private_lesson/student/cancel").hasAuthority("STUDENT")
+                            .requestMatchers("/private_lesson/student/paid").hasAuthority("TUTOR")
+                            .requestMatchers("/private_lesson/tutor/create").hasAuthority("TUTOR")
                             .anyRequest().authenticated()
                 );
         return http.build();
