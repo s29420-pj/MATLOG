@@ -23,7 +23,7 @@ public class PrivateLessonDAO {
     @JoinColumn(name = "student_id")
     StudentUserDAO student;
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = true)
     String connectionCode;
 
     @Column(nullable = false)
